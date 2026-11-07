@@ -534,7 +534,7 @@ let requestBusy = false;
 =================================== */
 
 // عنوان الوسيط الآمن بعد نشر Cloudflare Worker (لا تضع أسرارًا هنا)
-const DAHIRA_API_URL = 'https://aldhahira-timss-api.sultan-alwaeli.workers.dev';
+const DAHIRA_API_URL = 'https://REPLACE-WITH-YOUR-WORKER.workers.dev';
 const ALLOWED_API_METHODS = new Set(['dhStudentLogin','dhChallengeStatus','dhStartChallenge','dhSubmitChallengeAnswer','dhPortalProgress']);
 async function api(name,args,success){
   if(!ALLOWED_API_METHODS.has(name)) { showApiError('عملية غير مسموحة'); return; }
@@ -1395,6 +1395,55 @@ function resetExtraLab(){openExtraLab(extraType);}
 function renderExtraRecords(){const head=$('extraHead'),body=$('extraRows');head.replaceChildren();body.replaceChildren();const headers=extraRecords.length?extraRecords[0].headers:[];if(!headers.length){const tr=body.insertRow(),td=tr.insertCell();td.textContent='لم تُسجّل قياسات بعد';return;}const tr=head.insertRow();['#',...headers].forEach(h=>{const th=document.createElement('th');th.textContent=h;tr.appendChild(th);});extraRecords.forEach((r,i)=>{const tr=body.insertRow();[i+1,...r.values].forEach(x=>tr.insertCell().textContent=String(x));});}
 function checkExtraLab(){const checked=document.querySelector('input[name="extraChoice"]:checked'),host=$('extraFeedback');if(!checked){host.textContent='اختر إجابة أولًا.';return;}const correct=Number(checked.value)===extraDefs[extraType].answer;host.textContent=(correct?'✓ إجابة صحيحة. ':'✗ راجع استنتاجك. ')+extraDefs[extraType].explain;host.className=correct?'success':'error';}
 function copyResearchCard(){const lines=[extraDefs[extraType].title,'فرضيتي: '+$('extraHypothesis').value,'القياسات:',...extraRecords.map((r,i)=>`${i+1}. ${r.headers.map((h,j)=>h+': '+r.values[j]).join(' | ')}`),'استنتاجي: '+$('extraConclusion').value,'تنبيه: محاكاة تعليمية افتراضية'];const t=lines.join('\n');if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>$('extraCopyMsg').textContent='نُسخت البطاقة.').catch(()=>$('extraCopyMsg').textContent='تعذّر النسخ تلقائيًا؛ يمكنك تحديد النص ونسخه يدويًا.');}else{$('extraCopyMsg').textContent='النسخ التلقائي غير متاح في هذا المتصفح.';}}
+
+
+/* ===== V7: تقويم قائم على بيانات التجربة — لا يؤثر في تحديات TIMSS ===== */
+const labAssessments={};
+function labQuestion(host, question, options, correct, explain, key){
+ const q=document.getElementById(host); if(!q)return;
+ q.replaceChildren();const heading=document.createElement('p');heading.style.fontWeight='700';heading.textContent=question;q.appendChild(heading);
+ const group=document.createElement('div');group.setAttribute('role','radiogroup');group.setAttribute('aria-label','إجابة الاستقصاء');
+ options.forEach((option,i)=>{const l=document.createElement('label');l.className='inquiry-answer';const r=document.createElement('input');r.type='radio';r.name='dynamic_'+host;r.value=String(i);l.append(r,document.createTextNode(' '+option));group.appendChild(l)});q.appendChild(group);
+ labAssessments[key]={host,correct,explain};
+}
+function labEvaluate(key,feedbackId){const fb=document.getElementById(feedbackId),a=labAssessments[key];if(!a){fb.textContent='سجّل قياسين مختلفين أولًا حتى يتولد سؤال من نتائجك.';fb.className='error';return;}
+ const selected=document.querySelector('input[name="dynamic_'+a.host+'"]:checked');if(!selected){fb.textContent='اختر إجابة أولًا.';fb.className='error';return;}
+ const ok=Number(selected.value)===a.correct;fb.textContent=(ok?'✓ إجابة صحيحة. ':'✗ راجع القياسات المسجلة. ')+a.explain;fb.className=ok?'success':'error';}
+function labClear(key,host,feedbackId){delete labAssessments[key];const el=document.getElementById(host);if(el)el.textContent='سجّل قياسين مختلفين على الأقل، ثم سيظهر سؤال مبني على نتائج تجربتك.';const fb=document.getElementById(feedbackId);if(fb)fb.textContent='';}
+function labNumericOptions(value,unit,decimals=1){const f=n=>Number(n).toFixed(decimals)+' '+unit;const d=Math.max(decimals?0.5:1,Math.abs(value)*0.3);return [f(value+d),f(value),f(Math.max(0,value-d))];}
+const _recordInquiry=recordInquiry;recordInquiry=function(){_recordInquiry();labPlantQuestion();};
+const _resetInquiry=resetInquiry;resetInquiry=function(){_resetInquiry();labClear('plant','plantDynamic','inquiryFeedback');};
+function labPlantQuestion(){const r=inquiryReadings;if(r.length<2)return;const a=r[r.length-2],b=r[r.length-1];
+ const question=`في التجربة ${r.length-1} كان النمو ${a.growth} سم، وفي التجربة ${r.length} أصبح ${b.growth} سم. كم بلغ الفرق المطلق بين القياسين؟`;
+ const v=Number(Math.abs(b.growth-a.growth).toFixed(1));labQuestion('plantDynamic',question,labNumericOptions(v,'سم'),1,`الفرق = |${b.growth} − ${a.growth}| = ${v} سم. لا تنسب الفرق إلى الضوء أو الماء إلا إذا ثبّت المتغير الآخر.`,'plant');}
+checkInquiry=function(){labEvaluate('plant','inquiryFeedback');};
+const _recordElectric=recordElectricLab;recordElectricLab=function(){_recordElectric();labElectricQuestion();};
+const _resetElectric=resetElectricLab;resetElectricLab=function(){_resetElectric();labClear('electric','electricDynamic','electricFeedback');};
+function labElectricQuestion(){const r=electricReadings;if(r.length<2)return;const a=r[r.length-2],b=r[r.length-1],v=Number(b.current.toFixed(3));
+ labQuestion('electricDynamic',`في القياس ${r.length} كان الجهد ${b.voltage} فولت والمقاومة المكافئة ${electricFmt(b.req)} أوم. ما قيمة التيار الكلي وفق قانون أوم؟`,labNumericOptions(v,'أمبير',3),1,`التيار = الجهد ÷ المقاومة المكافئة = ${b.voltage} ÷ ${electricFmt(b.req)} ≈ ${electricFmt(b.current)} أمبير. قارن بالقياس السابق مع الانتباه إلى تغير المقاومة.`,'electric');}
+checkElectricLab=function(){labEvaluate('electric','electricFeedback');};
+const _openExtra=openExtraLab;openExtraLab=function(type){_openExtra(type);labClear('extra','extraDynamic','extraFeedback');};
+const _recordExtra=recordExtraLab;recordExtraLab=function(){_recordExtra();labExtraQuestion();};
+function labExtraQuestion(){const r=extraRecords;if(r.length<2)return;const a=r[r.length-2].values,b=r[r.length-1].values;let q='',opts=[],exp='';
+ if(extraType==='genetics'){const aa=Number(b[4]),pct=aa*25;q=`في التهجين المسجل أخيرًا (${b[0]} × ${b[1]})، كم احتمال النمط الجيني aa؟`;opts=[Math.min(100,pct+25)+'%',pct+'%',Math.max(0,pct-25)+'%'];exp=`ظهر aa في ${aa} من أصل 4 احتمالات متساوية، أي ${pct}%.`;}
+ else if(extraType==='heat'){const v=Number(b[4]);q=`وفقًا للقياس الأخير، ما درجة الاتزان الحراري المتوقعة للجسمين؟`;opts=labNumericOptions(v,'°م');exp=`بافتراض المادة نفسها وعدم فقد الحرارة، درجة الاتزان = ${v.toFixed(1)} °م.`;}
+ else if(extraType==='density'){const v=Number(b[2]);q=`في آخر قياس، ما كثافة جسم كتلته ${b[0]} جم وحجمه ${b[1]} سم³؟`;opts=labNumericOptions(v,'جم/سم³',2);exp=`الكثافة = ${b[0]} ÷ ${b[1]} = ${v.toFixed(2)} جم/سم³.`;}
+ else if(extraType==='geometry'){const v=Number(b[5]);q=`وفقًا للقياس الأخير، ما مساحة المستطيل الذي طوله ${b[1]} وعرضه ${b[2]}؟`;opts=labNumericOptions(v,'وحدة²',0);exp=`المساحة = ${b[1]} × ${b[2]} = ${v} وحدة². الانتقال لا يغير المساحة.`;}
+ labQuestion('extraDynamic',q,opts,1,exp,'extra');}
+checkExtraLab=function(){labEvaluate('extra','extraFeedback');};
+// توضيح أن الأسئلة تُبنى من السجل، وليست جزءًا من التقييم المركزي.
+function initDynamicLabs(){
+ [['inquiry','plantDynamic','inquiryFeedback'],['electricLab','electricDynamic','electricFeedback'],['extraLab','extraDynamic','extraFeedback']].forEach(([section,id,fb])=>{
+ const card=document.getElementById(section);const feedback=document.getElementById(fb);if(!card||!feedback)return;
+ const panel=feedback.closest('.inquiry-panel');if(!panel)return;
+ if(section==='extraLab'){document.getElementById('extraQuestion').style.display='none';document.getElementById('extraChoices').style.display='none';}
+ const oldQuestion=panel.querySelector('p:not([id])');if(oldQuestion)oldQuestion.remove();
+ panel.querySelectorAll('label.inquiry-answer').forEach(x=>x.remove());
+ const host=document.createElement('div');host.id=id;host.setAttribute('aria-live','polite');host.style.margin='12px 0';panel.insertBefore(host,panel.querySelector('button'));
+ labClear(section==='inquiry'?'plant':section==='electricLab'?'electric':'extra',id,fb);
+ });
+}
+initDynamicLabs();
 
 </script>
 </body>
