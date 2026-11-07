@@ -297,6 +297,15 @@ button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{tr
 .card{transition:box-shadow .2s}.tile{transition:transform .18s,box-shadow .18s}
 .tile:hover{transform:translateY(-2px);box-shadow:0 8px 18px #173c5115}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+
+/* V8: أسئلة التفسير العلمي */
+.reasoning-block{margin-top:18px;background:#f5fafb;border:1px solid #c7dce2;border-radius:14px;padding:20px;line-height:1.9}
+.reasoning-block h3{color:#123e59;margin:0 0 10px}
+.reasoning-block label{display:block;font-weight:bold;margin:10px 0 6px}
+.reasoning-textarea{display:block;width:100%;font:inherit;font-size:15px;line-height:1.8;padding:12px;border:1px solid #bdd1d9;border-radius:10px;resize:vertical;margin-bottom:12px}
+.reasoning-model{margin-top:15px;background:#edf8f2;border:1px solid #a5d4bc;border-radius:12px;padding:15px}
+.reasoning-model h4{margin:0;color:#14684d}
+.reasoning-model[hidden]{display:none}
 </style>
 </head>
 
@@ -1444,6 +1453,102 @@ function initDynamicLabs(){
  });
 }
 initDynamicLabs();
+
+
+/* ===== V8: سؤال تفسيري مفتوح لكل تجربة، مرتبط بقياساتها ===== */
+const reasoningState={};
+const reasoningKeys={plant:'plantDynamic',electric:'electricDynamic',extra:'extraDynamic'};
+function fmtReason(n){return Number(n).toLocaleString('en-US',{maximumFractionDigits:3});}
+function reasoningSpec(key){
+ let a,b,question='',model='',evidence='';
+ const compare=(x,y,unit)=>`${fmtReason(x)} ${unit} في القياس السابق، و${fmtReason(y)} ${unit} في القياس الأخير`;
+ if(key==='plant'){
+  if(inquiryReadings.length<2)return null;
+  a=inquiryReadings.at(-2);b=inquiryReadings.at(-1);
+  const changed=[a.light!==b.light?'شدة الضوء':null,a.water!==b.water?'كمية الماء':null].filter(Boolean);
+  question=`قارن نمو النبات في القياسين الأخيرين (${a.growth} سم و${b.growth} سم). إلى ماذا يُعزى الفرق؟ فسّر بالاستناد إلى المتغيرات التي غيّرتها، وهل تسمح التجربة بتحديد السبب بدقة؟`;
+  const direction=b.growth>a.growth?'ازداد':b.growth<a.growth?'انخفض':'لم يتغير';
+  model=`${direction==='لم يتغير'?'لم يتغير نمو النبات':direction+' النمو'} من ${a.growth} سم إلى ${b.growth} سم في نموذج المحاكاة. ${changed.length===1?`تغيّر عامل واحد هو ${changed[0]}، بينما بقي العامل الآخر ثابتًا؛ لذا تدعم المقارنة ارتباط اختلاف النمو بتغيير هذا العامل ضمن النموذج، دون تعميم النتائج على النباتات الحقيقية.`:changed.length===2?'تغيّر الضوء والماء معًا؛ لذلك لا يمكن الجزم بأيّهما سبّب الفرق. يجب تثبيت أحدهما وتغيير الآخر وحده لعزل أثره.':'لم تتغير ظروف الضوء أو الماء؛ لذا لا تسمح هاتان القراءتان باستنتاج أثر متغير جديد.'} الضوء يسهم في البناء الضوئي، والماء ضروري لعمليات النبات الحيوية، وقد ينخفض النمو في النموذج عند تجاوز الظروف المثلى.`;
+  evidence=`النمو ${a.growth} ← ${b.growth} سم؛ الضوء ${a.light} ← ${b.light}%؛ الماء ${a.water} ← ${b.water}%.`;
+ }else if(key==='electric'){
+  if(electricReadings.length<2)return null;
+  a=electricReadings.at(-2);b=electricReadings.at(-1);
+  question=`تغيّر التيار من ${fmtReason(a.current)} إلى ${fmtReason(b.current)} أمبير. فسّر سبب الاختلاف اعتمادًا على الجهد والمقاومة المكافئة، وهل أمكن عزل أثر الجهد وحده؟`;
+  const vSame=a.voltage===b.voltage,rSame=Math.abs(a.req-b.req)<1e-9;
+  model=`وفق قانون أوم: التيار = فرق الجهد ÷ المقاومة المكافئة (I = V/R). في القياسين: الجهد ${a.voltage} ثم ${b.voltage} فولت، والمقاومة المكافئة ${fmtReason(a.req)} ثم ${fmtReason(b.req)} أوم، فكان التيار ${fmtReason(a.current)} ثم ${fmtReason(b.current)} أمبير. ${rSame&&!vSame?'المقاومة ثابتة والجهد تغيّر؛ لذا يمكن ربط تغير التيار بتغير الجهد في هذه الدائرة المثالية.':vSame&&!rSame?'الجهد ثابت والمقاومة تغيرت؛ لذا يتغير التيار عكسيًا مع المقاومة.':!vSame&&!rSame?'تغير الجهد والمقاومة معًا، فلا يجوز نسبة تغير التيار إلى الجهد وحده؛ يجب تثبيت المقاومة أولًا.':'لم تتغير قيم الجهد والمقاومة؛ ولذلك لا نتوقع تغيرًا في التيار.'}`;
+  evidence=`الجهد ${a.voltage} ← ${b.voltage} فولت؛ المقاومة ${fmtReason(a.req)} ← ${fmtReason(b.req)} أوم؛ التيار ${fmtReason(a.current)} ← ${fmtReason(b.current)} أمبير.`;
+ }else if(key==='extra'){
+  if(extraRecords.length<2)return null;
+  a=extraRecords.at(-2).values;b=extraRecords.at(-1).values;
+  if(extraType==='genetics'){
+   const p1=Number(a[4])*25,p2=Number(b[4])*25;
+   question=`تغير احتمال ظهور النمط الجيني aa من ${p1}% إلى ${p2}%. فسّر هذا التغير باستخدام أنماط الأبوين ومربع بانيت، ولماذا لا يعني الاحتمال عددًا مؤكدًا من الأبناء؟`;
+   model=`في القياس الأول كان التزاوج ${a[0]} × ${a[1]} واحتمال aa يساوي ${p1}%، وفي الثاني ${b[0]} × ${b[1]} واحتماله ${p2}%. يتحدد الاحتمال بحسب الأمشاج الممكنة لكل أب ونسبة مربعات aa من أصل أربعة نواتج متساوية الاحتمال في النموذج. هذه احتمالات لكل مولود، وليست ضمانًا لظهور العدد نفسه بين أربعة أبناء.`;
+   evidence=`التزاوج ${a[0]} × ${a[1]} ← ${b[0]} × ${b[1]}؛ عدد مربعات aa ${a[4]} ← ${b[4]} من 4.`;
+  }else if(extraType==='heat'){
+   question=`قارن درجتي الاتزان ${a[4]}°م و${b[4]}°م. كيف أثرت درجات الحرارة الابتدائية والكتل في النتيجة؟ ولماذا لا يكفي تغيير أكثر من عامل لتحديد سبب واحد؟`;
+   model=`درجة الاتزان في النموذج لجسمين من المادة نفسها دون فقد حرارة = (كتلة 1 × حرارتها + كتلة 2 × حرارتها) ÷ مجموع الكتلتين. كانت ${a[4]}°م ثم ${b[4]}°م. الجسم الأكبر كتلة يؤثر أكثر في المتوسط الوزني؛ وتنتقل الطاقة من الأعلى حرارة إلى الأقل حتى الاتزان. ${[0,1,2,3].filter(i=>String(a[i])!==String(b[i])).length>1?'تغيّر أكثر من متغير، فلا نستطيع نسبة الفرق إلى عامل واحد دون ضبط بقية العوامل.':'يمكن تفسير الفرق من المتغير الذي تغير مع تثبيت البقية.'}`;
+   evidence=`الحرارتان (${a[0]}, ${a[1]}) ← (${b[0]}, ${b[1]}) °م؛ الكتلتان (${a[2]}, ${a[3]}) ← (${b[2]}, ${b[3]}) جم.`;
+  }else if(extraType==='density'){
+   question=`فسّر لماذا اختلفت الكثافة من ${a[2]} إلى ${b[2]} جم/سم³، وكيف تساعد الكثافة مقارنة بالماء في التنبؤ بالطفو أو الغوص؟`;
+   model=`الكثافة = الكتلة ÷ الحجم. في القياس الأول ${a[0]} ÷ ${a[1]} = ${a[2]} جم/سم³، وفي الثاني ${b[0]} ÷ ${b[1]} = ${b[2]} جم/سم³. الجسم المتجانس الأقل كثافة من الماء (1 جم/سم³ في هذا النموذج) يطفو، والأعلى كثافة يغوص. ${a[0]!==b[0]&&a[1]!==b[1]?'تغيرت الكتلة والحجم معًا؛ لذلك يجب تثبيت أحدهما لتحديد أثر الآخر في الكثافة.':'قارن العامل المتغير بالعامل الثابت لتفسير النتيجة.'}`;
+   evidence=`الكتلة ${a[0]} ← ${b[0]} جم؛ الحجم ${a[1]} ← ${b[1]} سم³؛ الكثافة ${a[2]} ← ${b[2]} جم/سم³.`;
+  }else if(extraType==='geometry'){
+   question=`قارن مساحتي المستطيل ${a[5]} و${b[5]} وحدة مربعة. فسّر العلاقة بين الطول والعرض والمساحة، وهل تؤثر الإزاحة الهندسية في المساحة؟`;
+   model=`المساحة = الطول × العرض. كانت ${a[1]} × ${a[2]} = ${a[5]} وحدة²، وأصبحت ${b[1]} × ${b[2]} = ${b[5]} وحدة². تغير المساحة يرجع إلى تغير أحد البعدين أو كليهما، وليس إلى انتقال الشكل؛ فالإزاحة تغير موقع المستطيل فقط وتحافظ على أبعاده ومساحته. ${a[1]!==b[1]&&a[2]!==b[2]?'تغيّر البعدان معًا؛ لتحديد أثر كل منهما نثبّت الآخر.':'يمكن مقارنة أثر البعد المتغير عند ثبات الآخر.'}`;
+   evidence=`الطول ${a[1]} ← ${b[1]}؛ العرض ${a[2]} ← ${b[2]}؛ المساحة ${a[5]} ← ${b[5]} وحدة².`;
+  }
+ }
+ return {question,model,evidence};
+}
+function reasoningPanel(key){
+ const id='reason_'+key;
+ let el=document.getElementById(id);
+ if(el)return el;
+ const section=document.getElementById(key==='plant'?'inquiry':key==='electric'?'electricLab':'extraLab');
+ const feedback=document.getElementById(key==='plant'?'inquiryFeedback':key==='electric'?'electricFeedback':'extraFeedback');
+ const parent=feedback.closest('.inquiry-panel');
+ el=document.createElement('div');el.id=id;el.className='reasoning-block';
+ parent.insertAdjacentElement('afterend',el);
+ return el;
+}
+function reasoningReset(key){
+ delete reasoningState[key];
+ const el=document.getElementById('reason_'+key);if(el)el.replaceChildren();
+}
+function reasoningRender(key){
+ const el=reasoningPanel(key);el.replaceChildren();
+ const spec=reasoningSpec(key);if(!spec)return;
+ reasoningState[key]=spec;
+ const h=document.createElement('h3');h.textContent='السؤال الثاني | الاستدلال والتحليل العلمي';
+ const desc=document.createElement('p');desc.textContent=spec.question;
+ const hint=document.createElement('p');hint.className='muted';hint.textContent='اكتب تفسيرك أولًا، مستشهدًا بالقياسات ومراعيًا ضبط المتغيرات. لن تظهر الإجابة النموذجية قبل كتابة تفسيرك.';
+ const label=document.createElement('label');label.textContent='تفسيري العلمي';label.htmlFor='reason_input_'+key;
+ const area=document.createElement('textarea');area.id='reason_input_'+key;area.rows=4;area.maxLength=1500;area.placeholder='لاحظت من البيانات أن... ويُعزى ذلك إلى... والدليل...';area.className='reasoning-textarea';
+ const btn=document.createElement('button');btn.type='button';btn.textContent='مراجعة إجابتي وعرض الإجابة النموذجية';btn.disabled=true;
+ const out=document.createElement('div');out.className='reasoning-model';out.hidden=true;
+ area.addEventListener('input',()=>{btn.disabled=area.value.trim().length<15;out.hidden=true;});
+ btn.addEventListener('click',()=>{
+  if(area.value.trim().length<15)return;
+  out.replaceChildren();
+  const title=document.createElement('h4');title.textContent='الإجابة النموذجية للمقارنة';
+  const evidence=document.createElement('p');evidence.textContent='الأدلة من تجربتك: '+spec.evidence;
+  const model=document.createElement('p');model.textContent=spec.model;
+  const review=document.createElement('p');review.textContent='راجع إجابتك: هل استخدمت قياساتك؟ هل فسّرت العلاقة علميًا؟ هل ميّزت بين تغير عامل واحد وتغير عدة عوامل؟';
+  out.append(title,evidence,model,review);out.hidden=false;
+ });
+ el.append(h,desc,hint,label,area,btn,out);
+}
+const _v8LabQuestion=labQuestion;
+labQuestion=function(host,question,options,correct,explain,key){
+ _v8LabQuestion(host,question,options,correct,explain,key);
+ reasoningRender(key);
+};
+const _v8LabClear=labClear;
+labClear=function(key,host,feedbackId){
+ _v8LabClear(key,host,feedbackId);
+ reasoningReset(key);
+};
 
 </script>
 </body>
