@@ -323,6 +323,29 @@ button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{tr
 .lab-jump{margin-top:12px;background:#f1faf8;border:1px solid #b5dcd7;border-radius:11px;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .lab-jump button{padding:10px 16px}
 @media(max-width:650px){.student-toolbar{top:0;border-radius:0;margin-inline:-15px;padding:8px 10px}.toolbar-brand span{font-size:11px;max-width:105px}.toolbar-brand img{width:30px;height:30px}.toolbar-links button{font-size:11px;padding:8px}.hero-logo{width:65px;height:65px}#app>.card:nth-child(2) .inquiry-actions{grid-template-columns:repeat(2,minmax(0,1fr))}#app>.card:nth-child(2) .inquiry-actions button{font-size:12px;min-height:58px}}
+
+/* V10 — هوية مؤسسية محسنة */
+:root{--navy:#102f44;--teal:#087f82;--gold:#c5a267;--bg:#f3f7f9;--line:#dce7eb;--text:#18384c}
+body{background:linear-gradient(180deg,#e8f1f4 0,#f6f9fa 410px);letter-spacing:.03px}
+header{background:linear-gradient(125deg,#102f44 0%,#16465b 58%,#0b6671 100%);border-bottom:4px solid var(--gold)}
+.gov-bar{padding-top:17px;padding-bottom:17px;gap:20px}
+.gov-id{font-size:13px;line-height:1.85}.gov-id strong{font-size:16px}
+.school-initiative{display:block;margin-top:7px;color:#f1d6a4;font-size:13px;font-weight:700;letter-spacing:.1px}
+.brand-logo{width:82px;height:82px;border-radius:20px;border:2px solid #e6d4b4;box-shadow:0 10px 26px #051e2a35}
+.brand-logo.logo-fallback:after{content:'أبو الدرداء';font-size:12px;color:#123e59;font-weight:700;text-align:center}
+.hero{padding-top:42px;padding-bottom:42px;gap:32px}
+.hero h1{letter-spacing:.2px;font-weight:800}.hero p{font-size:15px}
+.hero-mark{background:linear-gradient(145deg,#ffffff15,#ffffff05);border-color:#ffffff40;box-shadow:inset 0 1px #ffffff20}
+.hero-logo{width:104px;height:104px;border:2px solid #e8d6b3;box-shadow:0 5px 20px #061f2a30}
+main{max-width:1140px}.card{border:1px solid #e1e9ed;border-radius:20px;box-shadow:0 12px 32px #153e5010}
+.card h2{color:#12384e}.section-kicker{letter-spacing:.3px}
+button{border-radius:11px;box-shadow:0 3px 10px #093d4410}button:hover:not(:disabled){filter:brightness(1.04);box-shadow:0 5px 16px #093d4420}
+.student-toolbar{top:10px;border-radius:16px;backdrop-filter:blur(10px);background:#fffffff2}
+.toolbar-brand img{background:#fff;border:1px solid #e0e9e9;padding:2px}
+.inquiry-panel{background:#f8fbfc;border-color:#dce8eb;border-radius:16px}
+.inquiry-metric{border-radius:13px;box-shadow:0 2px 8px #123e5909}
+.inquiry-answer{background:white}.reasoning-block{background:#f7fbfc}
+@media(max-width:760px){.gov-bar{padding:13px 16px}.gov-id strong{font-size:13px}.school-initiative{font-size:11px}.brand-logo{width:60px;height:60px;border-radius:13px}.hero{padding:26px 18px}.hero-logo{width:78px;height:78px}.card{border-radius:16px}.student-toolbar{top:0;border-radius:0}}
 </style>
 </head>
 
@@ -330,21 +353,21 @@ button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{tr
 
 <header>
  <div class="gov-bar">
-  <div class="gov-id">سلطنة عُمان — وزارة التعليم<br><strong>المديرية العامة للتعليم بمحافظة الظاهرة</strong></div>
-  <div class="brand-logo"><img src="https://h.top4top.io/p_3963n9b3z1.jpg" alt="شعار المنصة" loading="eager" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'"></div>
+  <div class="gov-id">سلطنة عُمان — وزارة التعليم<br><strong>المديرية العامة للتعليم بمحافظة الظاهرة</strong><span class="school-initiative">مبادرة مدرسة أبو الدرداء للبنين (5–12)</span></div>
+  <div class="brand-logo"><img src="https://c.top4top.io/p_3906f6odb1.jpg" alt="شعار المنصة" loading="eager" referrerpolicy="no-referrer" onerror="this.style.display='none';this.parentElement.classList.add('logo-fallback')"></div>
  </div>
  <div class="hero">
   <div><div class="hero-kicker">برنامج الاستعداد للدراسة الدولية في الرياضيات والعلوم</div>
    <h1>المختبر الافتراضي للظاهرة</h1>
    <p>منصة تدريبية تفاعلية لطلبة الصف الثامن المشاركين في دراسة TIMSS 2027 بمدارس محافظة الظاهرة، لتنمية المعرفة والتطبيق والاستدلال.</p>
   </div>
-  <div class="hero-mark"><img class="hero-logo" src="https://h.top4top.io/p_3963n9b3z1.jpg" alt="شعار المنصة" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span>الدراسة الدولية في الرياضيات والعلوم</span><strong>TIMSS</strong><strong style="font-size:35px;color:white">2027</strong><span>نتعلم • نستكشف • نستدل • نتميز</span></div>
+  <div class="hero-mark"><img class="hero-logo" src="https://c.top4top.io/p_3906f6odb1.jpg" alt="شعار المنصة" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span>الدراسة الدولية في الرياضيات والعلوم</span><strong>TIMSS</strong><strong style="font-size:35px;color:white">2027</strong><span>نتعلم • نستكشف • نستدل • نتميز</span></div>
  </div>
 </header>
 
 <main>
 <nav id="studentToolbar" class="student-toolbar" aria-label="التنقل في المنصة" hidden>
-  <div class="toolbar-brand"><img src="https://h.top4top.io/p_3963n9b3z1.jpg" alt="الشعار" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span>المختبر الافتراضي للظاهرة</span></div>
+  <div class="toolbar-brand"><img src="https://c.top4top.io/p_3906f6odb1.jpg" alt="الشعار" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span>المختبر الافتراضي للظاهرة</span></div>
   <div class="toolbar-links"><button type="button" onclick="goDashboard()">الرئيسية</button><button type="button" id="jumpToAssessment" onclick="jumpToLabQuestions()" hidden>الانتقال إلى الأسئلة ↓</button><button type="button" onclick="logout()" class="toolbar-exit">خروج</button></div>
 </nav>
 
