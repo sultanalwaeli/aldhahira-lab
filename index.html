@@ -306,6 +306,23 @@ button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{tr
 .reasoning-model{margin-top:15px;background:#edf8f2;border:1px solid #a5d4bc;border-radius:12px;padding:15px}
 .reasoning-model h4{margin:0;color:#14684d}
 .reasoning-model[hidden]{display:none}
+
+/* V9 — واجهة الطالب: تنقل سريع، هوية بصرية، وصول مباشر للأسئلة */
+.brand-logo{height:68px;width:68px;border-radius:16px;background:white;padding:5px;display:grid;place-items:center;overflow:hidden;box-shadow:0 3px 14px #0002;flex:none}
+.brand-logo img,.hero-logo{width:100%;height:100%;object-fit:contain}
+.hero-logo{width:90px;height:90px;display:block;margin:0 auto 10px;border-radius:14px;background:white;padding:5px}
+.student-toolbar[hidden],#jumpToAssessment[hidden]{display:none!important}
+.student-toolbar{position:sticky;top:8px;z-index:90;background:#fffefa;box-shadow:0 8px 30px #12364e24;border:1px solid #d9e5e8;border-top:3px solid var(--gold);border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;margin-bottom:18px}
+.toolbar-brand{display:flex;align-items:center;gap:9px;font-weight:bold;color:#12364e;font-size:14px}.toolbar-brand img{width:39px;height:39px;object-fit:contain;border-radius:8px}
+.toolbar-links{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.toolbar-links button{padding:9px 13px;font-size:12px;border-radius:9px}.toolbar-links .toolbar-exit{background:#607887}
+#app>.card:first-child{padding:18px 24px}#app>.card:first-child p{margin:4px 0 0}
+#app>.card:nth-child(2) .inquiry-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%;margin:14px 0 0}
+#app>.card:nth-child(2) .inquiry-actions button{min-height:62px;padding:12px 10px;font-size:14px}
+#app>.card:nth-child(2) .topline{display:block}
+#inquiry,#electricLab,#extraLab,#challenge{scroll-margin-top:95px}
+.lab-jump{margin-top:12px;background:#f1faf8;border:1px solid #b5dcd7;border-radius:11px;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.lab-jump button{padding:10px 16px}
+@media(max-width:650px){.student-toolbar{top:0;border-radius:0;margin-inline:-15px;padding:8px 10px}.toolbar-brand span{font-size:11px;max-width:105px}.toolbar-brand img{width:30px;height:30px}.toolbar-links button{font-size:11px;padding:8px}.hero-logo{width:65px;height:65px}#app>.card:nth-child(2) .inquiry-actions{grid-template-columns:repeat(2,minmax(0,1fr))}#app>.card:nth-child(2) .inquiry-actions button{font-size:12px;min-height:58px}}
 </style>
 </head>
 
@@ -314,18 +331,22 @@ button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{tr
 <header>
  <div class="gov-bar">
   <div class="gov-id">سلطنة عُمان — وزارة التعليم<br><strong>المديرية العامة للتعليم بمحافظة الظاهرة</strong></div>
-  <div class="gov-seal" aria-label="رمز تعليمي زخرفي وليس شعارًا رسميًا">✦</div>
+  <div class="brand-logo"><img src="https://h.top4top.io/p_3963n9b3z1.jpg" alt="شعار المنصة" loading="eager" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'"></div>
  </div>
  <div class="hero">
   <div><div class="hero-kicker">برنامج الاستعداد للدراسة الدولية في الرياضيات والعلوم</div>
    <h1>المختبر الافتراضي للظاهرة</h1>
    <p>منصة تدريبية تفاعلية لطلبة الصف الثامن المشاركين في دراسة TIMSS 2027 بمدارس محافظة الظاهرة، لتنمية المعرفة والتطبيق والاستدلال.</p>
   </div>
-  <div class="hero-mark"><span>الدراسة الدولية في الرياضيات والعلوم</span><strong>TIMSS</strong><strong style="font-size:35px;color:white">2027</strong><span>نتعلم • نستكشف • نستدل • نتميز</span></div>
+  <div class="hero-mark"><img class="hero-logo" src="https://h.top4top.io/p_3963n9b3z1.jpg" alt="شعار المنصة" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span>الدراسة الدولية في الرياضيات والعلوم</span><strong>TIMSS</strong><strong style="font-size:35px;color:white">2027</strong><span>نتعلم • نستكشف • نستدل • نتميز</span></div>
  </div>
 </header>
 
 <main>
+<nav id="studentToolbar" class="student-toolbar" aria-label="التنقل في المنصة" hidden>
+  <div class="toolbar-brand"><img src="https://h.top4top.io/p_3963n9b3z1.jpg" alt="الشعار" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span>المختبر الافتراضي للظاهرة</span></div>
+  <div class="toolbar-links"><button type="button" onclick="goDashboard()">الرئيسية</button><button type="button" id="jumpToAssessment" onclick="jumpToLabQuestions()" hidden>الانتقال إلى الأسئلة ↓</button><button type="button" onclick="logout()" class="toolbar-exit">خروج</button></div>
+</nav>
 
 <section class="card" id="aboutTimss">
  <div class="about-grid">
@@ -397,7 +418,8 @@ button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{tr
 <section class="card" id="inquiry">
  <div class="topline"><div><h2>🌱 مختبر نمو النباتات</h2><p class="muted">استقصاء أثر الضوء والماء خلال 14 يومًا</p></div><button type="button" onclick="closeInquiry()" style="background:#607887">العودة إلى المراحل</button></div>
  <div class="inquiry-note">هذه محاكاة تعليمية ببيانات افتراضية. القيم لا تمثل تجربة مخبرية فعلية ولا تصلح للتنبؤ بنمو جميع النباتات. لا تُحتسب نتائجها ضمن درجات التحديات.</div>
- <div class="inquiry-layout" style="margin-top:18px">
+ <div class="lab-jump"><span>نفّذ التجربة وسجّل قياسين أو أكثر، ثم انتقل إلى أسئلة التطبيق والاستدلال.</span><button type="button" onclick="jumpToLabQuestions()">الانتقال إلى الأسئلة ↓</button></div>
+  <div class="inquiry-layout" style="margin-top:18px">
   <div class="inquiry-panel">
    <h3>اضبط ظروف التجربة</h3>
    <label for="lightRange">شدة الضوء: <span id="lightValue">60</span>%</label>
@@ -435,7 +457,8 @@ button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{tr
 <section class="card" id="electricLab" style="display:none">
  <div class="topline"><div><h2>⚡ مختبر الدوائر الكهربائية</h2><p class="muted">اكتشف قانون أوم وقارن التوصيل على التوالي والتوازي</p></div><button type="button" onclick="closeElectricLab()" style="background:#607887">العودة إلى المراحل</button></div>
  <div class="inquiry-note">محاكاة مثالية لدوائر تيار مستمر بمقاومات أومية ومصدر جهد ثابت، دون مقاومة داخلية أو تسخين. القيم تعليمية ولا تُضاف إلى درجات التحديات.</div>
- <div class="inquiry-layout" style="margin-top:18px">
+ <div class="lab-jump"><span>نفّذ التجربة وسجّل قياسين أو أكثر، ثم انتقل إلى أسئلة التطبيق والاستدلال.</span><button type="button" onclick="jumpToLabQuestions()">الانتقال إلى الأسئلة ↓</button></div>
+  <div class="inquiry-layout" style="margin-top:18px">
   <div class="inquiry-panel">
    <h3>اضبط عناصر الدائرة</h3>
    <label for="electricMode">طريقة التوصيل</label>
@@ -464,7 +487,8 @@ button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{tr
 <section class="card" id="extraLab" style="display:none">
  <div class="topline"><div><h2 id="extraTitle"></h2><p id="extraSubtitle" class="muted"></p></div><button type="button" onclick="closeExtraLab()" style="background:#607887">العودة إلى المراحل</button></div>
  <div class="inquiry-note">محاكاة تعليمية بنماذج مبسطة وافتراضات محددة. القياسات ليست تجارب مخبرية، ولا تؤثر في درجات التحديات.</div>
- <div class="inquiry-layout" style="margin-top:18px">
+ <div class="lab-jump"><span>نفّذ التجربة وسجّل قياسين أو أكثر، ثم انتقل إلى أسئلة التطبيق والاستدلال.</span><button type="button" onclick="jumpToLabQuestions()">الانتقال إلى الأسئلة ↓</button></div>
+  <div class="inquiry-layout" style="margin-top:18px">
   <div class="inquiry-panel"><h3>اضبط المتغيرات</h3><div id="extraControls"></div><div id="extraMetrics" class="inquiry-metrics"></div><div class="inquiry-actions"><button type="button" onclick="recordExtraLab()">سجّل القياس</button><button type="button" onclick="resetExtraLab()" style="background:#607887">إعادة التجربة</button></div></div>
   <div class="inquiry-panel"><h3>التمثيل العلمي</h3><div id="extraDiagram" style="overflow-x:auto"></div><p id="extraExplanation" class="muted"></p></div>
  </div>
@@ -609,7 +633,11 @@ function login(){
    ' — الصف الثامن / '+r.student.section;
 
   $('login').style.display='none';
+  $('aboutTimss').style.display='none';
+  $('programGoals').style.display='none';
+  $('studentToolbar').hidden=false;
   $('app').style.display='block';
+  setTimeout(()=>scrollToSection('app'),80);
 
   loadStages();
  });
@@ -704,6 +732,7 @@ function start(stage){
   $('challenge').style.display='block';
 
   showQuestion(r);
+   setTimeout(()=>scrollToSection('challenge'),80);
  });
 }
 
@@ -1198,10 +1227,10 @@ function inquiryGrowth(light,water){
 function openInquiry(){
  if(!session||requestBusy)return;
  $('app').style.display='none';$('challenge').style.display='none';$('inquiry').style.display='block';
- updateInquiry();window.scrollTo(0,0);
+ updateInquiry();showLabJump('inquiry');
 }
 function closeInquiry(){
- $('inquiry').style.display='none';$('app').style.display='block';window.scrollTo(0,0);
+ $('inquiry').style.display='none';$('app').style.display='block';showLabJump(null);
 }
 function updateInquiry(){
  const light=Number($('lightRange').value),water=Number($('waterRange').value),growth=inquiryGrowth(light,water);
@@ -1264,9 +1293,9 @@ function electricFmt(n){return Number(n.toFixed(3)).toLocaleString('en-US',{maxi
 function openElectricLab(){
  if(!session||requestBusy)return;
  $('app').style.display='none';$('challenge').style.display='none';$('inquiry').style.display='none';
- $('electricLab').style.display='block';updateElectricLab();window.scrollTo(0,0);
+ $('electricLab').style.display='block';updateElectricLab();showLabJump('electricLab');
 }
-function closeElectricLab(){$('electricLab').style.display='none';$('app').style.display='block';window.scrollTo(0,0);}
+function closeElectricLab(){$('electricLab').style.display='none';$('app').style.display='block';showLabJump(null);}
 function updateElectricLab(){
  const d=electricData();
  $('electricR2Wrap').style.display=d.mode==='single'?'none':'block';
@@ -1365,9 +1394,9 @@ function openExtraLab(type){
  $('extraQuestion').textContent=d.q;
  $('extraChoices').replaceChildren();d.choices.forEach((choice,i)=>{const label=document.createElement('label');label.className='inquiry-answer';const input=document.createElement('input');input.type='radio';input.name='extraChoice';input.value=i;label.append(input,document.createTextNode(' '+choice));$('extraChoices').appendChild(label);});
  $('extraHypothesis').value='';$('extraConclusion').value='';$('extraFeedback').textContent='';$('extraCopyMsg').textContent='';
- $('app').style.display='none';$('extraLab').style.display='block';renderExtraRecords();updateExtraLab();window.scrollTo(0,0);
+ $('app').style.display='none';$('extraLab').style.display='block';renderExtraRecords();updateExtraLab();showLabJump('extraLab');
 }
-function closeExtraLab(){$('extraLab').style.display='none';$('app').style.display='block';window.scrollTo(0,0);}
+function closeExtraLab(){$('extraLab').style.display='none';$('app').style.display='block';showLabJump(null);}
 function extraVal(id){return Number($(id).value);}
 function extraMetrics(items){$('extraMetrics').replaceChildren();items.forEach(([label,value])=>{const box=document.createElement('div');box.className='inquiry-metric';box.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.appendChild(strong);$('extraMetrics').appendChild(box);});}
 function updateExtraLab(){
@@ -1550,6 +1579,14 @@ labClear=function(key,host,feedbackId){
  reasoningReset(key);
 };
 
+
+/* V9 — تنقل سياقي دون تغيير منطق المختبرات أو الخادم */
+let currentLabSection=null;
+function scrollToSection(id){const el=$(id);if(!el)return;const top=el.getBoundingClientRect().top+window.scrollY-85;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});}
+function showLabJump(id){currentLabSection=id;$('jumpToAssessment').hidden=!id;setTimeout(()=>scrollToSection(id||'app'),70);}
+function labAssessmentTarget(){if(currentLabSection==='inquiry')return 'inquiryFeedback';if(currentLabSection==='electricLab')return 'electricFeedback';if(currentLabSection==='extraLab')return 'extraFeedback';return null;}
+function jumpToLabQuestions(){const id=labAssessmentTarget();if(!id)return;const el=$(id);const panel=el&&el.closest('.inquiry-panel');if(panel){const top=panel.getBoundingClientRect().top+window.scrollY-88;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});}}
+function goDashboard(){if(!session)return;$('inquiry').style.display='none';$('electricLab').style.display='none';$('extraLab').style.display='none';$('challenge').style.display='none';$('app').style.display='block';currentLabSection=null;$('jumpToAssessment').hidden=true;scrollToSection('app');}
 </script>
 </body>
 </html>
