@@ -1,17 +1,1401 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>المختبر الافتراضي للظاهرة | TIMSS 2027</title>
-<meta name="description" content="منصة تدريبية لطلبة الصف الثامن المشاركين في دراسة TIMSS 2027 من مدارس محافظة الظاهرة">
+
 <style>
-:root{--navy:#103e59;--teal:#087f82;--gold:#c6a061;--ink:#17394c;--muted:#5c7584;--line:#dce7ec;--bg:#f3f7f9}*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}header{background:linear-gradient(115deg,#103e59,#0b6573);color:#fff;border-bottom:5px solid var(--gold)}.wrap{max-width:1150px;margin:auto;padding:0 22px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid #ffffff33}.top small{display:block;line-height:2;color:#dcecf1}.mark{border:1px solid #ffffff66;border-radius:12px;padding:12px 15px;font-size:13px;color:#f7e2b9}.hero{padding:42px 0 48px}.eyebrow{color:#ead19d;font-size:14px;font-weight:bold}.hero h1{font-size:clamp(27px,4vw,45px);line-height:1.45;margin:10px 0}.hero p{max-width:780px;color:#e2eef2;line-height:2;font-size:16px}.pill{display:inline-block;border:1px solid #ffffff70;border-radius:30px;padding:8px 15px;margin-top:10px;font-size:13px}.content{padding:26px 0 40px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 8px 25px #103e5909}.card h2{font-size:21px;margin:0 0 10px}.card h3{font-size:17px;margin:0 0 8px}.card p{color:var(--muted);font-size:14px;line-height:2;margin:0}.grid .card{min-height:160px}.num{color:var(--teal);font-size:30px;font-weight:bold;display:block;margin-bottom:12px}.entry{margin-top:20px}.entry-head{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:18px}.entry-head p{margin:0}.frame{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}.frame iframe{display:block;width:100%;height:850px;border:0}.action{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;border-radius:10px;padding:13px 19px;font-weight:bold}.action:hover{background:#08686c}.hint{background:#fff9ed;border-right:4px solid var(--gold);padding:13px 17px;border-radius:8px;margin-top:14px;font-size:13px;line-height:1.9;color:#655431}footer{text-align:center;padding:26px 15px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:2}@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding:30px 0}.top{align-items:flex-start}.frame iframe{height:780px}.card{padding:19px}}
+:root{
+ --navy:#123e59;
+ --teal:#087f82;
+ --gold:#c49a50;
+ --bg:#edf5f8;
+ --line:#d8e6eb;
+ --text:#17384d;
+ --muted:#648091;
+ --green:#16845d;
+ --red:#b33d3d;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font-family:Tahoma,Arial,sans-serif;
+}
+header{
+ background:linear-gradient(110deg,#123e59,#087f82);
+ color:white;
+ padding:23px 5%;
+ border-bottom:4px solid var(--gold);
+}
+header .institution{
+ font-size:12px;
+ opacity:.9;
+ line-height:1.8;
+}
+header h1{
+ margin:10px 0;
+ font-size:27px;
+}
+header p{
+ margin:0;
+ font-size:13px;
+}
+main{
+ max-width:1100px;
+ margin:25px auto;
+ padding:0 15px;
+}
+.card{
+ background:white;
+ border-radius:18px;
+ padding:24px;
+ margin-bottom:18px;
+ box-shadow:0 8px 25px #123e5910;
+}
+h2{margin-top:0}
+p{line-height:1.9}
+button{
+ font-family:inherit;
+ border:0;
+ border-radius:10px;
+ padding:12px 20px;
+ background:var(--teal);
+ color:white;
+ cursor:pointer;
+ font-weight:bold;
+}
+button:hover{filter:brightness(.95)}
+button:disabled{
+ opacity:.55;
+ cursor:not-allowed;
+}
+input{
+ font-family:inherit;
+ padding:13px;
+ border:1px solid #bdd1d9;
+ border-radius:10px;
+ font-size:18px;
+}
+#code{
+ direction:ltr;
+ text-align:center;
+ letter-spacing:3px;
+ width:230px;
+ max-width:100%;
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+ gap:14px;
+}
+.tile{
+ background:#f8fcfd;
+ border:1px solid var(--line);
+ border-radius:15px;
+ padding:19px;
+}
+.tile h3{
+ font-size:16px;
+ margin:0 0 12px;
+}
+.tile p{
+ font-size:12px;
+ color:var(--muted);
+}
+.passed{
+ border-color:#8bd1b4;
+ background:#f1fbf5;
+}
+.locked{opacity:.75}
+.topline{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:12px;
+}
+.muted{
+ color:var(--muted);
+ font-size:13px;
+}
+.progress{
+ height:11px;
+ background:#e3edf0;
+ border-radius:20px;
+ overflow:hidden;
+ margin:16px 0;
+}
+.progress div{
+ height:100%;
+ background:linear-gradient(90deg,#087f82,#2bbca7);
+ width:0%;
+ transition:width .3s;
+}
+.option{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ border:1px solid var(--line);
+ padding:14px;
+ margin:9px 0;
+ border-radius:11px;
+ cursor:pointer;
+ background:#fff;
+}
+.option.selected{
+ background:#e6f6f4;
+ border-color:var(--teal);
+}
+.option input{
+ accent-color:var(--teal);
+}
+.success{color:var(--green)}
+.error{color:var(--red)}
+#feedback{
+ margin:15px 0;
+ font-weight:bold;
+ line-height:1.9;
+}
+#app,#challenge{display:none}
+#simulation{
+ margin:18px 0;
+}
+.lab{
+ background:#f2fafb;
+ border:1px solid #cce2e6;
+ padding:20px;
+ border-radius:15px;
+}
+.lab h3{
+ margin:0 0 10px;
+}
+.lab svg{
+ display:block;
+ width:100%;
+ max-width:640px;
+ margin:12px auto;
+ background:white;
+ border-radius:12px;
+}
+.lab table{
+ border-collapse:collapse;
+ width:100%;
+ margin:12px 0;
+ text-align:center;
+ background:white;
+}
+.lab td,.lab th{
+ border:1px solid #bdd5dc;
+ padding:12px;
+}
+.lab th{
+ background:#dceff1;
+}
+.note{
+ background:#fff9e9;
+ border-right:4px solid var(--gold);
+ padding:12px;
+ border-radius:8px;
+ font-size:13px;
+ margin-top:12px;
+}
+footer{
+ text-align:center;
+ padding:25px;
+ color:var(--muted);
+ font-size:12px;
+}
+@media(max-width:600px){
+ header h1{font-size:22px}
+ .card{padding:17px}
+}
+
+/* تحسينات الإصدار الثاني */
+.counter{display:inline-flex;align-items:center;padding:8px 13px;border:1px solid var(--line);border-radius:12px;background:#f5fafb;font-weight:bold;font-size:14px;unicode-bidi:plaintext}
+.progress{direction:rtl}
+.progress div{margin-right:0;margin-left:auto}
+#question{font-size:clamp(18px,2.3vw,23px);line-height:1.9;margin:18px 0}
+.option{min-height:52px;transition:background .15s,border-color .15s}
+.option:focus-within{outline:2px solid var(--teal);outline-offset:2px}
+.option input{width:18px;height:18px;flex-shrink:0}
+.option.correct-option{background:#eaf8f0;border-color:#16845d}
+.option.wrong-option{background:#fff0f0;border-color:#b33d3d}
+#feedback:not(:empty){padding:14px 16px;border-radius:12px;background:#f2f7fa;border:1px solid var(--line)}
+#feedback.success{background:#edf9f2;border-color:#b9e3cc}
+#feedback.error{background:#fff4f2;border-color:#efc7c2}
+#nextBtn,#backBtn{margin-top:8px}
+.lab{overflow-x:auto}
+.lab svg{height:auto}
+.lab table{min-width:300px}
+.stage-instruction{margin:0 0 10px}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(max-width:600px){.topline{align-items:flex-start}.counter{font-size:12px}.lab{padding:12px}.option{padding:12px}#submitBtn,#nextBtn,#backBtn{width:100%}}
+
+
+/* مختبر الاستقصاء العلمي V3 */
+#inquiry{display:none}
+.inquiry-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.inquiry-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.inquiry-panel{background:#f5fafb;border:1px solid var(--line);border-radius:14px;padding:17px}
+.inquiry-panel label{display:block;font-weight:bold;margin:14px 0 7px}
+.inquiry-panel input[type=range]{width:100%;accent-color:var(--teal);padding:0}
+.inquiry-metrics{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.inquiry-metric{flex:1;min-width:130px;background:#fff;border:1px solid var(--line);padding:12px;border-radius:12px}
+.inquiry-metric strong{display:block;font-size:22px;color:var(--teal);margin-top:5px}
+.inquiry-plant{width:100%;max-height:260px;background:linear-gradient(#eaf7fa,#f8fcf7);border-radius:14px}
+.inquiry-table{width:100%;border-collapse:collapse;text-align:center;margin-top:10px}
+.inquiry-table th,.inquiry-table td{border:1px solid #c9dde4;padding:9px}
+.inquiry-table th{background:#e3f1f3}
+.inquiry-answer{display:block;margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.inquiry-note{background:#fff8e8;border-right:4px solid var(--gold);padding:12px;border-radius:9px;font-size:13px;line-height:1.8}
+@media(max-width:720px){.inquiry-layout{grid-template-columns:1fr}}
+
+
+/* هوية محافظة الظاهرة — الإصدار المؤسسي V6 */
+:root{--navy:#12364e;--teal:#087f82;--gold:#bc9552;--bg:#f1f5f7;--line:#d8e3e9;--text:#18384c;--muted:#60798a}
+body{background:linear-gradient(180deg,#e7f0f3 0,#f5f8fa 340px);min-height:100vh}
+header{padding:0;background:#12364e;border-bottom:5px solid var(--gold);box-shadow:0 8px 28px #102e3c24}
+.gov-bar{padding:14px max(20px,calc((100vw - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #ffffff2b}
+.gov-id{font-size:13px;line-height:1.9;color:#e2edf1}.gov-id strong{color:white;font-size:15px}
+.gov-seal{width:58px;height:58px;border:1px solid #c8aa6b;border-radius:50%;display:grid;place-items:center;color:#eed4a1;font-size:27px;flex:none}
+.hero{max-width:1100px;margin:auto;padding:43px 20px 49px;display:grid;grid-template-columns:1.5fr .65fr;gap:22px;align-items:center}
+.hero-kicker{color:#ead5aa;font-size:13px;font-weight:700;letter-spacing:.5px}
+.hero h1{font-size:clamp(27px,4.5vw,44px);margin:10px 0 14px;line-height:1.4;color:#fff}
+.hero p{font-size:15px;color:#d5e7eb;max-width:640px;line-height:2}
+.hero-mark{border:1px solid #ffffff38;background:#ffffff0c;border-radius:22px;padding:25px;text-align:center;color:#fff}
+.hero-mark strong{font-family:Arial,sans-serif;display:block;font-size:44px;letter-spacing:2px;color:#e6c58c}
+.hero-mark span{display:block;font-size:13px;line-height:1.9}
+main{margin:25px auto 45px}.card{box-shadow:0 8px 30px #173c5110;border:1px solid #e2ebef}
+.section-kicker{color:#087f82;font-size:12px;font-weight:bold;letter-spacing:.4px}
+.about-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:start}
+.about-grid h2{font-size:23px;margin:8px 0}.about-grid p{font-size:14px;color:#496477}
+.goals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.goal{border:1px solid #d9e7ea;background:#f6fafb;border-radius:14px;padding:16px 10px;text-align:center}
+.goal b{display:block;color:#0b6774;margin-bottom:7px}.goal span{font-size:12px;color:#617988;line-height:1.7}
+.login-shell{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.login-side{background:#f3f8f9;border:1px solid #dce8ec;border-radius:16px;padding:22px}
+.login-side h2{margin:0 0 10px}.login-side p{font-size:14px;color:#587384}
+.login-form{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.login-form #code{flex:1;min-width:190px;width:auto}
+.login-form button{min-height:51px;padding-inline:26px}
+.official-note{color:#6b8290;font-size:12px;line-height:1.9;margin:12px 0 0}
+.section-heading{margin:0 0 14px;font-size:20px;color:#123e59}
+#app>.card:first-child{border-top:4px solid var(--gold)}
+#app>.card:nth-child(2){border-top:4px solid var(--teal)}
+.inquiry-actions button{border-radius:11px;box-shadow:0 3px 10px #123e5910}
+footer{background:#e7eff2;border-top:1px solid #d5e2e7;padding:25px 15px;line-height:2}
+@media(max-width:760px){.hero,.about-grid,.login-shell{grid-template-columns:1fr}.hero{padding:28px 20px}.hero-mark{padding:14px}.hero-mark strong{font-size:31px}.goals{grid-template-columns:1fr 1fr 1fr}.goal{padding:12px 5px}.goal b{font-size:12px}.goal span{font-size:10px}.gov-id{font-size:11px}.gov-id strong{font-size:12px}.gov-seal{width:45px;height:45px;font-size:20px}}
+@media print{header{print-color-adjust:exact;-webkit-print-color-adjust:exact}.login-shell,.gov-seal{display:none}}
+
+/* تحسينات الإصدار المستقل: سهولة القراءة والتفاعل */
+html{scroll-behavior:smooth} body{font-family:Tahoma,Arial,sans-serif}
+button{transition:transform .15s,box-shadow .15s}button:not(:disabled):active{transform:scale(.98)}
+.card{transition:box-shadow .2s}.tile{transition:transform .18s,box-shadow .18s}
+.tile:hover{transform:translateY(-2px);box-shadow:0 8px 18px #173c5115}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
+
 <body>
-<header><div class="wrap"><div class="top"><div><small>سلطنة عُمان — وزارة التعليم</small><strong>المديرية العامة للتعليم بمحافظة الظاهرة</strong></div><div class="mark">الصف الثامن | 2027</div></div><div class="hero"><div class="eyebrow">بيئة تعليمية داعمة للاستعداد للدراسة الدولية</div><h1>المختبر الافتراضي للظاهرة<br> TIMSS 2027</h1><p>مساحة تفاعلية لطلبة الصف الثامن المسجلين في المدارس المشاركة بمحافظة الظاهرة، لتنمية مهارات الرياضيات والعلوم من خلال التحديات والاستقصاء والمحاكاة.</p><span class="pill">نتعلّم • نطبّق • نستدل • نتميّز</span></div></div></header>
-<main class="wrap content"><section class="card"><h2>ما دراسة TIMSS؟</h2><p>دراسة الاتجاهات الدولية في الرياضيات والعلوم (Trends in International Mathematics and Science Study)، وهي دراسة دولية تقيس تحصيل الطلبة في الرياضيات والعلوم، وتساعد نتائجها على فهم مستويات الأداء وتطوير التعلم. هذه المنصة مخصصة للتدريب والاستعداد وليست موقعًا رسميًا لإجراء اختبار TIMSS.</p></section>
-<section class="grid" style="margin-top:16px" aria-label="المجالات المعرفية"><article class="card"><span class="num">01</span><h3>المعرفة</h3><p>استيعاب الحقائق والمفاهيم والمبادئ الأساسية في الرياضيات والعلوم.</p></article><article class="card"><span class="num">02</span><h3>التطبيق</h3><p>استخدام المعرفة والمهارات لحل المسائل والمواقف العلمية.</p></article><article class="card"><span class="num">03</span><h3>الاستدلال</h3><p>تحليل البيانات وتفسير النتائج وبناء الاستنتاجات المنطقية.</p></article></section>
-<section class="card entry" id="student-entry"><div class="entry-head"><div><h2>بوابة الطلبة المشاركين</h2><p>أدخل رمز الدخول المعتمد من مدرستك في النموذج أدناه.</p></div><a class="action" id="open-app" href="https://script.google.com/a/macros/edu.moe.om/s/AKfycbxU1DbbZXT7DYAax48GIGfUnNucOwYSgpPFwrK0vXausbdLg45JAGdrrdvuwL9km2RP/exec" target="_blank" rel="noopener noreferrer">فتح البوابة في نافذة مستقلة</a></div><div class="frame"><iframe title="بوابة دخول المختبر الافتراضي للظاهرة" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://script.google.com/a/macros/edu.moe.om/s/AKfycbxU1DbbZXT7DYAax48GIGfUnNucOwYSgpPFwrK0vXausbdLg45JAGdrrdvuwL9km2RP/exec"></iframe></div><div class="hint">إذا لم يظهر نموذج الدخول داخل هذه الصفحة، استخدم «فتح البوابة في نافذة مستقلة». تضمين تطبيق Apps Script يعتمد على إعدادات النشر وسياسة الأمان والدخول في حساب وزارة التعليم.</div></section></main>
-<footer>المختبر الافتراضي للظاهرة | TIMSS 2027<br>مبادرة تدريبية لدعم الاستعداد للدراسة الدولية — وليست المنصة الرسمية للاختبار<br>تطوير المبادرة: مدرسة أبو الدرداء للتعليم الأساسي للبنين</footer>
-</body></html>
+
+<header>
+ <div class="gov-bar">
+  <div class="gov-id">سلطنة عُمان — وزارة التعليم<br><strong>المديرية العامة للتعليم بمحافظة الظاهرة</strong></div>
+  <div class="gov-seal" aria-label="رمز تعليمي زخرفي وليس شعارًا رسميًا">✦</div>
+ </div>
+ <div class="hero">
+  <div><div class="hero-kicker">برنامج الاستعداد للدراسة الدولية في الرياضيات والعلوم</div>
+   <h1>المختبر الافتراضي للظاهرة</h1>
+   <p>منصة تدريبية تفاعلية لطلبة الصف الثامن المشاركين في دراسة TIMSS 2027 بمدارس محافظة الظاهرة، لتنمية المعرفة والتطبيق والاستدلال.</p>
+  </div>
+  <div class="hero-mark"><span>الدراسة الدولية في الرياضيات والعلوم</span><strong>TIMSS</strong><strong style="font-size:35px;color:white">2027</strong><span>نتعلم • نستكشف • نستدل • نتميز</span></div>
+ </div>
+</header>
+
+<main>
+
+<section class="card" id="aboutTimss">
+ <div class="about-grid">
+  <div><div class="section-kicker">تعرف إلى الدراسة الدولية</div><h2>ما هي TIMSS؟</h2>
+   <p>دراسة الاتجاهات الدولية في الرياضيات والعلوم (Trends in International Mathematics and Science Study)، وهي دراسة دولية دورية تقيس تحصيل الطلبة في الرياضيات والعلوم، وتوفر بيانات تساعد الأنظمة التعليمية على فهم مستوى الأداء وتطوير التعلم.</p>
+   <p>صُممت هذه المنصة لتدريب الطلبة المشاركين من مدارس محافظة الظاهرة على حل المسائل العلمية والرياضية، وتحليل البيانات، والتجريب الافتراضي، والتفكير الاستدلالي.</p>
+  </div>
+  <div><div class="section-kicker" style="margin-bottom:12px">مجالات التفكير المستهدفة</div>
+   <div class="goals"><div class="goal"><b>المعرفة</b><span>تذكر المفاهيم وفهمها</span></div><div class="goal"><b>التطبيق</b><span>توظيف المعرفة في مواقف جديدة</span></div><div class="goal"><b>الاستدلال</b><span>التحليل والتفسير والاستنتاج</span></div></div>
+   <p class="official-note">الهدف: تعزيز جاهزية الطلبة للمشاركة في TIMSS 2027 من خلال ممارسة تعليمية منتظمة، وليس محاكاة الاختبار الرسمي نفسه.</p>
+  </div>
+ </div>
+</section>
+<section class="card" id="programGoals">
+ <div class="section-kicker">أهداف البرنامج التدريبي</div>
+ <h2 class="section-heading">نحو أداء علمي ورياضي أكثر تميزًا</h2>
+ <div class="grid">
+  <div class="tile"><h3>01 — إتقان المفاهيم</h3><p>تعزيز المفاهيم الأساسية في الرياضيات والعلوم المرتبطة بالصف الثامن.</p></div>
+  <div class="tile"><h3>02 — حل المشكلات</h3><p>التدرب على مواقف تتطلب التطبيق واختيار الاستراتيجيات المناسبة.</p></div>
+  <div class="tile"><h3>03 — الاستقصاء والتحليل</h3><p>تفسير الرسومات والجداول والبيانات والتوصل إلى استنتاجات مدعومة بالأدلة.</p></div>
+  <div class="tile"><h3>04 — الاستعداد الرقمي</h3><p>تنمية الثقة في استخدام بيئات التعلم والتقييم الرقمي التفاعلية.</p></div>
+ </div>
+</section>
+<!-- بوابة المشاركين -->
+<section class="card" id="login">
+ <div class="login-shell">
+  <div><div class="section-kicker">دخول آمن للمشاركين</div><h2 style="margin:8px 0 10px">بوابة الطالب المشارك</h2>
+   <p>هذه البوابة مخصصة لطلبة الصف الثامن المسجلين من المدارس المشاركة في دراسة TIMSS 2027 بمحافظة الظاهرة.</p>
+   <p class="official-note">استخدم رمز الدخول المكون من ستة أرقام الذي زودتك به مدرستك. لا تشارك الرمز مع الآخرين.</p>
+  </div>
+  <div class="login-side"><h2>تسجيل الدخول</h2><p>أدخل رمزك المعتمد للانتقال إلى التحديات والمختبرات.</p>
+   <div class="login-form"><input id="code" type="text" inputmode="numeric" maxlength="6" placeholder="رمز الدخول (6 أرقام)" autocomplete="off" aria-label="رمز الدخول المكون من ستة أرقام"><button id="loginBtn" onclick="login()">دخول المنصة</button></div>
+   <p id="loginMsg" class="error" role="alert"></p>
+  </div>
+ </div>
+</section>
+
+<!-- المراحل -->
+<section id="app">
+
+ <div class="card">
+  <div class="topline">
+   <div>
+    <h2 id="studentName"></h2>
+    <p id="schoolName" class="muted"></p>
+   </div>
+   <button onclick="logout()" style="background:#607887">
+    خروج
+   </button>
+  </div>
+
+  <p class="muted">
+   اختر المادة والمرحلة. تُفتح المرحلة التالية
+   بعد اجتياز المرحلة السابقة.
+  </p>
+ </div>
+
+  <div class="card">
+   <div class="topline"><div><h2>المختبرات التفاعلية | الاستقصاء العلمي</h2><p class="muted">استكشف المتغيرات، واجمع البيانات، ثم استنتج.</p></div>
+    <div class="inquiry-actions"><button type="button" onclick="openInquiry()">🌱 نمو النباتات</button><button type="button" onclick="openElectricLab()">⚡ الدوائر الكهربائية</button><button type="button" onclick="openExtraLab('genetics')">🧬 الوراثة</button><button type="button" onclick="openExtraLab('heat')">🌡️ انتقال الحرارة</button><button type="button" onclick="openExtraLab('density')">⚖️ الكثافة والطفو</button><button type="button" onclick="openExtraLab('geometry')">📐 الرياضيات</button></div>
+   </div>
+  </div>
+
+ <div class="card"><div class="section-kicker">التحديات التدريبية</div><h2 class="section-heading">مراحل الرياضيات والعلوم</h2><div class="grid" id="stages"></div></div>
+
+</section>
+
+<!-- مختبر مستقل: لا يؤثر في درجات التحديات -->
+<section class="card" id="inquiry">
+ <div class="topline"><div><h2>🌱 مختبر نمو النباتات</h2><p class="muted">استقصاء أثر الضوء والماء خلال 14 يومًا</p></div><button type="button" onclick="closeInquiry()" style="background:#607887">العودة إلى المراحل</button></div>
+ <div class="inquiry-note">هذه محاكاة تعليمية ببيانات افتراضية. القيم لا تمثل تجربة مخبرية فعلية ولا تصلح للتنبؤ بنمو جميع النباتات. لا تُحتسب نتائجها ضمن درجات التحديات.</div>
+ <div class="inquiry-layout" style="margin-top:18px">
+  <div class="inquiry-panel">
+   <h3>اضبط ظروف التجربة</h3>
+   <label for="lightRange">شدة الضوء: <span id="lightValue">60</span>%</label>
+   <input id="lightRange" type="range" min="0" max="100" step="5" value="60" oninput="updateInquiry()">
+   <label for="waterRange">كمية الماء النسبية: <span id="waterValue">100</span>%</label>
+   <input id="waterRange" type="range" min="0" max="100" step="10" value="100" oninput="updateInquiry()">
+   <div class="inquiry-metrics"><div class="inquiry-metric">النمو في النموذج<strong id="growthValue">—</strong></div><div class="inquiry-metric">مدة التجربة<strong>14 يومًا</strong></div></div>
+   <div class="inquiry-actions"><button type="button" onclick="recordInquiry()">سجّل القياس</button><button type="button" onclick="resetInquiry()" style="background:#607887">إعادة التجربة</button></div>
+  </div>
+  <div class="inquiry-panel"><h3>نموذج النبات</h3>
+   <svg id="plantVisual" class="inquiry-plant" viewBox="0 0 340 260" role="img" aria-label="رسم توضيحي للنبات يتغير ارتفاعه مع قيمة النمو الافتراضي">
+    <circle cx="280" cy="46" r="21" fill="#efbb42" id="sunVisual"/>
+    <path d="M0 212 Q170 198 340 212 V260 H0Z" fill="#d8e7d7"/>
+    <path d="M146 205 L194 205 L185 250 L155 250 Z" fill="#b87950"/>
+    <path id="plantStem" d="M170 205 L170 140" stroke="#32854c" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <g id="plantLeaves"><ellipse cx="153" cy="150" rx="22" ry="10" fill="#4eaa64" transform="rotate(24 153 150)"/><ellipse cx="187" cy="162" rx="22" ry="10" fill="#379a55" transform="rotate(-24 187 162)"/></g>
+   </svg>
+   <p class="muted">شكل النبات توضيحي وغير مطابق للمقياس. غيّر عاملًا واحدًا في كل مرة لاختبار أثره.</p>
+  </div>
+ </div>
+ <div class="inquiry-panel" style="margin-top:18px"><h3>سجل القياسات والمقارنة</h3><p class="muted">ثبّت كمية الماء عند 100%، ثم سجّل ثلاث قراءات عند شدات ضوء مختلفة.</p>
+  <div style="overflow-x:auto"><table class="inquiry-table"><thead><tr><th>التجربة</th><th>الضوء (%)</th><th>الماء (%)</th><th>النمو (سم)</th></tr></thead><tbody id="inquiryRows"><tr><td colspan="4">لم تُسجل قياسات بعد</td></tr></tbody></table></div>
+  <div id="inquiryChart" aria-label="مخطط مقارنة النمو المسجل" style="margin-top:14px"></div>
+ </div>
+ <div class="inquiry-panel" style="margin-top:18px"><h3>سؤال الاستدلال</h3><p>ما التصميم الذي يسمح باختبار أثر شدة الضوء وحدها في نمو النبات؟</p>
+  <label class="inquiry-answer"><input type="radio" name="inquiryChoice" value="a"> تغيير الضوء والماء معًا.</label>
+  <label class="inquiry-answer"><input type="radio" name="inquiryChoice" value="b"> تغيير الضوء مع تثبيت الماء ونوع النبات والتربة ومدة التجربة.</label>
+  <label class="inquiry-answer"><input type="radio" name="inquiryChoice" value="c"> تغيير نوع النبات في كل تجربة.</label>
+  <button type="button" onclick="checkInquiry()">تحقق من استنتاجك</button><p id="inquiryFeedback" role="status" aria-live="polite"></p>
+ </div>
+</section>
+
+
+<!-- مختبر الدوائر الكهربائية - مستقل عن درجات التحديات -->
+<section class="card" id="electricLab" style="display:none">
+ <div class="topline"><div><h2>⚡ مختبر الدوائر الكهربائية</h2><p class="muted">اكتشف قانون أوم وقارن التوصيل على التوالي والتوازي</p></div><button type="button" onclick="closeElectricLab()" style="background:#607887">العودة إلى المراحل</button></div>
+ <div class="inquiry-note">محاكاة مثالية لدوائر تيار مستمر بمقاومات أومية ومصدر جهد ثابت، دون مقاومة داخلية أو تسخين. القيم تعليمية ولا تُضاف إلى درجات التحديات.</div>
+ <div class="inquiry-layout" style="margin-top:18px">
+  <div class="inquiry-panel">
+   <h3>اضبط عناصر الدائرة</h3>
+   <label for="electricMode">طريقة التوصيل</label>
+   <select id="electricMode" onchange="updateElectricLab()" style="width:100%;padding:12px;border:1px solid #bdd1d9;border-radius:10px;font:inherit"><option value="single">مقاومة واحدة</option><option value="series">مقاومتان على التوالي</option><option value="parallel">مقاومتان على التوازي</option></select>
+   <label for="electricVoltage">فرق جهد المصدر: <span id="electricVoltageValue">6</span> فولت</label>
+   <input id="electricVoltage" type="range" min="1" max="24" step="1" value="6" oninput="updateElectricLab()">
+   <label for="electricR1">المقاومة الأولى R1: <span id="electricR1Value">6</span> أوم</label>
+   <input id="electricR1" type="range" min="1" max="30" step="1" value="6" oninput="updateElectricLab()">
+   <div id="electricR2Wrap"><label for="electricR2">المقاومة الثانية R2: <span id="electricR2Value">6</span> أوم</label><input id="electricR2" type="range" min="1" max="30" step="1" value="6" oninput="updateElectricLab()"></div>
+   <div class="inquiry-metrics"><div class="inquiry-metric">المقاومة المكافئة<strong id="electricReq">—</strong></div><div class="inquiry-metric">التيار الكلي<strong id="electricCurrent">—</strong></div></div>
+   <div class="inquiry-actions"><button type="button" onclick="recordElectricLab()">سجّل القياس</button><button type="button" onclick="resetElectricLab()" style="background:#607887">إعادة التجربة</button></div>
+  </div>
+  <div class="inquiry-panel"><h3>مخطط الدائرة</h3><div id="electricDiagram"></div><p class="muted" id="electricDetail"></p><p class="muted">رمز البطارية يمثل المصدر؛ الأسهم توضح اتجاه التيار الاصطلاحي. الرسم تخطيطي وليس بمقياس.</p></div>
+ </div>
+ <div class="inquiry-panel" style="margin-top:18px"><h3>سجل القياسات</h3><p class="muted">ثبّت المقاومة وطريقة التوصيل، ثم غيّر الجهد وسجّل ثلاث قراءات لاستنتاج العلاقة بين الجهد والتيار.</p><div style="overflow-x:auto"><table class="inquiry-table"><thead><tr><th>التجربة</th><th>التوصيل</th><th>الجهد (V)</th><th>المقاومة المكافئة (Ω)</th><th>التيار الكلي (A)</th></tr></thead><tbody id="electricRows"><tr><td colspan="5">لم تُسجل قياسات بعد</td></tr></tbody></table></div><div id="electricChart"></div></div>
+ <div class="inquiry-panel" style="margin-top:18px"><h3>سؤال الاستدلال</h3><p>عند تثبيت المقاومة المكافئة ومضاعفة فرق الجهد، ماذا يحدث لشدة التيار الكلي في الدائرة المثالية؟</p>
+  <label class="inquiry-answer"><input type="radio" name="electricChoice" value="a"> ينخفض التيار إلى النصف.</label>
+  <label class="inquiry-answer"><input type="radio" name="electricChoice" value="b"> يتضاعف التيار.</label>
+  <label class="inquiry-answer"><input type="radio" name="electricChoice" value="c"> يبقى التيار ثابتًا.</label>
+  <button type="button" onclick="checkElectricLab()">تحقق من استنتاجك</button><p id="electricFeedback" role="status" aria-live="polite"></p>
+ </div>
+</section>
+
+
+<!-- مختبرات V5: الوراثة والحرارة والكثافة والهندسة -->
+<section class="card" id="extraLab" style="display:none">
+ <div class="topline"><div><h2 id="extraTitle"></h2><p id="extraSubtitle" class="muted"></p></div><button type="button" onclick="closeExtraLab()" style="background:#607887">العودة إلى المراحل</button></div>
+ <div class="inquiry-note">محاكاة تعليمية بنماذج مبسطة وافتراضات محددة. القياسات ليست تجارب مخبرية، ولا تؤثر في درجات التحديات.</div>
+ <div class="inquiry-layout" style="margin-top:18px">
+  <div class="inquiry-panel"><h3>اضبط المتغيرات</h3><div id="extraControls"></div><div id="extraMetrics" class="inquiry-metrics"></div><div class="inquiry-actions"><button type="button" onclick="recordExtraLab()">سجّل القياس</button><button type="button" onclick="resetExtraLab()" style="background:#607887">إعادة التجربة</button></div></div>
+  <div class="inquiry-panel"><h3>التمثيل العلمي</h3><div id="extraDiagram" style="overflow-x:auto"></div><p id="extraExplanation" class="muted"></p></div>
+ </div>
+ <div class="inquiry-panel" style="margin-top:18px"><h3>سجل الاستقصاء</h3><p class="muted">غيّر متغيرًا واحدًا في كل مرة، وسجّل ثلاث محاولات للمقارنة.</p><div style="overflow-x:auto"><table class="inquiry-table"><thead id="extraHead"></thead><tbody id="extraRows"></tbody></table></div></div>
+ <div class="inquiry-panel" style="margin-top:18px"><h3>سؤال الاستدلال</h3><p id="extraQuestion"></p><div id="extraChoices"></div><button type="button" onclick="checkExtraLab()">تحقق من الاستنتاج</button><p id="extraFeedback" role="status" aria-live="polite"></p></div>
+ <div class="inquiry-panel" style="margin-top:18px"><h3>📝 بطاقة الباحث الصغير</h3><p class="muted">يمكنك كتابة فرضيتك واستنتاجك ونسخ البطاقة. لا تُحفظ البيانات على الخادم.</p><label for="extraHypothesis">فرضيتي قبل التجربة</label><textarea id="extraHypothesis" rows="2" style="width:100%;font:inherit;padding:10px;border:1px solid #bdd1d9;border-radius:9px" placeholder="أتوقع أن..."></textarea><label for="extraConclusion">استنتاجي بعد مقارنة القياسات</label><textarea id="extraConclusion" rows="3" style="width:100%;font:inherit;padding:10px;border:1px solid #bdd1d9;border-radius:9px" placeholder="لاحظت أن... لأن..."></textarea><div class="inquiry-actions"><button type="button" onclick="copyResearchCard()">نسخ بطاقة الباحث</button><button type="button" onclick="window.print()" style="background:#607887">طباعة</button></div><p id="extraCopyMsg" class="muted" role="status"></p></div>
+</section>
+
+<!-- صفحة السؤال -->
+<section class="card" id="challenge">
+
+ <div class="topline">
+  <h2 id="stageTitle">التحدي</h2>
+  <span id="counter" class="counter" aria-live="polite"></span>
+ </div>
+
+ <div class="progress" role="progressbar" aria-label="التقدم في التحدي" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
+  <div id="bar"></div>
+ </div>
+
+ <p class="muted" id="topic"></p>
+
+ <h3 id="question"></h3>
+
+ <div id="simulation"></div>
+
+ <div id="options"></div>
+
+ <button id="submitBtn" onclick="submitAnswer()">
+  اعتماد الإجابة
+ </button>
+
+ <div id="feedback" aria-live="polite" role="status"></div>
+
+ <button
+  id="nextBtn"
+  onclick="nextQuestion()"
+  style="display:none"
+ >
+  السؤال التالي ←
+ </button>
+
+ <button
+  id="backBtn"
+  onclick="backToStages()"
+  style="display:none"
+ >
+  العودة إلى المراحل
+ </button>
+
+</section>
+
+</main>
+
+<footer>
+ المختبر الافتراضي للظاهرة
+ <br>
+ منصة تعليمية تجريبية لدعم الاستعداد لدراسة TIMSS 2027
+</footer>
+
+<script>
+
+/* ===================================
+   المتغيرات العامة
+=================================== */
+
+const $ = id => document.getElementById(id);
+
+let session = '';
+let active = null;
+let pending = null;
+let requestBusy = false;
+
+/* ===================================
+   الاتصال بالخادم
+=================================== */
+
+// عنوان الوسيط الآمن بعد نشر Cloudflare Worker (لا تضع أسرارًا هنا)
+const DAHIRA_API_URL = 'https://REPLACE-WITH-YOUR-WORKER.workers.dev';
+const ALLOWED_API_METHODS = new Set(['dhStudentLogin','dhChallengeStatus','dhStartChallenge','dhSubmitChallengeAnswer','dhPortalProgress']);
+async function api(name,args,success){
+  if(!ALLOWED_API_METHODS.has(name)) { showApiError('عملية غير مسموحة'); return; }
+  if(DAHIRA_API_URL.includes('REPLACE-WITH-YOUR-WORKER')) {
+    showApiError('يلزم إعداد عنوان الاتصال الآمن أولًا. راجع دليل التشغيل.'); return;
+  }
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),35000);
+  try{
+    const response=await fetch(DAHIRA_API_URL+'/api',{
+      method:'POST',mode:'cors',cache:'no-store',credentials:'omit',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({method:name,args}),signal:controller.signal
+    });
+    const data=await response.json();
+    if(!response.ok || data.error) throw new Error(data.error||'تعذر تنفيذ الطلب');
+    success(data);
+  }catch(error){
+    showApiError(error.name==='AbortError'?'انتهت مهلة الاتصال؛ حاول مجددًا.':(error.message||'تعذر الاتصال بالخادم'));
+  }finally{clearTimeout(timeout);}
+}
+function showApiError(message){
+  const msg='حدث خطأ: '+message;
+  if($('challenge').style.display==='block'){$('feedback').className='error';$('feedback').textContent=msg;}
+  else {$('loginMsg').textContent=msg;}
+  requestBusy=false;$('loginBtn').disabled=false;$('submitBtn').disabled=false;
+}
+
+
+/* ===================================
+   تسجيل الدخول
+=================================== */
+
+function login(){
+
+ const code=$('code').value.trim().replace(/[٠-٩]/g,d=>String(d.charCodeAt(0)-1632)).replace(/[۰-۹]/g,d=>String(d.charCodeAt(0)-1776));
+
+ if(!/^[0-9]{6}$/.test(code)){
+  $('loginMsg').textContent=
+   'يرجى إدخال رمز مكون من 6 أرقام';
+  return;
+ }
+
+ $('loginBtn').disabled=true;
+ $('loginMsg').textContent='';
+
+ api('dhStudentLogin',[code],r=>{
+
+  $('loginBtn').disabled=false;
+
+  if(!r.ok){
+   $('loginMsg').textContent=r.message;
+   return;
+  }
+
+  session=r.session;
+
+  $('studentName').textContent=
+   'مرحبًا، '+r.student.name;
+
+  $('schoolName').textContent=
+   r.student.school+
+   ' — الصف الثامن / '+r.student.section;
+
+  $('login').style.display='none';
+  $('app').style.display='block';
+
+  loadStages();
+ });
+}
+
+/* ===================================
+   تحميل المراحل
+=================================== */
+
+function loadStages(){
+
+ api('dhChallengeStatus',[session],r=>{
+
+  const stages=r.stages;
+  const host=$('stages');
+
+  host.innerHTML='';
+
+  stages.forEach(s=>{
+
+   const unlocked=
+    s.order===1 ||
+    stages.some(x=>
+     x.subject===s.subject &&
+     x.order===s.order-1 &&
+     x.passed
+    );
+
+   const card=document.createElement('div');
+
+   card.className=
+    'tile'+
+    (s.passed?' passed':'')+
+    (!unlocked?' locked':'');
+
+   const title=document.createElement('h3');
+
+   title.textContent=
+    (s.subject==='العلوم'?'🔬 ':'📐 ')+
+    s.subject+' — '+s.name;
+
+   card.appendChild(title);
+
+   const details=document.createElement('p');
+
+   details.textContent=
+    s.count+' سؤالًا | اجتياز '+s.pass+'%';
+
+   card.appendChild(details);
+
+   if(s.passed){
+    const status=document.createElement('p');
+    status.className='success';
+    status.textContent='✓ مرحلة مجتازة';
+    card.appendChild(status);
+   }
+
+   const btn=document.createElement('button');
+
+   btn.textContent=
+    !unlocked?'🔒 مغلق':
+    s.passed?'إعادة التحدي':'ابدأ التحدي';
+
+   btn.disabled=!unlocked;
+
+   btn.onclick=()=>start(s);
+
+   card.appendChild(btn);
+   host.appendChild(card);
+  });
+ });
+}
+
+/* ===================================
+   بدء التحدي
+=================================== */
+
+function start(stage){
+ if(requestBusy)return;
+ requestBusy=true;
+
+ $('stageTitle').textContent=
+  stage.subject+' — '+stage.name;
+
+ api('dhStartChallenge',[session,stage.code],r=>{
+  requestBusy=false;
+
+  active=r;
+  pending=null;
+
+  $('app').style.display='none';
+  $('challenge').style.display='block';
+
+  showQuestion(r);
+ });
+}
+
+/* ===================================
+   عرض السؤال
+=================================== */
+
+function showQuestion(r){
+
+ active=r;
+
+ $('counter').textContent='السؤال '+r.index+' من '+r.total;
+ updateProgress((r.index-1)/r.total*100);
+
+ $('topic').textContent=
+  r.question.topic+' | '+r.question.level;
+
+ $('question').textContent=
+  r.question.text;
+
+ const host=$('options');
+ host.innerHTML='';
+
+ r.question.options.forEach((option,i)=>{
+
+  const label=document.createElement('label');
+  label.className='option';
+
+  const radio=document.createElement('input');
+
+  radio.type='radio';
+  radio.name='answer';
+  radio.value=i;
+
+  radio.onchange=()=>{
+   document.querySelectorAll('.option')
+    .forEach(x=>x.classList.remove('selected'));
+
+   label.classList.add('selected');
+  };
+
+  label.appendChild(radio);
+  label.appendChild(
+   document.createTextNode(' '+option)
+  );
+
+  host.appendChild(label);
+ });
+
+ // الرسم مرتبط ببيانات السؤال
+ renderAssessmentSimulation(r.question);
+
+ $('feedback').textContent='';
+ $('feedback').className='';
+
+ $('submitBtn').style.display='inline-block';
+ $('submitBtn').disabled=false;
+
+ $('nextBtn').style.display='none';
+ $('backBtn').style.display='none';
+}
+
+/* ===================================
+   إرسال الإجابة
+=================================== */
+
+function submitAnswer(){
+
+ const chosen=document.querySelector(
+  'input[name="answer"]:checked'
+ );
+
+ if(!chosen){
+  $('feedback').textContent='اختر إجابة أولًا';
+  return;
+ }
+
+ if(requestBusy)return;
+ requestBusy=true;
+ $('submitBtn').disabled=true;
+
+ api('dhSubmitChallengeAnswer',[
+  session,
+  active.attempt,
+  active.index,
+  Number(chosen.value)
+ ],r=>{
+  requestBusy=false;
+  $('submitBtn').style.display='none';
+
+  document.querySelectorAll(
+   'input[name="answer"]'
+  ).forEach(x=>x.disabled=true);
+
+  updateProgress(active.index/active.total*100);
+
+  $('feedback').className=
+   r.ok?'success':'error';
+
+  $('feedback').textContent=
+   (r.ok?'✓ إجابة صحيحة. ':'✗ إجابة غير صحيحة. ')+
+   (r.explain||'');
+  const chosenOption=document.querySelector('input[name="answer"]:checked');
+  if(chosenOption)chosenOption.closest('.option').classList.add(r.ok?'correct-option':'wrong-option');
+
+  if(r.done){
+
+   $('feedback').textContent+=
+    ' | النتيجة: '+r.correct+
+    '/'+r.total+
+    ' ('+r.percentage+'%) '+
+    (r.passed?'— اجتزت المرحلة!':
+              '— لم تحقق نسبة الاجتياز.');
+
+   $('backBtn').style.display='inline-block';
+
+   pending=null;
+
+  }else{
+
+   pending=r.next;
+
+   $('nextBtn').style.display='inline-block';
+  }
+ });
+}
+
+function nextQuestion(){
+ if(pending){const next=pending;pending=null;showQuestion(next);}
+}
+
+function updateProgress(value){
+ const pct=Math.max(0,Math.min(100,Number(value)||0));
+ $('bar').style.width=pct+'%';
+ $('progressTrack').setAttribute('aria-valuenow',String(Math.round(pct)));
+}
+
+function backToStages(){
+
+ $('challenge').style.display='none';
+ $('app').style.display='block';
+
+ active=null;
+ pending=null;
+
+ loadStages();
+}
+
+function logout(){
+
+ session='';
+ requestBusy=false;
+ active=null;
+ pending=null;
+
+ $('code').value='';
+
+ $('challenge').style.display='none';
+ $('app').style.display='none';
+ $('inquiry').style.display='none';
+ $('electricLab').style.display='none';
+ $('extraLab').style.display='none';
+ $('login').style.display='block';
+  $('aboutTimss').style.display='block';
+  $('programGoals').style.display='block';
+}
+
+$('code').addEventListener('keydown',e=>{
+ if(e.key==='Enter')login();
+});
+
+/* ===================================
+   محرك الرسومات المرتبطة بالأسئلة
+=================================== */
+
+function renderAssessmentSimulation(q){
+
+ const host=$('simulation');
+ host.innerHTML='';
+
+ const v=q.visual;
+
+ if(!v)return;
+
+ if(v.type==='triangle'){
+  renderTriangle(host,v);
+ }
+
+ else if(v.type==='table'){
+  renderTable(host,v);
+ }
+
+ else if(v.type==='bars'){
+  renderBars(host,v);
+ }
+
+ else if(v.type==='circuit'){
+  renderCircuit(host,v);
+ }
+
+ else if(v.type==='punnett'){
+  renderPunnett(host,v);
+ }
+}
+
+/* ===================================
+   أدوات مساعدة للرسومات
+=================================== */
+
+const SVG_NS='http://www.w3.org/2000/svg';
+
+function svgElement(tag,attrs,text){
+ const el=document.createElementNS(SVG_NS,tag);
+
+ Object.entries(attrs||{}).forEach(([k,v])=>{
+  el.setAttribute(k,String(v));
+ });
+
+ if(text!==undefined){
+  el.textContent=String(text);
+ }
+
+ return el;
+}
+
+function createLab(host,title,description){
+
+ const box=document.createElement('div');
+ box.className='lab';
+
+ const h=document.createElement('h3');
+ h.textContent=title;
+
+ const p=document.createElement('p');
+ p.textContent=description;
+
+ box.append(h,p);
+ host.appendChild(box);
+
+ return box;
+}
+
+/* ===================================
+   رسم المثلث
+=================================== */
+
+function renderTriangle(host,v){
+
+ const box=createLab(
+  host,
+  '📐 التمثيل الهندسي',
+  'اقرأ أطوال الأضلاع من الرسم ثم أجب عن السؤال.'
+ );
+
+ const svg=svgElement('svg',{
+  viewBox:'0 0 480 300'
+ });
+
+ const a=Number(v.a);
+ const b=Number(v.b);
+
+ // نرسم المثلث بنسب تتناسب مع المعطيات
+ const scale=Math.min(230/a,190/b);
+
+ const x=110;
+ const y=245;
+
+ const width=a*scale;
+ const height=b*scale;
+
+ const polygon=svgElement('polygon',{
+  points:
+   x+','+y+' '+
+   (x+width)+','+y+' '+
+   x+','+(y-height),
+  fill:'#bceae7',
+  stroke:'#087f82',
+  'stroke-width':3
+ });
+
+ svg.appendChild(polygon);
+
+ svg.appendChild(svgElement('path',{
+  d:'M '+x+' '+(y-18)+' h 18 v 18',
+  fill:'none',
+  stroke:'#123e59',
+  'stroke-width':2
+ }));
+
+ svg.appendChild(svgElement('text',{
+  x:x+width/2,
+  y:y+25,
+  'text-anchor':'middle',
+  'font-size':17
+ },a+' سم'));
+
+ svg.appendChild(svgElement('text',{
+  x:x-35,
+  y:y-height/2,
+  'text-anchor':'middle',
+  'font-size':17
+ },b+' سم'));
+
+ svg.appendChild(svgElement('text',{
+  x:x+width/2+15,
+  y:y-height/2-8,
+  'font-size':25,
+  fill:'#087f82'
+ },'؟'));
+
+ box.appendChild(svg);
+
+ const note=document.createElement('div');
+ note.className='note';
+ note.textContent=
+  'طول الضلع المجهول غير ظاهر. استخدم المعطيات لحسابه.';
+
+ box.appendChild(note);
+}
+
+/* ===================================
+   الجداول
+=================================== */
+
+function renderTable(host,v){
+
+ const box=createLab(
+  host,
+  '📋 جدول البيانات',
+  'حلّل القيم المعروضة في الجدول قبل اختيار الإجابة.'
+ );
+
+ const table=document.createElement('table');
+
+ const thead=document.createElement('thead');
+ const tr=document.createElement('tr');
+
+ (v.headers||[]).forEach(h=>{
+  const th=document.createElement('th');
+  th.textContent=h;
+  tr.appendChild(th);
+ });
+
+ thead.appendChild(tr);
+ table.appendChild(thead);
+
+ const tbody=document.createElement('tbody');
+
+ (v.rows||[]).forEach(row=>{
+
+  const tr=document.createElement('tr');
+
+  row.forEach(value=>{
+   const td=document.createElement('td');
+   td.textContent=String(value);
+   tr.appendChild(td);
+  });
+
+  tbody.appendChild(tr);
+ });
+
+ table.appendChild(tbody);
+ box.appendChild(table);
+}
+
+/* ===================================
+   الأعمدة البيانية
+=================================== */
+
+
+function renderBars(host,v) {
+ const box=createLab(host,'📊 مخطط البيانات','اقرأ المحاور وقارن بين الأعمدة قبل اختيار الإجابة.');
+ const values=Array.isArray(v.values)?v.values.map(Number):[];
+ if(!values.length||values.some(x=>!Number.isFinite(x)||x<0)){
+  const p=document.createElement('p');p.textContent='بيانات المخطط غير متاحة.';box.appendChild(p);return;
+ }
+ const labels=Array.isArray(v.labels)?v.labels:[];
+ const max=Math.max(...values,1),upper=Math.ceil(max*1.15);
+ const W=640,H=345,L=65,R=20,T=38,B=95;
+ const plotW=W-L-R,plotH=H-T-B,slot=plotW/values.length,barW=Math.min(65,slot*.58);
+ const svg=svgElement('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'مخطط أعمدة لبيانات السؤال'});
+ for(let i=0;i<=4;i++){
+  const y=T+plotH-plotH*i/4;
+  svg.appendChild(svgElement('line',{x1:L,y1:y,x2:W-R,y2:y,stroke:'#d5e4e8'}));
+  svg.appendChild(svgElement('text',{x:L-8,y:y+5,'text-anchor':'end','font-size':13,fill:'#31556a'},Number((upper*i/4).toFixed(2))));
+ }
+ values.forEach((value,i)=>{
+  const h=value/upper*plotH,x=L+i*slot+(slot-barW)/2,y=T+plotH-h;
+  svg.appendChild(svgElement('rect',{x,y,width:barW,height:h,rx:5,fill:'#159a91'}));
+  svg.appendChild(svgElement('text',{x:x+barW/2,y:T+plotH+25,'text-anchor':'middle','font-size':12,fill:'#123c53'},String(labels[i]??`مجموعة ${i+1}`)));
+  if(!v.hideValues)svg.appendChild(svgElement('text',{x:x+barW/2,y:Math.max(T+12,y-8),'text-anchor':'middle','font-size':14,fill:'#123c53'},value));
+ });
+ box.appendChild(svg);
+}
+
+/* ===================================
+   الدائرة الكهربائية
+=================================== */
+
+function renderCircuit(host,v) {
+ const box=createLab(host,'⚡ الدائرة الكهربائية','اقرأ معطيات الدائرة، ثم احسب الكمية المطلوبة.');
+ const val=(x,hidden,unit)=>hidden||x===undefined||x===null||x===''||!Number.isFinite(Number(x))?'؟':`${Number(x)} ${unit}`;
+ const r=val(v.resistance,false,'Ω'),i=val(v.current,v.hideCurrent,'A'),vol=val(v.voltage,v.hideVoltage,'V');
+ const svg=svgElement('svg',{viewBox:'0 0 520 285',role:'img','aria-label':'دائرة كهربائية بسيطة ببطارية ومقاومة'});
+ // أسلاك متصلة بلوحي البطارية والمقاومة
+ svg.appendChild(svgElement('path',{d:'M125 112 V55 H220 M340 55 H425 V232 H125 V154',stroke:'#087f83','stroke-width':5,fill:'none'}));
+ svg.appendChild(svgElement('rect',{x:220,y:35,width:120,height:40,fill:'#eac77e',stroke:'#123c53','stroke-width':3}));
+ svg.appendChild(svgElement('line',{x1:104,y1:112,x2:146,y2:112,stroke:'#123c53','stroke-width':4}));
+ svg.appendChild(svgElement('line',{x1:114,y1:154,x2:136,y2:154,stroke:'#123c53','stroke-width':4}));
+ [['R = '+r,280,23],['I = '+i,280,263],['V = '+vol,61,140],['+',164,109],['−',164,166]].forEach(([t,x,y])=>svg.appendChild(svgElement('text',{x,y,'text-anchor':'middle','font-size':19,fill:'#123c53'},t)));
+ box.appendChild(svg);
+}
+
+/* ===================================
+   مربع بانيت
+=================================== */
+
+function renderPunnett(host,v){
+
+ const box=createLab(
+  host,
+  '🧬 مربع بانيت',
+  'حلّل احتمالات التراكيب الجينية الناتجة عن التزاوج.'
+ );
+
+ const parents=v.parents||['Aa','Aa'];
+
+ const first=String(parents[0]).split('');
+ const second=String(parents[1]).split('');
+
+ const table=document.createElement('table');
+
+ const header=document.createElement('tr');
+
+ ['×',...second].forEach(x=>{
+  const th=document.createElement('th');
+  th.textContent=x;
+  header.appendChild(th);
+ });
+
+ table.appendChild(header);
+
+ first.forEach(a=>{
+
+  const tr=document.createElement('tr');
+
+  const th=document.createElement('th');
+  th.textContent=a;
+  tr.appendChild(th);
+
+  second.forEach(b=>{
+
+   const td=document.createElement('td');
+
+   // ترتيب الحرف السائد أولًا
+   td.textContent=[a,b]
+    .sort((x,y)=>{
+     const xu=x===x.toUpperCase();
+     const yu=y===y.toUpperCase();
+     return Number(yu)-Number(xu);
+    })
+    .join('');
+
+   tr.appendChild(td);
+  });
+
+  table.appendChild(tr);
+ });
+
+ box.appendChild(table);
+
+ const note=document.createElement('div');
+ note.className='note';
+
+ note.textContent=
+  'احسب الاحتمال اعتمادًا على عدد المربعات المناسبة من مجموع المربعات.';
+
+ box.appendChild(note);
+}
+
+
+/* ===================================
+   مختبر الاستقصاء - مستقل عن محرك التحديات
+=================================== */
+let inquiryReadings=[];
+function inquiryGrowth(light,water){
+ // نموذج اصطناعي ذو قيمة مثلى تقريبية للضوء؛ ليس علاقة بيولوجية عامة.
+ const lightEffect=2+9*Math.exp(-Math.pow((light-65)/38,2));
+ const waterEffect=.35+.65*Math.min(water,100)/100;
+ return Math.round(lightEffect*waterEffect*10)/10;
+}
+function openInquiry(){
+ if(!session||requestBusy)return;
+ $('app').style.display='none';$('challenge').style.display='none';$('inquiry').style.display='block';
+ updateInquiry();window.scrollTo(0,0);
+}
+function closeInquiry(){
+ $('inquiry').style.display='none';$('app').style.display='block';window.scrollTo(0,0);
+}
+function updateInquiry(){
+ const light=Number($('lightRange').value),water=Number($('waterRange').value),growth=inquiryGrowth(light,water);
+ $('lightValue').textContent=light;$('waterValue').textContent=water;$('growthValue').textContent=growth+' سم';
+ const tip=205-growth*8;
+ $('plantStem').setAttribute('d',`M170 205 Q163 ${tip+25} 170 ${tip}`);
+ $('plantLeaves').setAttribute('transform',`translate(0 ${tip-140})`);
+ $('sunVisual').setAttribute('opacity',String(.3+.7*light/100));
+ $('inquiryFeedback').textContent='';
+}
+function recordInquiry(){
+ if(inquiryReadings.length>=8){alert('الحد الأقصى 8 قياسات. استخدم إعادة التجربة للبدء من جديد.');return;}
+ const light=Number($('lightRange').value),water=Number($('waterRange').value);
+ inquiryReadings.push({light,water,growth:inquiryGrowth(light,water)});
+ renderInquiryReadings();
+}
+function resetInquiry(){
+ inquiryReadings=[];$('lightRange').value=60;$('waterRange').value=100;
+ document.querySelectorAll('input[name="inquiryChoice"]').forEach(x=>x.checked=false);
+ updateInquiry();renderInquiryReadings();
+}
+function renderInquiryReadings(){
+ const tbody=$('inquiryRows');tbody.replaceChildren();
+ if(!inquiryReadings.length){const tr=tbody.insertRow();const td=tr.insertCell();td.colSpan=4;td.textContent='لم تُسجل قياسات بعد';$('inquiryChart').replaceChildren();return;}
+ inquiryReadings.forEach((r,i)=>{const tr=tbody.insertRow();[i+1,r.light,r.water,r.growth].forEach(x=>tr.insertCell().textContent=String(x));});
+ const chart=$('inquiryChart');chart.replaceChildren();
+ const svg=svgElement('svg',{viewBox:'0 0 520 240',role:'img','aria-label':'مقارنة قيم النمو المسجلة',style:'width:100%;max-width:650px;background:white;border-radius:10px'});
+ const max=12,W=520,L=48,T=15,H=175,slot=440/inquiryReadings.length;
+ [0,3,6,9,12].forEach(val=>{const y=T+H-val/max*H;svg.appendChild(svgElement('line',{x1:L,y1:y,x2:W-20,y2:y,stroke:'#dce8eb'}));svg.appendChild(svgElement('text',{x:L-8,y:y+4,'text-anchor':'end','font-size':12},val));});
+ inquiryReadings.forEach((r,i)=>{const w=Math.min(55,slot*.6),x=L+i*slot+(slot-w)/2,h=r.growth/max*H,y=T+H-h;
+ svg.appendChild(svgElement('rect',{x,y,width:w,height:h,rx:4,fill:'#159a91'}));
+ svg.appendChild(svgElement('text',{x:x+w/2,y:y-5,'text-anchor':'middle','font-size':12},r.growth));
+ svg.appendChild(svgElement('text',{x:x+w/2,y:T+H+18,'text-anchor':'middle','font-size':11},'ت'+(i+1)));
+ });
+ chart.appendChild(svg);
+ const note=document.createElement('p');note.className='muted';note.textContent='المحور الرأسي: النمو (سم). المحور الأفقي: رقم التجربة. قارن النتائج فقط عند تثبيت بقية المتغيرات.';chart.appendChild(note);
+}
+function checkInquiry(){
+ const chosen=document.querySelector('input[name="inquiryChoice"]:checked');const feedback=$('inquiryFeedback');
+ if(!chosen){feedback.className='error';feedback.textContent='اختر إجابة أولًا.';return;}
+ const ok=chosen.value==='b';feedback.className=ok?'success':'error';
+ feedback.textContent=(ok?'✓ إجابة صحيحة. ':'✗ راجع تصميم التجربة. ')+
+ 'لعزل أثر شدة الضوء يجب تغيير الضوء وحده، وتثبيت الماء والتربة ونوع النبات ومدة التجربة. ولا يجوز تعميم نتائج هذا النموذج الافتراضي على جميع النباتات.';
+}
+
+
+/* ===================================
+   مختبر الدوائر الكهربائية - قانون أوم
+=================================== */
+let electricReadings=[];
+function electricData(){
+ const mode=$('electricMode').value;
+ const voltage=Number($('electricVoltage').value);
+ const r1=Number($('electricR1').value),r2=Number($('electricR2').value);
+ const req=mode==='single'?r1:mode==='series'?r1+r2:r1*r2/(r1+r2);
+ const current=voltage/req;
+ return {mode,voltage,r1,r2,req,current,i1:mode==='parallel'?voltage/r1:current,i2:mode==='parallel'?voltage/r2:current};
+}
+function electricFmt(n){return Number(n.toFixed(3)).toLocaleString('en-US',{maximumFractionDigits:3});}
+function openElectricLab(){
+ if(!session||requestBusy)return;
+ $('app').style.display='none';$('challenge').style.display='none';$('inquiry').style.display='none';
+ $('electricLab').style.display='block';updateElectricLab();window.scrollTo(0,0);
+}
+function closeElectricLab(){$('electricLab').style.display='none';$('app').style.display='block';window.scrollTo(0,0);}
+function updateElectricLab(){
+ const d=electricData();
+ $('electricR2Wrap').style.display=d.mode==='single'?'none':'block';
+ $('electricVoltageValue').textContent=d.voltage;
+ $('electricR1Value').textContent=d.r1;
+ $('electricR2Value').textContent=d.r2;
+ $('electricReq').textContent=electricFmt(d.req)+' Ω';
+ $('electricCurrent').textContent=electricFmt(d.current)+' A';
+ $('electricDetail').textContent=d.mode==='parallel'
+ ?`تيار الفرع الأول: ${electricFmt(d.i1)} A | تيار الفرع الثاني: ${electricFmt(d.i2)} A | مجموعهما: ${electricFmt(d.current)} A`
+ :d.mode==='series'?`يمر التيار نفسه (${electricFmt(d.current)} A) في المقاومتين.`:'مقاومة واحدة في مسار مغلق.';
+ drawElectricDiagram(d);
+ $('electricFeedback').textContent='';
+}
+function drawElectricDiagram(d){
+ const host=$('electricDiagram');host.replaceChildren();
+ const svg=svgElement('svg',{viewBox:'0 0 520 320',role:'img','aria-label':'رسم دائرة كهربائية ببطارية ومقاومات',style:'width:100%;max-width:640px;background:white;border-radius:12px'});
+ const line=(x1,y1,x2,y2)=>svg.appendChild(svgElement('line',{x1,y1,x2,y2,stroke:'#087f82','stroke-width':4,'stroke-linecap':'round'}));
+ const label=(x,y,t,size=17)=>svg.appendChild(svgElement('text',{x,y,'text-anchor':'middle','font-size':size,fill:'#123e59','font-family':'Arial,sans-serif'},t));
+ const resistor=(x,y,w,h,t)=>{svg.appendChild(svgElement('rect',{x,y,width:w,height:h,fill:'#f3dfac',stroke:'#123e59','stroke-width':2,rx:3}));label(x+w/2,y+h/2+6,t,16);};
+ // البطارية في الفرع الأيسر: لوح طويل موجب ولوح قصير سالب
+ line(100,60,100,132);line(100,170,100,255);
+ line(78,132,122,132);line(87,170,113,170);
+ label(145,136,'+',18);label(145,176,'−',18);
+ label(50,157,`${d.voltage} V`,16);
+ if(d.mode==='parallel'){
+  line(100,60,420,60);line(420,60,420,255);line(100,255,420,255);
+  line(230,60,230,112);resistor(203,112,54,46,`R1`);line(230,158,230,255);
+  line(340,60,340,112);resistor(313,112,54,46,`R2`);line(340,158,340,255);
+  label(230,102,`${d.r1} Ω`,15);label(340,102,`${d.r2} Ω`,15);
+ }else if(d.mode==='series'){
+  line(100,60,165,60);resistor(165,43,75,34,'R1');line(240,60,290,60);resistor(290,43,75,34,'R2');line(365,60,420,60);
+  line(420,60,420,255);line(100,255,420,255);
+  label(202,34,`${d.r1} Ω`,14);label(327,34,`${d.r2} Ω`,14);
+ }else{
+  line(100,60,215,60);resistor(215,43,90,34,'R1');line(305,60,420,60);
+  line(420,60,420,255);line(100,255,420,255);
+  label(260,34,`${d.r1} Ω`,14);
+ }
+ label(260,285,`I الكلي = ${electricFmt(d.current)} A`,17);
+ host.appendChild(svg);
+}
+function recordElectricLab(){
+ if(electricReadings.length>=8){alert('الحد الأقصى 8 قياسات. استخدم إعادة التجربة للبدء من جديد.');return;}
+ electricReadings.push(electricData());renderElectricReadings();
+}
+function resetElectricLab(){
+ electricReadings=[];$('electricMode').value='single';$('electricVoltage').value=6;$('electricR1').value=6;$('electricR2').value=6;
+ document.querySelectorAll('input[name="electricChoice"]').forEach(x=>x.checked=false);
+ updateElectricLab();renderElectricReadings();
+}
+function renderElectricReadings(){
+ const tbody=$('electricRows');tbody.replaceChildren();const chart=$('electricChart');chart.replaceChildren();
+ if(!electricReadings.length){const tr=tbody.insertRow();const td=tr.insertCell();td.colSpan=5;td.textContent='لم تُسجل قياسات بعد';return;}
+ const names={single:'واحدة',series:'توالي',parallel:'توازٍ'};
+ electricReadings.forEach((d,i)=>{const tr=tbody.insertRow();[i+1,names[d.mode],d.voltage,electricFmt(d.req),electricFmt(d.current)].forEach(v=>tr.insertCell().textContent=String(v));});
+ const max=Math.max(1,...electricReadings.map(d=>d.current))*1.1;
+ const svg=svgElement('svg',{viewBox:'0 0 540 260',role:'img','aria-label':'مخطط التيار الكلي لكل تجربة',style:'width:100%;max-width:660px;background:white;border-radius:10px;margin-top:12px'});
+ const L=65,T=20,H=185,slot=450/electricReadings.length;
+ for(let i=0;i<=4;i++){const val=max*i/4,y=T+H-i*H/4;svg.appendChild(svgElement('line',{x1:L,y1:y,x2:520,y2:y,stroke:'#dce8eb'}));svg.appendChild(svgElement('text',{x:L-8,y:y+5,'text-anchor':'end','font-size':12},electricFmt(val)));}
+ electricReadings.forEach((d,i)=>{const w=Math.min(55,slot*.6),x=L+i*slot+(slot-w)/2,h=d.current/max*H,y=T+H-h;
+ svg.appendChild(svgElement('rect',{x,y,width:w,height:h,rx:4,fill:'#159a91'}));
+ svg.appendChild(svgElement('text',{x:x+w/2,y:Math.max(15,y-6),'text-anchor':'middle','font-size':12},electricFmt(d.current)));
+ svg.appendChild(svgElement('text',{x:x+w/2,y:T+H+22,'text-anchor':'middle','font-size':12},'ت'+(i+1)));
+ });
+ chart.appendChild(svg);const p=document.createElement('p');p.className='muted';p.textContent='المحور الرأسي: التيار الكلي (أمبير). المحور الأفقي: رقم التجربة. لا تقارن أثر الجهد وحده إلا عند تثبيت المقاومة المكافئة.';chart.appendChild(p);
+}
+function checkElectricLab(){
+ const selected=document.querySelector('input[name="electricChoice"]:checked'),feedback=$('electricFeedback');
+ if(!selected){feedback.className='error';feedback.textContent='اختر إجابة أولًا.';return;}
+ const ok=selected.value==='b';feedback.className=ok?'success':'error';
+ feedback.textContent=(ok?'✓ إجابة صحيحة. ':'✗ أعد النظر في قانون أوم. ')+ 'بحسب قانون أوم I = V / R، عند ثبات المقاومة المكافئة يتضاعف التيار إذا تضاعف الجهد. في التوازي يتوزع التيار على الفروع ويكون التيار الكلي مجموع تياراتها.';
+}
+
+
+/* ===== V5: مختبرات استقصائية مستقلة ===== */
+let extraType='',extraRecords=[];
+const extraDefs={
+ genetics:{title:'🧬 مختبر الوراثة',sub:'مربع بانيت لصفة واحدة بسيادة تامة',q:'عند تزاوج فردين Aa × Aa، ما احتمال ظهور النمط الجيني aa؟',choices:['25%','50%','75%'],answer:0,explain:'النواتج AA وAa وAa وaa؛ احتمال aa يساوي ربع النواتج.'},
+ heat:{title:'🌡️ مختبر انتقال الحرارة',sub:'اتزان حراري مثالي لجسمين من المادة نفسها',q:'إذا تلامس جسمان مختلفان في درجة الحرارة، ما اتجاه انتقال الطاقة الحرارية تلقائيًا؟',choices:['من الأبرد إلى الأسخن','من الأسخن إلى الأبرد','لا تنتقل الطاقة'],answer:1,explain:'تنتقل الطاقة الحرارية تلقائيًا من الجسم الأعلى حرارة إلى الأقل حتى الاتزان.'},
+ density:{title:'⚖️ مختبر الكثافة والطفو',sub:'جسم متجانس في الماء الساكن',q:'جسم كثافته 0.8 جم/سم³ في ماء كثافته 1 جم/سم³؛ ماذا يحدث؟',choices:['يغوص','يطفو','لا يمكن تحديد ذلك'],answer:1,explain:'الجسم الأقل كثافة من الماء يطفو في النموذج، ويغمر منه نحو 80% عند الاتزان.'},
+ geometry:{title:'📐 مختبر الرياضيات',sub:'استكشاف مساحة المستطيل والتحويلات الهندسية',q:'إذا تضاعف طول المستطيل مع ثبات عرضه، ماذا يحدث لمساحته؟',choices:['تتضاعف','تنخفض إلى النصف','تبقى ثابتة'],answer:0,explain:'المساحة = الطول × العرض؛ مضاعفة الطول وحده تضاعف المساحة.'}
+};
+function extraSelect(id,label,options){return `<label for="${id}">${label}</label><select id="${id}" onchange="updateExtraLab()" style="width:100%;padding:11px;border:1px solid #bdd1d9;border-radius:10px;font:inherit">${options.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select>`;}
+function extraSlider(id,label,min,max,val,step=1){return `<label for="${id}">${label}: <strong id="${id}Value">${val}</strong></label><input id="${id}" type="range" min="${min}" max="${max}" step="${step}" value="${val}" oninput="updateExtraLab()" style="width:100%">`;}
+function openExtraLab(type){
+ if(!session||!extraDefs[type])return;
+ extraType=type;extraRecords=[];
+ const d=extraDefs[type];$('extraTitle').textContent=d.title;$('extraSubtitle').textContent=d.sub;
+ let controls='';
+ if(type==='genetics')controls=extraSelect('g1','النمط الجيني للأب الأول',[['AA','AA'],['Aa','Aa'],['aa','aa']])+extraSelect('g2','النمط الجيني للأب الثاني',[['AA','AA'],['Aa','Aa'],['aa','aa']]);
+ if(type==='heat')controls=extraSlider('h1','درجة حرارة الجسم الأول (°م)',0,100,80)+extraSlider('h2','درجة حرارة الجسم الثاني (°م)',0,100,20)+extraSlider('hm','كتلة الجسم الأول (جم)',50,500,200,50)+extraSlider('hn','كتلة الجسم الثاني (جم)',50,500,200,50);
+ if(type==='density')controls=extraSlider('dm','كتلة الجسم (جم)',10,200,80,10)+extraSlider('dv','حجم الجسم (سم³)',20,200,100,10);
+ if(type==='geometry')controls=extraSelect('geoMode','النشاط',[['area','المساحة'],['transform','الانتقال الهندسي']])+extraSlider('gl','الطول (وحدة)',1,12,6)+extraSlider('gw','العرض (وحدة)',1,12,4)+extraSlider('gx','الإزاحة الأفقية',-5,5,2)+extraSlider('gy','الإزاحة الرأسية',-5,5,1);
+ $('extraControls').innerHTML=controls;
+ $('extraQuestion').textContent=d.q;
+ $('extraChoices').replaceChildren();d.choices.forEach((choice,i)=>{const label=document.createElement('label');label.className='inquiry-answer';const input=document.createElement('input');input.type='radio';input.name='extraChoice';input.value=i;label.append(input,document.createTextNode(' '+choice));$('extraChoices').appendChild(label);});
+ $('extraHypothesis').value='';$('extraConclusion').value='';$('extraFeedback').textContent='';$('extraCopyMsg').textContent='';
+ $('app').style.display='none';$('extraLab').style.display='block';renderExtraRecords();updateExtraLab();window.scrollTo(0,0);
+}
+function closeExtraLab(){$('extraLab').style.display='none';$('app').style.display='block';window.scrollTo(0,0);}
+function extraVal(id){return Number($(id).value);}
+function extraMetrics(items){$('extraMetrics').replaceChildren();items.forEach(([label,value])=>{const box=document.createElement('div');box.className='inquiry-metric';box.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.appendChild(strong);$('extraMetrics').appendChild(box);});}
+function updateExtraLab(){
+ const type=extraType;let summary=[],headers=[],values=[],svg='',explanation='';
+ if(type==='genetics'){
+  const a=$('g1').value,b=$('g2').value,genotypes={AA:0,Aa:0,aa:0},cells=[];
+  for(const x of a)for(const y of b){const g=[x,y].sort((p,q)=>(q===q.toUpperCase())-(p===p.toUpperCase())).join('');genotypes[g]++;cells.push(g);}
+  const prob=genotypes.aa/4*100;summary=[['احتمال aa',prob+'%'],['احتمال الصفة السائدة',(100-prob)+'%']];headers=['الأب الأول','الأب الثاني','AA','Aa','aa'];values=[a,b,genotypes.AA,genotypes.Aa,genotypes.aa];
+  svg=`<table class="inquiry-table" style="text-align:center"><tr><th>×</th><th>${b[0]}</th><th>${b[1]}</th></tr><tr><th>${a[0]}</th><td>${cells[0]}</td><td>${cells[1]}</td></tr><tr><th>${a[1]}</th><td>${cells[2]}</td><td>${cells[3]}</td></tr></table>`;
+  explanation='نموذج مندلي لصفة واحدة بسيادة تامة، مع افتراض تساوي فرص تكوّن الأمشاج والإخصاب؛ الاحتمالات لا تضمن نتيجة أربعة أبناء فعليين.';
+ }else if(type==='heat'){
+  const t1=extraVal('h1'),t2=extraVal('h2'),m1=extraVal('hm'),m2=extraVal('hn');const eq=(m1*t1+m2*t2)/(m1+m2);const direction=t1===t2?'لا يوجد انتقال صافٍ':t1>t2?'من الأول إلى الثاني':'من الثاني إلى الأول';
+  summary=[['درجة الاتزان',eq.toFixed(1)+' °م'],['اتجاه انتقال الحرارة',direction]];headers=['حرارة 1','حرارة 2','كتلة 1','كتلة 2','الاتزان'];values=[t1,t2,m1,m2,eq.toFixed(1)];
+  svg=`<svg viewBox="0 0 480 230" role="img" aria-label="تمثيل درجتي الحرارة قبل وبعد الاتزان" style="width:100%;max-width:520px;background:white;border-radius:12px"><rect x="55" y="55" width="130" height="115" rx="12" fill="#f5b17c"/><rect x="295" y="55" width="130" height="115" rx="12" fill="#91c9e3"/><text x="120" y="110" text-anchor="middle" font-size="21">${t1}°م</text><text x="360" y="110" text-anchor="middle" font-size="21">${t2}°م</text><path d="M190 110 H287" stroke="#087f82" stroke-width="4"/><text x="240" y="94" text-anchor="middle" font-size="14">تلامس حراري</text><text x="240" y="207" text-anchor="middle" font-size="16">درجة الاتزان: ${eq.toFixed(1)} °م</text></svg>`;
+  explanation='يفترض النموذج جسمين من المادة نفسها، وسعة حرارية نوعية ثابتة، وعدم فقدان حرارة للوسط. لا يحسب سرعة انتقال الحرارة أو الزمن اللازم للاتزان.';
+ }else if(type==='density'){
+  const mass=extraVal('dm'),vol=extraVal('dv'),rho=mass/vol,sub=Math.min(1,rho);const floating=rho<1;summary=[['الكثافة',rho.toFixed(2)+' جم/سم³'],['الحالة',floating?'يطفو':rho===1?'اتزان محايد':'يغوص']];headers=['الكتلة (جم)','الحجم (سم³)','الكثافة','الحالة'];values=[mass,vol,rho.toFixed(2),summary[1][1]];
+  const top=floating?135-90*(1-sub):140;
+  svg=`<svg viewBox="0 0 480 250" role="img" aria-label="جسم في الماء مع توضيح الجزء المغمور" style="width:100%;max-width:520px;background:white;border-radius:12px"><rect x="50" y="110" width="380" height="115" rx="6" fill="#a6d9ed"/><path d="M50 110 H430" stroke="#3287ac" stroke-width="3"/><rect x="195" y="${floating?110-70*(1-sub):145}" width="90" height="70" rx="5" fill="#d8a968" stroke="#95672f" stroke-width="3"/><text x="240" y="38" text-anchor="middle" font-size="18">${floating?'جسم طافٍ':rho===1?'اتزان محايد':'جسم أكثر كثافة من الماء'}</text><text x="240" y="243" text-anchor="middle" font-size="14">ماء كثافته 1 جم/سم³ — رسم توضيحي</text></svg>`;
+  explanation=floating?`نسبة الحجم المغمور عند الاتزان تقارب ${(sub*100).toFixed(0)}% بافتراض جسم متجانس لا يمتص الماء.`:'إذا زادت كثافة الجسم على كثافة الماء يغوص؛ وعند التساوي تكون الطفو المحايد ممكنًا بحسب الظروف.';
+ }else if(type==='geometry'){
+  const l=extraVal('gl'),w=extraVal('gw'),dx=extraVal('gx'),dy=extraVal('gy'),mode=$('geoMode').value;
+  summary=mode==='area'?[['المساحة',l*w+' وحدة²'],['المحيط',2*(l+w)+' وحدة']]:[['الإزاحة',`(${dx}, ${dy})`],['المساحة قبل وبعد',l*w+' وحدة²']];headers=['النشاط','الطول','العرض','الإزاحة س','الإزاحة ص','المساحة'];values=[mode==='area'?'مساحة':'انتقال',l,w,dx,dy,l*w];
+  const scale=12,x=115,y=165,rx=x+dx*scale,ry=y-dy*scale;
+  svg=`<svg viewBox="0 0 480 260" role="img" aria-label="مستطيل وإزاحته على شبكة إحداثية" style="width:100%;max-width:520px;background:white;border-radius:12px"><path d="M30 210 H450 M70 20 V240" stroke="#647e8b" stroke-width="2"/><rect x="${x}" y="${y-w*scale}" width="${l*scale}" height="${w*scale}" fill="#89d2c5" stroke="#087f82" stroke-width="3" opacity=".85"/>${mode==='transform'?`<rect x="${rx}" y="${ry-w*scale}" width="${l*scale}" height="${w*scale}" fill="#f5c87a" stroke="#b17d23" stroke-width="3" opacity=".7"/>`:''}<text x="240" y="246" text-anchor="middle" font-size="15">${mode==='area'?'المساحة = الطول × العرض':'الانتقال يحافظ على الشكل والمساحة'}</text></svg>`;
+  explanation=mode==='area'?'المساحة بوحدات مربعة، والمحيط بوحدات طول. غيّر أحد البعدين وثبّت الآخر.':'الانتقال يغيّر الموقع ولا يغيّر الأبعاد أو المساحة أو الزوايا. المستطيل البرتقالي يمثل الصورة بعد الانتقال.';
+ }
+ extraMetrics(summary);$('extraDiagram').innerHTML=svg;$('extraExplanation').textContent=explanation;extraCurrent={headers,values};
+ for(const id of ['h1','h2','hm','hn','dm','dv','gl','gw','gx','gy'])if($(id+'Value'))$(id+'Value').textContent=$(id).value;
+}
+let extraCurrent={headers:[],values:[]};
+function recordExtraLab(){if(extraRecords.length>=8){alert('الحد الأقصى 8 قياسات.');return;}extraRecords.push({...extraCurrent,values:[...extraCurrent.values]});renderExtraRecords();}
+function resetExtraLab(){openExtraLab(extraType);}
+function renderExtraRecords(){const head=$('extraHead'),body=$('extraRows');head.replaceChildren();body.replaceChildren();const headers=extraRecords.length?extraRecords[0].headers:[];if(!headers.length){const tr=body.insertRow(),td=tr.insertCell();td.textContent='لم تُسجّل قياسات بعد';return;}const tr=head.insertRow();['#',...headers].forEach(h=>{const th=document.createElement('th');th.textContent=h;tr.appendChild(th);});extraRecords.forEach((r,i)=>{const tr=body.insertRow();[i+1,...r.values].forEach(x=>tr.insertCell().textContent=String(x));});}
+function checkExtraLab(){const checked=document.querySelector('input[name="extraChoice"]:checked'),host=$('extraFeedback');if(!checked){host.textContent='اختر إجابة أولًا.';return;}const correct=Number(checked.value)===extraDefs[extraType].answer;host.textContent=(correct?'✓ إجابة صحيحة. ':'✗ راجع استنتاجك. ')+extraDefs[extraType].explain;host.className=correct?'success':'error';}
+function copyResearchCard(){const lines=[extraDefs[extraType].title,'فرضيتي: '+$('extraHypothesis').value,'القياسات:',...extraRecords.map((r,i)=>`${i+1}. ${r.headers.map((h,j)=>h+': '+r.values[j]).join(' | ')}`),'استنتاجي: '+$('extraConclusion').value,'تنبيه: محاكاة تعليمية افتراضية'];const t=lines.join('\n');if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>$('extraCopyMsg').textContent='نُسخت البطاقة.').catch(()=>$('extraCopyMsg').textContent='تعذّر النسخ تلقائيًا؛ يمكنك تحديد النص ونسخه يدويًا.');}else{$('extraCopyMsg').textContent='النسخ التلقائي غير متاح في هذا المتصفح.';}}
+
+</script>
+</body>
+</html>
