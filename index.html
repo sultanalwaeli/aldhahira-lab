@@ -534,7 +534,7 @@ let requestBusy = false;
 =================================== */
 
 // عنوان الوسيط الآمن بعد نشر Cloudflare Worker (لا تضع أسرارًا هنا)
-const DAHIRA_API_URL = 'https://REPLACE-WITH-YOUR-WORKER.workers.dev';
+const DAHIRA_API_URL = 'https://aldhahira-timss-api.sultan-alwaeli.workers.dev';
 const ALLOWED_API_METHODS = new Set(['dhStudentLogin','dhChallengeStatus','dhStartChallenge','dhSubmitChallengeAnswer','dhPortalProgress']);
 async function api(name,args,success){
   if(!ALLOWED_API_METHODS.has(name)) { showApiError('عملية غير مسموحة'); return; }
