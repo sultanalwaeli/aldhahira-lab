@@ -346,75 +346,429 @@ button{border-radius:11px;box-shadow:0 3px 10px #093d4410}button:hover:not(:disa
 .inquiry-metric{border-radius:13px;box-shadow:0 2px 8px #123e5909}
 .inquiry-answer{background:white}.reasoning-block{background:#f7fbfc}
 @media(max-width:760px){.gov-bar{padding:13px 16px}.gov-id strong{font-size:13px}.school-initiative{font-size:11px}.brand-logo{width:60px;height:60px;border-radius:13px}.hero{padding:26px 18px}.hero-logo{width:78px;height:78px}.card{border-radius:16px}.student-toolbar{top:0;border-radius:0}}
+
+/* ============================================================
+   V11 — الواجهة المؤسسية وتجربة المستخدم
+   يمكن تعديل الألوان والأحجام من هذا القسم دون المساس بالمختبرات.
+   ============================================================ */
+
+:root {
+  --v11-navy: #12384e;
+  --v11-teal: #087f82;
+  --v11-gold: #c49a50;
+  --v11-surface: #ffffff;
+  --v11-soft: #f3f8fa;
+}
+
+.site-header {
+  background: linear-gradient(115deg, #12384e 10%, #075c66 100%);
+  border-bottom: 4px solid var(--v11-gold);
+}
+
+.gov-bar {
+  min-height: 86px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.gov-id {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  line-height: 1.55;
+}
+
+.gov-id .ministry-name {
+  font-size: 12px;
+  color: #d7e6ec;
+}
+
+.gov-id strong {
+  font-size: 15px;
+  color: white;
+}
+
+.school-initiative {
+  margin-top: 1px;
+  font-size: 12px;
+  color: #f0d5a0;
+}
+
+.brand-logo {
+  width: 64px;
+  height: 64px;
+  padding: 5px;
+  border-radius: 15px;
+  background: white;
+  border: 2px solid #e5c88f;
+}
+
+.brand-logo img,
+.toolbar-brand img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hero {
+  grid-template-columns: 1fr;
+  padding-top: 28px;
+  padding-bottom: 34px;
+  gap: 0;
+}
+
+.hero-copy {
+  max-width: 780px;
+}
+
+.hero h1 {
+  font-size: clamp(28px, 4vw, 43px);
+  line-height: 1.35;
+  margin: 8px 0;
+}
+
+.hero p {
+  margin: 0;
+  font-size: 15px;
+  color: #e2edf0;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 17px;
+}
+
+.hero-tags span {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid #ffffff40;
+  background: #ffffff12;
+  color: #f3e3c1;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+main {
+  margin-top: 20px;
+}
+
+.login-card {
+  border-top: 4px solid var(--v11-gold);
+  padding: 28px;
+}
+
+.login-shell {
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.login-intro h2 {
+  margin: 8px 0 10px;
+  font-size: 26px;
+  color: var(--v11-navy);
+}
+
+.login-intro p {
+  max-width: 510px;
+}
+
+.login-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.login-features span {
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #e9f6f3;
+  color: #086c69;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.login-side {
+  background: var(--v11-soft);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.login-side h2 {
+  margin: 8px 0 4px;
+  font-size: 23px;
+}
+
+.login-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.login-form #code {
+  width: 100%;
+  min-width: 0;
+  min-height: 52px;
+  font-size: 20px;
+  letter-spacing: 5px;
+  background: white;
+}
+
+.login-form #loginBtn {
+  min-height: 50px;
+  width: 100%;
+}
+
+.platform-info {
+  margin-bottom: 22px;
+  border: 1px solid #dbe6ea;
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+}
+
+.platform-info > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 19px 24px;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--v11-navy);
+  list-style: none;
+}
+
+.platform-info > summary::-webkit-details-marker {
+  display: none;
+}
+
+.platform-info[open] .summary-arrow {
+  transform: rotate(180deg);
+}
+
+.platform-info > .card {
+  margin: 0 14px 14px;
+  box-shadow: none;
+  border: 1px solid #e3ecef;
+}
+
+.lab-card-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  margin-top: 20px;
+}
+
+.lab-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: right;
+  gap: 8px;
+  min-height: 160px;
+  padding: 18px;
+  background: #f8fbfc;
+  color: var(--v11-navy);
+  border: 1px solid #d9e7eb;
+  border-radius: 15px;
+  box-shadow: none;
+}
+
+.lab-card:hover,
+.lab-card:focus-visible {
+  background: #eaf6f6;
+  border-color: var(--v11-teal);
+  box-shadow: 0 6px 20px #12384e14;
+}
+
+.lab-card-icon {
+  font-size: 26px;
+}
+
+.lab-card-title {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.lab-card-description {
+  color: #61798a;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+.lab-card-link {
+  margin-top: auto;
+  color: #087f82;
+  font-size: 12px;
+}
+
+.student-logged-in .site-header .hero {
+  display: none;
+}
+
+.student-logged-in .site-header .gov-bar {
+  min-height: 65px;
+}
+
+.student-logged-in .site-header .brand-logo {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+}
+
+@media (max-width: 760px) {
+  .gov-bar {
+    min-height: 74px;
+    padding: 12px 16px;
+  }
+
+  .gov-id strong {
+    font-size: 12px;
+  }
+
+  .school-initiative {
+    font-size: 11px;
+  }
+
+  .brand-logo {
+    width: 54px;
+    height: 54px;
+  }
+
+  .hero {
+    padding: 24px 18px 28px;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .login-shell {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+
+  .login-card {
+    padding: 18px;
+  }
+
+  .login-side {
+    padding: 18px;
+  }
+
+  .lab-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .lab-card {
+    min-height: 150px;
+    padding: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  .lab-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
-
-<header>
+<header class="site-header">
+  <!-- الهوية المؤسسية -->
   <div class="gov-bar">
     <div class="gov-id">
-      سلطنة عُمان — وزارة التعليم
-      <br>
+      <span class="ministry-name">سلطنة عُمان — وزارة التعليم</span>
       <strong>المديرية العامة للتعليم بمحافظة الظاهرة</strong>
-      <span class="school-initiative">
-        مبادرة مدرسة أبو الدرداء للبنين (5–12)
-      </span>
+      <span class="school-initiative">مبادرة مدرسة أبو الدرداء للبنين (5–12)</span>
     </div>
 
     <div class="brand-logo">
-      <img
-        src="./logo.jpg"
-        alt="شعار سلطنة عُمان"
-        loading="eager"
-      >
+      <img src="./logo.jpg" alt="شعار سلطنة عُمان" loading="eager">
     </div>
   </div>
 
+  <!-- واجهة مختصرة تركّز على دخول الطالب -->
   <div class="hero">
-    <div>
-      <div class="hero-kicker">
-        برنامج الاستعداد للدراسة الدولية في الرياضيات والعلوم
-      </div>
-
+    <div class="hero-copy">
+      <div class="hero-kicker">برنامج الاستعداد للدراسة الدولية في الرياضيات والعلوم</div>
       <h1>المختبر الافتراضي للظاهرة</h1>
-
-      <p>
-        منصة تدريبية تفاعلية لطلبة الصف الثامن المشاركين
-        في دراسة TIMSS 2027 بمدارس محافظة الظاهرة،
-        لتنمية المعرفة والتطبيق والاستدلال.
-      </p>
-    </div>
-
-    <div class="hero-mark">
-      <img
-        class="hero-logo"
-        src="./logo.jpg"
-        alt="شعار سلطنة عُمان"
-        loading="eager"
-      >
-
-      <span>الدراسة الدولية في الرياضيات والعلوم</span>
-
-      <strong>TIMSS</strong>
-
-      <strong style="font-size:35px;color:white">
-        2027
-      </strong>
-
-      <span>نتعلم • نستكشف • نستدل • نتميز</span>
+      <p>تعلّم • استكشف • جرّب • استدل</p>
+      <div class="hero-tags">
+        <span>TIMSS 2027</span>
+        <span>الصف الثامن</span>
+        <span>الرياضيات والعلوم</span>
+      </div>
     </div>
   </div>
 </header>
 
-
 <main>
 <nav id="studentToolbar" class="student-toolbar" aria-label="التنقل في المنصة" hidden>
-  <div class="toolbar-brand"><img src="https://c.top4top.io/p_3906f6odb1.jpg" alt="الشعار" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span>المختبر الافتراضي للظاهرة</span></div>
+  <div class="toolbar-brand"><img src="./logo.jpg" alt="الشعار" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span>المختبر الافتراضي للظاهرة</span></div>
   <div class="toolbar-links"><button type="button" onclick="goDashboard()">الرئيسية</button><button type="button" id="jumpToAssessment" onclick="jumpToLabQuestions()" hidden>الانتقال إلى الأسئلة ↓</button><button type="button" onclick="logout()" class="toolbar-exit">خروج</button></div>
 </nav>
 
+<!-- بوابة المشاركين -->
+<section class="card login-card" id="login">
+  <div class="login-shell">
+    <div class="login-intro">
+      <div class="section-kicker">بوابة المشاركين</div>
+      <h2>ابدأ رحلتك العلمية</h2>
+      <p>
+        ستة مختبرات تفاعلية وتحديات في الرياضيات والعلوم؛
+        استكشف البيانات ثم فسّر نتائجك بالدليل.
+      </p>
+      <div class="login-features">
+        <span>✓ تجربة علمية</span>
+        <span>✓ تحليل بيانات</span>
+        <span>✓ استدلال</span>
+      </div>
+      <p class="official-note">
+        مخصصة لطلبة الصف الثامن المسجلين في المدارس المشاركة.
+        حافظ على سرية رمز الدخول.
+      </p>
+    </div>
+
+    <div class="login-side">
+      <div class="section-kicker">حساب الطالب</div>
+      <h2>تسجيل الدخول</h2>
+      <p>أدخل رمز الدخول المكوّن من ستة أرقام.</p>
+      <div class="login-form">
+        <input
+          id="code"
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          placeholder="رمز الدخول (6 أرقام)"
+          autocomplete="off"
+          aria-label="رمز الدخول المكون من ستة أرقام"
+        >
+        <button id="loginBtn" type="button" onclick="login()">دخول المنصة</button>
+      </div>
+      <p id="loginMsg" class="error" role="alert"></p>
+    </div>
+  </div>
+</section>
+
+<!-- معلومات إضافية: مطوية لتبقى بوابة الدخول أول ما يراه الطالب -->
+<details id="platformInfo" class="platform-info">
+  <summary>
+    <span>تعرّف إلى دراسة TIMSS وأهداف المبادرة</span>
+    <span class="summary-arrow" aria-hidden="true">⌄</span>
+  </summary>
 <section class="card" id="aboutTimss">
  <div class="about-grid">
   <div><div class="section-kicker">تعرف إلى الدراسة الدولية</div><h2>ما هي TIMSS؟</h2>
@@ -437,19 +791,7 @@ button{border-radius:11px;box-shadow:0 3px 10px #093d4410}button:hover:not(:disa
   <div class="tile"><h3>04 — الاستعداد الرقمي</h3><p>تنمية الثقة في استخدام بيئات التعلم والتقييم الرقمي التفاعلية.</p></div>
  </div>
 </section>
-<!-- بوابة المشاركين -->
-<section class="card" id="login">
- <div class="login-shell">
-  <div><div class="section-kicker">دخول آمن للمشاركين</div><h2 style="margin:8px 0 10px">بوابة الطالب المشارك</h2>
-   <p>هذه البوابة مخصصة لطلبة الصف الثامن المسجلين من المدارس المشاركة في دراسة TIMSS 2027 بمحافظة الظاهرة.</p>
-   <p class="official-note">استخدم رمز الدخول المكون من ستة أرقام الذي زودتك به مدرستك. لا تشارك الرمز مع الآخرين.</p>
-  </div>
-  <div class="login-side"><h2>تسجيل الدخول</h2><p>أدخل رمزك المعتمد للانتقال إلى التحديات والمختبرات.</p>
-   <div class="login-form"><input id="code" type="text" inputmode="numeric" maxlength="6" placeholder="رمز الدخول (6 أرقام)" autocomplete="off" aria-label="رمز الدخول المكون من ستة أرقام"><button id="loginBtn" onclick="login()">دخول المنصة</button></div>
-   <p id="loginMsg" class="error" role="alert"></p>
-  </div>
- </div>
-</section>
+</details>
 
 <!-- المراحل -->
 <section id="app">
@@ -473,7 +815,44 @@ button{border-radius:11px;box-shadow:0 3px 10px #093d4410}button:hover:not(:disa
 
   <div class="card">
    <div class="topline"><div><h2>المختبرات التفاعلية | الاستقصاء العلمي</h2><p class="muted">استكشف المتغيرات، واجمع البيانات، ثم استنتج.</p></div>
-    <div class="inquiry-actions"><button type="button" onclick="openInquiry()">🌱 نمو النباتات</button><button type="button" onclick="openElectricLab()">⚡ الدوائر الكهربائية</button><button type="button" onclick="openExtraLab('genetics')">🧬 الوراثة</button><button type="button" onclick="openExtraLab('heat')">🌡️ انتقال الحرارة</button><button type="button" onclick="openExtraLab('density')">⚖️ الكثافة والطفو</button><button type="button" onclick="openExtraLab('geometry')">📐 الرياضيات</button></div>
+    <div class="lab-card-grid">
+      <button type="button" class="lab-card" onclick="openInquiry()">
+        <span class="lab-card-icon" aria-hidden="true">🌱</span>
+        <span class="lab-card-title">نمو النباتات</span>
+        <span class="lab-card-description">اختبر أثر الضوء والماء</span>
+        <span class="lab-card-link">ابدأ التجربة ←</span>
+      </button>
+      <button type="button" class="lab-card" onclick="openElectricLab()">
+        <span class="lab-card-icon" aria-hidden="true">⚡</span>
+        <span class="lab-card-title">الدوائر الكهربائية</span>
+        <span class="lab-card-description">استكشف الجهد والتيار والمقاومة</span>
+        <span class="lab-card-link">ابدأ التجربة ←</span>
+      </button>
+      <button type="button" class="lab-card" onclick="openExtraLab('genetics')">
+        <span class="lab-card-icon" aria-hidden="true">🧬</span>
+        <span class="lab-card-title">الوراثة</span>
+        <span class="lab-card-description">حلّل احتمالات الصفات</span>
+        <span class="lab-card-link">ابدأ التجربة ←</span>
+      </button>
+      <button type="button" class="lab-card" onclick="openExtraLab('heat')">
+        <span class="lab-card-icon" aria-hidden="true">🌡️</span>
+        <span class="lab-card-title">انتقال الحرارة</span>
+        <span class="lab-card-description">قارن درجات الحرارة</span>
+        <span class="lab-card-link">ابدأ التجربة ←</span>
+      </button>
+      <button type="button" class="lab-card" onclick="openExtraLab('density')">
+        <span class="lab-card-icon" aria-hidden="true">⚖️</span>
+        <span class="lab-card-title">الكثافة والطفو</span>
+        <span class="lab-card-description">فسّر الغوص والطفو</span>
+        <span class="lab-card-link">ابدأ التجربة ←</span>
+      </button>
+      <button type="button" class="lab-card" onclick="openExtraLab('geometry')">
+        <span class="lab-card-icon" aria-hidden="true">📐</span>
+        <span class="lab-card-title">الرياضيات</span>
+        <span class="lab-card-description">حلّل القياسات والأشكال</span>
+        <span class="lab-card-link">ابدأ التجربة ←</span>
+      </button>
+    </div>
    </div>
   </div>
 
@@ -703,6 +1082,7 @@ function login(){
   $('aboutTimss').style.display='none';
   $('programGoals').style.display='none';
   $('studentToolbar').hidden=false;
+  document.body.classList.add('student-logged-in');
   $('app').style.display='block';
   setTimeout(()=>scrollToSection('app'),80);
 
@@ -965,6 +1345,10 @@ function logout(){
  $('login').style.display='block';
   $('aboutTimss').style.display='block';
   $('programGoals').style.display='block';
+  $('platformInfo').open=false;
+  $('studentToolbar').hidden=true;
+  document.body.classList.remove('student-logged-in');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 $('code').addEventListener('keydown',e=>{
