@@ -818,6 +818,25 @@ main {
   }
 }
 
+
+/* ============================================================
+   V13 — مسارات الاستكشاف الحر، دون درجات أو اتصال إضافي بالخادم
+   ============================================================ */
+.v13-learning{margin:20px 0;background:#fff;border:1px solid #d5e5e8;border-radius:18px;padding:20px;box-shadow:0 5px 18px #12364e0a}
+.v13-learning h3{margin:0 0 6px;color:#12384e}
+.v13-learning .v13-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:17px 0}
+.v13-learning .v13-tab{background:#eef5f7;color:#23465a;border:1px solid #d4e4e9;box-shadow:none;padding:12px 8px;min-height:52px}
+.v13-learning .v13-tab[aria-selected="true"]{background:#087f82;color:white;border-color:#087f82}
+.v13-learning .v13-prompt{background:#f6fafb;border-right:4px solid #c49a50;padding:16px;border-radius:12px;line-height:1.9}
+.v13-learning .v13-prompt strong{display:block;margin-bottom:5px}
+.v13-learning textarea{width:100%;min-height:100px;font:inherit;font-size:15px;line-height:1.8;border:1px solid #c3d8df;border-radius:12px;padding:13px;resize:vertical;margin:13px 0}
+.v13-learning .v13-actions{display:flex;gap:10px;flex-wrap:wrap}
+.v13-learning .v13-answer{margin-top:13px;background:#eaf7f1;border:1px solid #b7dfc9;border-radius:12px;padding:15px;line-height:1.9}
+.v13-learning .v13-answer[hidden]{display:none}
+.v13-learning .v13-hint{font-size:12px;color:#627e8d;margin:8px 0}
+.v13-free-note{background:#eaf7f3;border:1px solid #b6dcd0;border-radius:11px;padding:12px 15px;margin:10px 0;font-size:13px;line-height:1.8;color:#14674f}
+@media(max-width:540px){.v13-learning{padding:14px}.v13-learning .v13-tab{font-size:12px;padding:10px 5px}.v13-learning .v13-actions button{flex:1}}
+
 </style>
 </head>
 
@@ -2182,6 +2201,108 @@ function showLabJump(id){currentLabSection=id;$('jumpToAssessment').hidden=!id;s
 function labAssessmentTarget(){if(currentLabSection==='inquiry')return 'inquiryFeedback';if(currentLabSection==='electricLab')return 'electricFeedback';if(currentLabSection==='extraLab')return 'extraFeedback';return null;}
 function jumpToLabQuestions(){const id=labAssessmentTarget();if(!id)return;const el=$(id);const panel=el&&el.closest('.inquiry-panel');if(panel){const top=panel.getBoundingClientRect().top+window.scrollY-88;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});}}
 function goDashboard(){if(!session)return;$('inquiry').style.display='none';$('electricLab').style.display='none';$('extraLab').style.display='none';$('challenge').style.display='none';$('app').style.display='block';currentLabSection=null;$('jumpToAssessment').hidden=true;scrollToSection('app');}
+
+/* ============================================================
+   V13 — ثلاثة مستويات تعلم حر في كل مختبر
+   لا توجد درجات أو إرسال بيانات إلى الخادم.
+   يحتفظ الطالب بحرية إعادة المحاولة، والإجابات للمراجعة الذاتية فقط.
+   ============================================================ */
+const V13_LEARNING = {
+  plants: [
+    ['مستكشف','ثبّت الماء عند 100%، وغيّر شدة الضوء. ما التغيّر الذي تلاحظه في النمو؟','قارن قياسين مسجلين. اذكر قيمة الضوء والنمو في كل منهما، ولا تخلط بين الملاحظة والتفسير.'],
+    ['باحث','كيف تصمم تجربة عادلة لمعرفة أثر الضوء وحده في نمو النبات؟','غيّر شدة الضوء فقط، وثبّت الماء ونوع النبات والتربة ومدة التجربة، ثم كرّر القياسات وقارن النتائج.'],
+    ['عالم صغير','إذا غيّرت الضوء والماء معًا فزاد النمو، هل تستطيع تحديد السبب؟ صمّم تجربة تحسم الأمر.','لا يمكن الجزم بسبب واحد لأن عاملين تغيرا. نفّذ مجموعتين من المقارنات: ثبّت الماء وغيّر الضوء، ثم ثبّت الضوء وغيّر الماء.']
+  ],
+  circuits: [
+    ['مستكشف','ثبّت المقاومة، ثم ارفع الجهد. كيف يتغير التيار؟','في النموذج الأومي المثالي، يتناسب التيار طرديًا مع الجهد عند ثبات المقاومة: I = V / R.'],
+    ['باحث','قارن مقاومتيْن متساويتين على التوالي وعلى التوازي. ما الفرق في المقاومة المكافئة؟','في التوالي R الكلية = R1 + R2، وفي التوازي 1/R الكلية = 1/R1 + 1/R2؛ فتكون مقاومة التوازي أقل من كل مقاومة منفردة.'],
+    ['عالم صغير','في دائرة بجهد ثابت، لماذا يزيد التيار عند تقليل المقاومة المكافئة؟ استشهد بقياسين.','وفق قانون أوم I = V / R؛ إذا بقي الجهد ثابتًا وانخفضت المقاومة زاد التيار. استشهد بالأرقام من سجل القياسات.']
+  ],
+  genetics: [
+    ['مستكشف','اختر Aa × Aa. ما الأنماط الجينية الأربعة في مربع بانيت؟','الأنماط: AA وAa وAa وaa.'],
+    ['باحث','قارن Aa × Aa مع AA × aa. هل تتساوى احتمالات ظهور النمط aa؟','في Aa × Aa احتمال aa يساوي 25%، وفي AA × aa يساوي صفرًا؛ لأن جميع النواتج Aa.'],
+    ['عالم صغير','لماذا لا يعني احتمال 25% للنمط aa أن كل أربعة أبناء سيضمّون بالضرورة فردًا واحدًا aa؟','الاحتمال يصف توقعًا إحصائيًا عبر أعداد كبيرة من الحالات المستقلة، وليس ضمانًا لتوزيع محدد في أسرة صغيرة.']
+  ],
+  heat: [
+    ['مستكشف','ضع جسمين مختلفين في درجة الحرارة. في أي اتجاه تنتقل الطاقة الحرارية تلقائيًا؟','تنتقل الطاقة الحرارية من الجسم الأعلى درجة حرارة إلى الأقل حتى الوصول إلى الاتزان الحراري.'],
+    ['باحث','اجعل الكتلتين متساويتين، ثم غيّر درجة حرارة أحد الجسمين. كيف تتغير درجة الاتزان؟','في هذا النموذج المثالي لمادتين لهما السعة الحرارية النوعية نفسها وكتلتان متساويتان، تكون درجة الاتزان متوسط درجتي البداية.'],
+    ['عالم صغير','هل يكفي نموذج الاتزان الحالي لمعرفة الزمن اللازم للتبريد؟ فسّر.','لا؛ النموذج يحسب درجة الاتزان فقط، ولا يصف معدل انتقال الحرارة أو العزل أو مساحة التلامس أو الفقد إلى الوسط.']
+  ],
+  density: [
+    ['مستكشف','غيّر كتلة الجسم مع ثبات حجمه. كيف تتغير كثافته؟','الكثافة = الكتلة ÷ الحجم؛ لذلك تزيد الكثافة عند زيادة الكتلة مع ثبات الحجم.'],
+    ['باحث','صمّم جسمين لهما الكتلة نفسها وحجمان مختلفان. أيهما أكثر قابلية للطفو في الماء؟','الجسم الأكبر حجمًا تكون كثافته أقل عند ثبات الكتلة؛ لذا يكون أكثر قابلية للطفو وفق النموذج المبسط.'],
+    ['عالم صغير','جسم كثافته 0.8 جم/سم³ في الماء. ما النسبة التقريبية من حجمه المغمورة عند الاتزان؟','تقريبًا 80% من حجمه، إذا كان الجسم متجانسًا ولا يمتص الماء ويطفو في ماء كثافته 1 جم/سم³.']
+  ],
+  geometry: [
+    ['مستكشف','غيّر طول المستطيل مع تثبيت العرض. ماذا يحدث لمساحته؟','المساحة = الطول × العرض؛ تزيد المساحة طرديًا مع الطول عند ثبات العرض.'],
+    ['باحث','ضاعف طول مستطيل وعرضه معًا. كم مرة تصبح مساحته؟','تصبح المساحة أربعة أمثالها، لأن (2 × الطول) × (2 × العرض) = 4 × المساحة الأصلية.'],
+    ['عالم صغير','حرّك المستطيل بإزاحة أفقية ورأسية. ما الخصائص التي تبقى ثابتة؟ ولماذا؟','الانتقال يحافظ على الأطوال والزوايا والمساحة والمحيط؛ الذي يتغير هو الموقع فقط.']
+  ]
+};
+const V13_LEVEL_NAMES = ['🔎 مستكشف','🧪 باحث','🧠 عالم صغير'];
+function v13CreateLearning(sectionId,labKey){
+  const section=document.getElementById(sectionId);
+  if(!section)return;
+  const panel=document.createElement('section');
+  panel.className='v13-learning';
+  panel.setAttribute('aria-label','مستويات الاستكشاف الحر');
+  const title=document.createElement('h3');title.textContent='رحلتك العلمية | ثلاثة مستويات اختيارية';
+  const intro=document.createElement('p');intro.className='v13-hint';
+  intro.textContent='اختر أي مستوى، نفّذ التجربة، ثم اكتب تفسيرك. لا توجد درجات، ويمكنك المحاولة بلا حدود.';
+  const tabs=document.createElement('div');tabs.className='v13-tabs';tabs.setAttribute('role','tablist');
+  const prompt=document.createElement('div');prompt.className='v13-prompt';
+  const label=document.createElement('label');label.textContent='تفسيري واستنتاجي';
+  const answer=document.createElement('textarea');answer.placeholder='لاحظت أن... والدليل من قياساتي... وأفسّر ذلك بأن...';
+  const actions=document.createElement('div');actions.className='v13-actions';
+  const reveal=document.createElement('button');reveal.type='button';reveal.textContent='قارن إجابتي بالتفسير العلمي';
+  const retry=document.createElement('button');retry.type='button';retry.textContent='أحاول من جديد';retry.style.background='#607887';
+  const model=document.createElement('div');model.className='v13-answer';model.hidden=true;model.setAttribute('role','status');
+  let selected=0;
+  const buttons=[];
+  function display(index){
+    selected=index;answer.value='';model.hidden=true;model.textContent='';
+    const item=V13_LEARNING[labKey][index];
+    prompt.replaceChildren();const strong=document.createElement('strong');strong.textContent=item[0]+' — مهمة الاستقصاء';
+    prompt.append(strong,document.createTextNode(item[1]));
+    buttons.forEach((btn,i)=>{btn.setAttribute('aria-selected',String(i===index));btn.tabIndex=i===index?0:-1;});
+  }
+  V13_LEVEL_NAMES.forEach((name,i)=>{
+    const btn=document.createElement('button');btn.type='button';btn.className='v13-tab';btn.setAttribute('role','tab');
+    btn.textContent=name;btn.addEventListener('click',()=>display(i));buttons.push(btn);tabs.appendChild(btn);
+  });
+  reveal.addEventListener('click',()=>{
+    if(answer.value.trim().length<10){model.hidden=false;model.textContent='اكتب ملاحظتك أو تفسيرك أولًا (10 أحرف على الأقل)، ثم قارنها بالنموذج.';return;}
+    model.replaceChildren();const strong=document.createElement('strong');strong.textContent='تفسير علمي مقترح للمراجعة الذاتية: ';
+    model.append(strong,document.createTextNode(V13_LEARNING[labKey][selected][2]));model.hidden=false;
+  });
+  retry.addEventListener('click',()=>{answer.value='';model.hidden=true;answer.focus();});
+  actions.append(reveal,retry);panel.append(title,intro,tabs,prompt,label,answer,actions,model);
+  section.appendChild(panel);display(0);
+  return {display};
+}
+const v13Panels={};
+function v13Init(){
+  v13Panels.plants=v13CreateLearning('inquiry','plants');
+  v13Panels.circuits=v13CreateLearning('electricLab','circuits');
+  // The four extra labs share one section; refresh its prompts whenever the lab changes.
+  v13Panels.extra=v13CreateLearning('extraLab','genetics');
+  const oldOpenExtra=openExtraLab;
+  openExtraLab=function(type){
+    oldOpenExtra(type);
+    if(v13Panels.extra && V13_LEARNING[type]){
+      const panel=document.querySelector('#extraLab .v13-learning');
+      panel.remove();
+      // Recreate controls with the selected lab's prompts (not inherited from another lab).
+      v13Panels.extra=v13CreateLearning('extraLab',type);
+    }
+  };
+  for(const note of document.querySelectorAll('#inquiry .inquiry-note,#electricLab .inquiry-note,#extraLab .inquiry-note')){
+    note.insertAdjacentHTML('afterend','<div class="v13-free-note">التجارب والأسئلة للتعلم الحر والمراجعة الذاتية؛ لا تُحفظ لها درجات ولا تؤثر في نتائج التحديات.</div>');
+  }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',v13Init);
+else v13Init();
+
 </script>
 </body>
 </html>
