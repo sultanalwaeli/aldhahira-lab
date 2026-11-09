@@ -837,6 +837,19 @@ main {
 .v13-free-note{background:#eaf7f3;border:1px solid #b6dcd0;border-radius:11px;padding:12px 15px;margin:10px 0;font-size:13px;line-height:1.8;color:#14674f}
 @media(max-width:540px){.v13-learning{padding:14px}.v13-learning .v13-tab{font-size:12px;padding:10px 5px}.v13-learning .v13-actions button{flex:1}}
 
+
+/* V14 — مقارنة نمو نباتين، نموذج افتراضي */
+.v14-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.v14-plantbox{background:#f8fcfd;border:1px solid #d7e6eb;border-radius:14px;padding:14px}
+.v14-plantbox label{display:block;margin:12px 0 6px;font-weight:bold}
+.v14-plantbox input[type=range]{width:100%;accent-color:#087f82;padding:0}
+.v14-plantbox svg{width:100%;max-height:250px;background:linear-gradient(#e7f5fa,#fff);border-radius:12px}
+.v14-plantbox strong{color:#087f82}
+.v14-playback{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:15px 0}
+.v14-playback button{padding:10px 15px}
+.v14-day{font-weight:bold;color:#12384e}
+#v14Chart svg{width:100%;max-height:250px;background:white;border-radius:12px}
+@media(max-width:640px){.v14-controls{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -1048,6 +1061,39 @@ main {
    </svg>
    <p class="muted">شكل النبات توضيحي وغير مطابق للمقياس. غيّر عاملًا واحدًا في كل مرة لاختبار أثره.</p>
   </div>
+ </div>
+
+ <div class="inquiry-panel" id="v14PlantCompare" style="margin-top:18px">
+  <h3>🌿 V14 — تجربة المقارنة الحية بين نباتين</h3>
+  <p class="muted">ثبّت الماء في النباتين، وغيّر الضوء في أحدهما. راقب تطور النمو خلال 14 يومًا في نموذج افتراضي مبسط.</p>
+  <div class="v14-controls">
+   <div class="v14-plantbox">
+    <h4>النبات (أ)</h4>
+    <label for="v14LightA">الضوء: <span id="v14LightAValue">65</span>%</label>
+    <input type="range" id="v14LightA" min="0" max="100" step="5" value="65" oninput="v14Update()">
+    <label for="v14WaterA">الماء: <span id="v14WaterAValue">100</span>%</label>
+    <input type="range" id="v14WaterA" min="0" max="100" step="10" value="100" oninput="v14Update()">
+    <svg viewBox="0 0 280 240" role="img" aria-label="نمو النبات أ"><g id="v14VisualA"></g></svg>
+    <p>النمو الافتراضي: <strong id="v14GrowthA">—</strong></p>
+   </div>
+   <div class="v14-plantbox">
+    <h4>النبات (ب)</h4>
+    <label for="v14LightB">الضوء: <span id="v14LightBValue">25</span>%</label>
+    <input type="range" id="v14LightB" min="0" max="100" step="5" value="25" oninput="v14Update()">
+    <label for="v14WaterB">الماء: <span id="v14WaterBValue">100</span>%</label>
+    <input type="range" id="v14WaterB" min="0" max="100" step="10" value="100" oninput="v14Update()">
+    <svg viewBox="0 0 280 240" role="img" aria-label="نمو النبات ب"><g id="v14VisualB"></g></svg>
+    <p>النمو الافتراضي: <strong id="v14GrowthB">—</strong></p>
+   </div>
+  </div>
+  <div class="v14-playback">
+   <button type="button" id="v14Play" onclick="v14Toggle()">▶ تشغيل النمو</button>
+   <button type="button" onclick="v14Step()">يوم واحد ←</button>
+   <button type="button" onclick="v14Reset()" style="background:#607887">إعادة المقارنة</button>
+   <span class="v14-day" id="v14Day" aria-live="polite">اليوم 0 من 14</span>
+  </div>
+  <div id="v14Chart" aria-label="رسم بياني لتطور النمو الافتراضي للنباتين"></div>
+  <p class="inquiry-note" id="v14Insight" role="status">ثبّت كمية الماء عند النباتين ثم غيّر شدة الضوء في أحدهما لتكون المقارنة عادلة.</p>
  </div>
  <div class="inquiry-panel" style="margin-top:18px"><h3>سجل القياسات والمقارنة</h3><p class="muted">ثبّت كمية الماء عند 100%، ثم سجّل ثلاث قراءات عند شدات ضوء مختلفة.</p>
   <div style="overflow-x:auto"><table class="inquiry-table"><thead><tr><th>التجربة</th><th>الضوء (%)</th><th>الماء (%)</th><th>النمو (سم)</th></tr></thead><tbody id="inquiryRows"><tr><td colspan="4">لم تُسجل قياسات بعد</td></tr></tbody></table></div>
@@ -1844,6 +1890,7 @@ function openInquiry(){
  updateInquiry();showLabJump('inquiry');
 }
 function closeInquiry(){
+ v14Stop();
  $('inquiry').style.display='none';$('app').style.display='block';showLabJump(null);
 }
 function updateInquiry(){
@@ -2302,6 +2349,42 @@ function v13Init(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',v13Init);
 else v13Init();
+
+
+/* V14: نموذج تعليمي بصري مستقل؛ لا يحفظ درجات أو بيانات شخصية. */
+let v14Day=0,v14Timer=null;
+function v14Stop(){if(v14Timer!==null){clearInterval(v14Timer);v14Timer=null;}const b=document.getElementById('v14Play');if(b)b.textContent='▶ تشغيل النمو';}
+function v14Settings(which){return {light:Number(document.getElementById('v14Light'+which).value),water:Number(document.getElementById('v14Water'+which).value)};}
+function v14Height(which,day){const p=v14Settings(which);return inquiryGrowth(p.light,p.water)*Math.max(0,Math.min(14,day))/14;}
+function v14Plant(which){
+ const el=document.getElementById('v14Visual'+which);if(!el)return;
+ const p=v14Settings(which),h=v14Height(which,v14Day),top=192-h*11;
+ const ns='http://www.w3.org/2000/svg';el.replaceChildren();
+ function shape(tag,attrs){const n=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,String(v)));el.appendChild(n);return n;}
+ shape('circle',{cx:235,cy:37,r:17,fill:'#efbb42',opacity:(.25+.75*p.light/100).toFixed(2)});
+ shape('path',{d:'M0 192 Q140 182 280 192 V240 H0Z',fill:'#d8e7d7'});
+ shape('path',{d:'M116 193 H164 L156 232 H124 Z',fill:'#b87950'});
+ if(v14Day>0){shape('path',{d:`M140 193 Q136 ${top+25} 140 ${top}`,stroke:'#32854c','stroke-width':5,fill:'none','stroke-linecap':'round'});
+ const r=Math.min(22,6+v14Day*1.1);shape('ellipse',{cx:140-r*.7,cy:top+15,rx:r,ry:7,fill:'#4eaa64',transform:`rotate(23 ${140-r*.7} ${top+15})`});shape('ellipse',{cx:140+r*.7,cy:top+27,rx:r,ry:7,fill:'#379a55',transform:`rotate(-23 ${140+r*.7} ${top+27})`});}
+ document.getElementById('v14Growth'+which).textContent=h.toFixed(1)+' سم';
+ document.getElementById('v14Light'+which+'Value').textContent=p.light;
+ document.getElementById('v14Water'+which+'Value').textContent=p.water;
+}
+function v14ChartRender(){
+ const target=document.getElementById('v14Chart');if(!target)return;target.replaceChildren();
+ const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 560 245');svg.setAttribute('role','img');svg.setAttribute('aria-label','خط نمو النبات أ وخط نمو النبات ب على مدار 14 يومًا');
+ function el(tag,attrs,content){const n=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,String(v)));if(content!==undefined)n.textContent=content;svg.appendChild(n);return n;}
+ const left=48,right=530,top=16,bottom=205,max=12;
+ for(let v=0;v<=12;v+=3){let y=bottom-v/max*(bottom-top);el('line',{x1:left,y1:y,x2:right,y2:y,stroke:'#e1e9ed'});el('text',{x:left-8,y:y+4,'text-anchor':'end','font-size':12,fill:'#587384'},v);}
+ for(let d=0;d<=14;d+=2){const x=left+d/14*(right-left);el('text',{x,y:bottom+19,'text-anchor':'middle','font-size':11,fill:'#587384'},d);}
+ [['A','#087f82'],['B','#c49a50']].forEach(([w,color])=>{let pts=[];for(let d=0;d<=v14Day;d++){let x=left+d/14*(right-left),y=bottom-v14Height(w,d)/max*(bottom-top);pts.push(x.toFixed(1)+','+y.toFixed(1));}if(pts.length>1)el('polyline',{points:pts.join(' '),fill:'none',stroke:color,'stroke-width':3,'stroke-linejoin':'round'});if(pts.length){const [x,y]=pts.at(-1).split(',');el('circle',{cx:x,cy:y,r:4,fill:color});}});
+ el('text',{x:280,y:242,'text-anchor':'middle','font-size':12,fill:'#587384'},'الأيام — أ: أخضر مزرق | ب: ذهبي');target.appendChild(svg);
+}
+function v14Update(){v14Stop();v14Plant('A');v14Plant('B');v14ChartRender();const a=v14Settings('A'),b=v14Settings('B');document.getElementById('v14Day').textContent='اليوم '+v14Day+' من 14';let note='';if(a.light!==b.light&&a.water!==b.water)note='غيّرت الضوء والماء معًا؛ لا يمكن عزل أثر عامل واحد. ثبّت أحدهما في النباتين.';else if(a.light===b.light&&a.water===b.water)note='الظروف متطابقة؛ من المتوقع أن يتساوى النمو في النموذج.';else{const factor=a.light!==b.light?'الضوء':'الماء',diff=Math.abs(v14Height('A',14)-v14Height('B',14)).toFixed(1);note='المتغير الوحيد المختلف هو '+factor+'؛ فرق النمو المتوقع في اليوم 14 هو '+diff+' سم وفق النموذج الافتراضي.';}document.getElementById('v14Insight').textContent=note;}
+function v14Step(){v14Stop();if(v14Day<14)v14Day++;v14Update();}
+function v14Toggle(){if(v14Timer!==null){v14Stop();return;}if(v14Day>=14)v14Day=0;document.getElementById('v14Play').textContent='⏸ إيقاف مؤقت';v14Timer=setInterval(()=>{if(v14Day>=14){v14Stop();return;}v14Day++;v14Plant('A');v14Plant('B');v14ChartRender();document.getElementById('v14Day').textContent='اليوم '+v14Day+' من 14';if(v14Day>=14)v14Stop();},450);}
+function v14Reset(){v14Stop();v14Day=0;[['A',65,100],['B',25,100]].forEach(([w,l,water])=>{document.getElementById('v14Light'+w).value=l;document.getElementById('v14Water'+w).value=water;});v14Update();}
+document.addEventListener('DOMContentLoaded',v14Update);
 
 </script>
 </body>
