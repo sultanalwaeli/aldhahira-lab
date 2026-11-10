@@ -858,6 +858,20 @@ main {
 .v14-bulb{width:65px;height:65px;flex:none;display:grid;place-items:center;font-size:37px;border-radius:50%;background:#e7edf1;transition:background .25s,box-shadow .25s}
 .v14-electric-lamp strong{font-size:13px}
 @media(prefers-reduced-motion:reduce){.v14-bulb{transition:none}}
+
+/* V14 — Genetics: exploratory sampling, no scores or server writes */
+.v14g-shell{margin-top:18px;padding:19px;border:1px solid #cbdfe6;background:#f7fbfc;border-radius:16px}
+.v14g-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.v14g-panel{padding:15px;background:white;border:1px solid #dce8eb;border-radius:12px}
+.v14g-actions{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}
+.v14g-actions button{padding:10px 15px}
+.v14g-bars{display:grid;gap:10px;margin-top:14px}
+.v14g-track{height:15px;border-radius:20px;background:#e8eff2;overflow:hidden;direction:ltr}
+.v14g-fill{height:100%;background:#087f82;width:0%;transition:width .2s}
+.v14g-fill.secondary{background:#c49a50}
+.v14g-small{font-size:12px;color:#60798a;line-height:1.8}
+.v14g-legend{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px}
+@media(max-width:720px){.v14g-grid{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -1157,6 +1171,33 @@ main {
  </div>
  <div class="inquiry-panel" style="margin-top:18px"><h3>سجل الاستقصاء</h3><p class="muted">غيّر متغيرًا واحدًا في كل مرة، وسجّل ثلاث محاولات للمقارنة.</p><div style="overflow-x:auto"><table class="inquiry-table"><thead id="extraHead"></thead><tbody id="extraRows"></tbody></table></div></div>
  <div class="inquiry-panel" style="margin-top:18px"><h3>سؤال الاستدلال</h3><p id="extraQuestion"></p><div id="extraChoices"></div><button type="button" onclick="checkExtraLab()">تحقق من الاستنتاج</button><p id="extraFeedback" role="status" aria-live="polite"></p></div>
+  <section id="v14Genetics" class="v14g-shell" hidden aria-label="محاكاة التوزيع الوراثي">
+   <h3>🧬 V14 — محاكاة التوزيع الوراثي بين الأفراد</h3>
+   <p class="muted">اختر الطرز الجينية للأبوين أعلاه، ثم جرّب أحجام عينات مختلفة. هذه محاكاة عشوائية لصفة واحدة بسيادة تامة، وليست تنبؤًا بأبناء أسرة بعينها.</p>
+   <div class="v14g-grid">
+    <div class="v14g-panel">
+     <h4>توقعات مربع بانيت</h4>
+     <p id="v14gCross" class="muted"></p>
+     <div id="v14gExpected"></div>
+     <p id="v14gDominant" class="v14g-small"></p>
+    </div>
+    <div class="v14g-panel">
+     <h4>تجربة عشوائية</h4>
+     <p class="v14g-small">قبل التشغيل: هل تتوقع أن تتطابق النتائج تمامًا مع الاحتمالات النظرية؟</p>
+     <label for="v14gPrediction">توقعي</label>
+     <select id="v14gPrediction" style="width:100%;padding:10px;border:1px solid #bdd1d9;border-radius:9px;font:inherit">
+      <option value="">اختر توقعك</option><option value="same">ستتطابق دائمًا</option><option value="vary">قد تختلف، وتقترب غالبًا مع زيادة العينة</option>
+     </select>
+     <div class="v14g-actions"><button type="button" onclick="v14gSimulate(10)">10 أفراد</button><button type="button" onclick="v14gSimulate(100)">100 فرد</button><button type="button" onclick="v14gSimulate(1000)">1000 فرد</button><button type="button" style="background:#607887" onclick="v14gReset()">إعادة</button></div>
+     <p id="v14gFeedback" role="status" aria-live="polite" class="v14g-small">ابدأ المحاكاة لمقارنة النتائج.</p>
+    </div>
+   </div>
+   <div class="v14g-panel" style="margin-top:14px">
+    <h4>مقارنة التوقع النظري بنتيجة المحاكاة</h4>
+    <div id="v14gResults" class="v14g-bars"></div>
+    <p class="v14g-small">كل فرد افتراضي ناتج عن اختيار عشوائي مستقل لمشيج من كل أب. تزداد عادةً دقة النسبة الملاحظة بزيادة حجم العينة، لكن التطابق التام غير مضمون.</p>
+   </div>
+  </section>
  <div class="inquiry-panel" style="margin-top:18px"><h3>📝 بطاقة الباحث الصغير</h3><p class="muted">يمكنك كتابة فرضيتك واستنتاجك ونسخ البطاقة. لا تُحفظ البيانات على الخادم.</p><label for="extraHypothesis">فرضيتي قبل التجربة</label><textarea id="extraHypothesis" rows="2" style="width:100%;font:inherit;padding:10px;border:1px solid #bdd1d9;border-radius:9px" placeholder="أتوقع أن..."></textarea><label for="extraConclusion">استنتاجي بعد مقارنة القياسات</label><textarea id="extraConclusion" rows="3" style="width:100%;font:inherit;padding:10px;border:1px solid #bdd1d9;border-radius:9px" placeholder="لاحظت أن... لأن..."></textarea><div class="inquiry-actions"><button type="button" onclick="copyResearchCard()">نسخ بطاقة الباحث</button><button type="button" onclick="window.print()" style="background:#607887">طباعة</button></div><p id="extraCopyMsg" class="muted" role="status"></p></div>
 </section>
 
@@ -2086,7 +2127,9 @@ function openExtraLab(type){
  $('extraQuestion').textContent=d.q;
  $('extraChoices').replaceChildren();d.choices.forEach((choice,i)=>{const label=document.createElement('label');label.className='inquiry-answer';const input=document.createElement('input');input.type='radio';input.name='extraChoice';input.value=i;label.append(input,document.createTextNode(' '+choice));$('extraChoices').appendChild(label);});
  $('extraHypothesis').value='';$('extraConclusion').value='';$('extraFeedback').textContent='';$('extraCopyMsg').textContent='';
- $('app').style.display='none';$('extraLab').style.display='block';renderExtraRecords();updateExtraLab();showLabJump('extraLab');
+ $('app').style.display='none';$('extraLab').style.display='block';
+ if(typeof v14gToggle==='function')v14gToggle(type==='genetics');
+ renderExtraRecords();updateExtraLab();showLabJump('extraLab');
 }
 function closeExtraLab(){$('extraLab').style.display='none';$('app').style.display='block';showLabJump(null);}
 function extraVal(id){return Number($(id).value);}
@@ -2116,6 +2159,7 @@ function updateExtraLab(){
   svg=`<svg viewBox="0 0 480 260" role="img" aria-label="مستطيل وإزاحته على شبكة إحداثية" style="width:100%;max-width:520px;background:white;border-radius:12px"><path d="M30 210 H450 M70 20 V240" stroke="#647e8b" stroke-width="2"/><rect x="${x}" y="${y-w*scale}" width="${l*scale}" height="${w*scale}" fill="#89d2c5" stroke="#087f82" stroke-width="3" opacity=".85"/>${mode==='transform'?`<rect x="${rx}" y="${ry-w*scale}" width="${l*scale}" height="${w*scale}" fill="#f5c87a" stroke="#b17d23" stroke-width="3" opacity=".7"/>`:''}<text x="240" y="246" text-anchor="middle" font-size="15">${mode==='area'?'المساحة = الطول × العرض':'الانتقال يحافظ على الشكل والمساحة'}</text></svg>`;
   explanation=mode==='area'?'المساحة بوحدات مربعة، والمحيط بوحدات طول. غيّر أحد البعدين وثبّت الآخر.':'الانتقال يغيّر الموقع ولا يغيّر الأبعاد أو المساحة أو الزوايا. المستطيل البرتقالي يمثل الصورة بعد الانتقال.';
  }
+ if(type==='genetics' && typeof v14gUpdate==='function')v14gUpdate();
  extraMetrics(summary);$('extraDiagram').innerHTML=svg;$('extraExplanation').textContent=explanation;extraCurrent={headers,values};
  for(const id of ['h1','h2','hm','hn','dm','dv','gl','gw','gx','gy'])if($(id+'Value'))$(id+'Value').textContent=$(id).value;
 }
@@ -2417,6 +2461,60 @@ function v14Toggle(){if(v14Timer!==null){v14Stop();return;}if(v14Day>=14)v14Day=
 function v14Reset(){v14Stop();v14Day=0;[['A',65,100],['B',25,100]].forEach(([w,l,water])=>{document.getElementById('v14Light'+w).value=l;document.getElementById('v14Water'+w).value=water;});v14Update();}
 document.addEventListener('DOMContentLoaded',v14Update);
 
+
+/* V14 Genetics: independent educational Monte Carlo simulation */
+let v14gLast=null;
+function v14gToggle(show){const panel=document.getElementById('v14Genetics');if(panel)panel.hidden=!show;if(show)v14gReset();}
+function v14gExpectedCounts(){
+ const a=document.getElementById('g1')?.value,b=document.getElementById('g2')?.value;
+ if(!a||!b)return null;
+ const counts={AA:0,Aa:0,aa:0};
+ for(const x of a)for(const y of b){const pair=[x,y].sort((u,v)=>u==='A'?-1:v==='A'?1:0).join('');counts[pair]++;}
+ return {a,b,counts};
+}
+function v14gUpdate(){
+ const data=v14gExpectedCounts();if(!data)return;
+ const root=document.getElementById('v14Genetics');if(!root||root.hidden)return;
+ document.getElementById('v14gCross').textContent='التهجين: '+data.a+' × '+data.b;
+ document.getElementById('v14gExpected').textContent=['AA','Aa','aa'].map(k=>k+': '+(data.counts[k]*25)+'%').join('  |  ');
+ document.getElementById('v14gDominant').textContent='الصفة السائدة (AA أو Aa): '+((data.counts.AA+data.counts.Aa)*25)+'%؛ المتنحية (aa): '+(data.counts.aa*25)+'%.';
+ v14gLast=null;
+ document.getElementById('v14gResults').replaceChildren();
+ document.getElementById('v14gFeedback').textContent='تغيّر التهجين؛ شغّل عينة جديدة لرؤية نتائج هذا التزاوج.';
+}
+function v14gReset(){
+ v14gLast=null;const results=document.getElementById('v14gResults');if(results)results.replaceChildren();
+ const pred=document.getElementById('v14gPrediction');if(pred)pred.value='';
+ const feedback=document.getElementById('v14gFeedback');if(feedback)feedback.textContent='ابدأ المحاكاة لمقارنة النتائج.';
+ v14gUpdate();
+}
+function v14gSimulate(n){
+ const data=v14gExpectedCounts();if(!data||![10,100,1000].includes(n))return;
+ const counts={AA:0,Aa:0,aa:0};
+ for(let i=0;i<n;i++){
+  const x=data.a[Math.floor(Math.random()*2)],y=data.b[Math.floor(Math.random()*2)];
+  const genotype=(x==='A'||y==='A')?(x==='A'&&y==='A'?'AA':'Aa'):'aa';
+  counts[genotype]++;
+ }
+ v14gLast={n,counts};
+ const results=document.getElementById('v14gResults');results.replaceChildren();
+ for(const [key,label] of [['AA','AA — سائد نقي'],['Aa','Aa — سائد هجين'],['aa','aa — متنحٍ']]){
+  const expected=data.counts[key]*25,actual=counts[key]/n*100;
+  const item=document.createElement('div');
+  const title=document.createElement('div');title.className='v14g-legend';
+  const name=document.createElement('strong');name.textContent=label;
+  const values=document.createElement('span');values.textContent='النظري '+expected+'% | المحاكاة '+actual.toFixed(1)+'% ('+counts[key]+' من '+n+')';
+  title.append(name,values);item.append(title);
+  for(const [value,kind] of [[expected,''],[actual,'secondary']]){
+   const track=document.createElement('div');track.className='v14g-track';track.style.marginTop='5px';
+   const bar=document.createElement('div');bar.className='v14g-fill '+kind;bar.style.width=value+'%';track.append(bar);item.append(track);
+  }
+  results.append(item);
+ }
+ const pred=document.getElementById('v14gPrediction').value;
+ const note=pred==='vary'?'توقعك مناسب علميًا. ':pred==='same'?'التطابق ليس مضمونًا؛ فالتوزيع عشوائي. ':'اختر توقعًا قبل التجربة التالية. ';
+ document.getElementById('v14gFeedback').textContent=note+'حجم العينة: '+n+' فرد. الشريط الأزرق المخضر للنسبة النظرية، والذهبي للنسبة الملاحظة. كرر التجربة وقارن.';
+}
 </script>
 </body>
 </html>
