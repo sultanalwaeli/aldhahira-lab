@@ -872,6 +872,17 @@ main {
 .v14g-small{font-size:12px;color:#60798a;line-height:1.8}
 .v14g-legend{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px}
 @media(max-width:720px){.v14g-grid{grid-template-columns:1fr}}
+
+/* V14 — ثلاثة مختبرات تفاعلية إضافية، مستقلة عن التحديات */
+.v14x-panel{margin-top:18px;padding:18px;background:#f5fafb;border:1px solid #cbdfe6;border-radius:16px}
+.v14x-panel[hidden]{display:none!important}.v14x-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.v14x-box{background:white;border:1px solid #d7e5e9;border-radius:12px;padding:13px}.v14x-box h4{margin:0 0 10px}
+.v14x-stage{width:100%;background:#fff;border-radius:12px;display:block;max-height:330px}
+.v14x-controls{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}.v14x-controls button{padding:10px 13px}
+.v14x-reading{font-size:14px;line-height:1.9;padding:10px;background:#eaf6f4;border-radius:9px;margin:10px 0}
+.v14x-explain{padding:10px;border-right:3px solid #bc9552;background:#fff9e9;border-radius:7px;font-size:13px;line-height:1.8}
+.v14x-panel label{display:block;font-weight:bold;margin:8px 0}.v14x-panel input[type=range]{width:100%;accent-color:#087f82}
+@media(max-width:680px){.v14x-grid{grid-template-columns:1fr}.v14x-panel{padding:11px}}
 </style>
 </head>
 
@@ -1199,6 +1210,30 @@ main {
    </div>
   </section>
  <div class="inquiry-panel" style="margin-top:18px"><h3>📝 بطاقة الباحث الصغير</h3><p class="muted">يمكنك كتابة فرضيتك واستنتاجك ونسخ البطاقة. لا تُحفظ البيانات على الخادم.</p><label for="extraHypothesis">فرضيتي قبل التجربة</label><textarea id="extraHypothesis" rows="2" style="width:100%;font:inherit;padding:10px;border:1px solid #bdd1d9;border-radius:9px" placeholder="أتوقع أن..."></textarea><label for="extraConclusion">استنتاجي بعد مقارنة القياسات</label><textarea id="extraConclusion" rows="3" style="width:100%;font:inherit;padding:10px;border:1px solid #bdd1d9;border-radius:9px" placeholder="لاحظت أن... لأن..."></textarea><div class="inquiry-actions"><button type="button" onclick="copyResearchCard()">نسخ بطاقة الباحث</button><button type="button" onclick="window.print()" style="background:#607887">طباعة</button></div><p id="extraCopyMsg" class="muted" role="status"></p></div>
+</section>
+
+
+<section id="v14Heat" class="v14x-panel" hidden aria-label="محاكاة انتقال الحرارة">
+ <h3>🌡️ V14 — شاهد انتقال الحرارة خطوة بخطوة</h3>
+ <p class="muted">جسمان من المادة نفسها، دون فقد حراري للوسط. نموذج تعليمي تقريبي للزمن وليس قياسًا مخبريًا.</p>
+ <div class="v14x-grid"><div class="v14x-box"><h4>المحاكاة الحرارية</h4><svg id="v14HeatSvg" class="v14x-stage" viewBox="0 0 500 280" role="img" aria-label="جسمان ملونان ومؤشر لانتقال الحرارة"></svg></div>
+ <div class="v14x-box"><h4>درجة الحرارة مع الزمن الافتراضي</h4><svg id="v14HeatGraph" class="v14x-stage" viewBox="0 0 500 280" role="img" aria-label="منحنى اقتراب درجات الحرارة من الاتزان"></svg></div></div>
+ <div class="v14x-controls"><button type="button" onclick="v14xHeatPlay()" id="v14HeatPlay">▶ تشغيل الانتقال</button><button type="button" onclick="v14xHeatStep()">خطوة واحدة</button><button type="button" onclick="v14xHeatReset()" style="background:#607887">إعادة المحاكاة</button></div>
+ <div id="v14HeatRead" class="v14x-reading" aria-live="polite"></div><div class="v14x-explain">كلما زادت الكتلة زادت الطاقة المطلوبة لتغيير درجة الحرارة بالمقدار نفسه، مع ثبات المادة. لا تعني حركة الجسيمات المعروضة سرعةً حقيقية لانتقال الحرارة.</div>
+</section>
+<section id="v14Density" class="v14x-panel" hidden aria-label="محاكاة الكثافة والطفو">
+ <h3>⚖️ V14 — جرّب الطفو والغوص أمام عينيك</h3><p class="muted">غيّر الكتلة والحجم في الأعلى، ثم شغّل التجربة. كثافة الماء في هذا النموذج 1 جم/سم³.</p>
+ <div class="v14x-grid"><div class="v14x-box"><h4>حوض الماء</h4><svg id="v14DensitySvg" class="v14x-stage" viewBox="0 0 500 300" role="img" aria-label="جسم يتحرك في حوض ماء حسب كثافته"></svg></div>
+ <div class="v14x-box"><h4>قارن كثافة الجسم بالماء</h4><svg id="v14DensityGraph" class="v14x-stage" viewBox="0 0 500 300" role="img" aria-label="مخطط مقارنة الكثافة"></svg></div></div>
+ <div class="v14x-controls"><button type="button" onclick="v14xDensityPlay()" id="v14DensityPlay">▶ أنزل الجسم في الماء</button><button type="button" onclick="v14xDensityReset()" style="background:#607887">إعادة المحاكاة</button></div>
+ <div id="v14DensityRead" class="v14x-reading" aria-live="polite"></div><div class="v14x-explain">الجسم الأقل كثافة يطفو ويغمر جزء منه، والأكثر كثافة يغوص. عند تساوي الكثافتين يمكن أن يكون الجسم في اتزان محايد داخل الماء.</div>
+</section>
+<section id="v14Geometry" class="v14x-panel" hidden aria-label="محاكاة الرياضيات">
+ <h3>📐 V14 — هندسة تفاعلية بالسحب والقياس</h3><p class="muted">حرّك المستطيل على الشبكة بسحب شكله، أو غيّر طوله وعرضه من المنزلقات أعلاه. في نشاط الانتقال، يظهر موضعه الأصلي بخط متقطع.</p>
+ <div class="v14x-grid"><div class="v14x-box"><h4>شبكة الإحداثيات</h4><svg id="v14GeometrySvg" class="v14x-stage" viewBox="0 0 500 340" role="img" aria-label="مستطيل تفاعلي على شبكة إحداثية"></svg></div>
+ <div class="v14x-box"><h4>المساحة والمحيط</h4><svg id="v14GeometryGraph" class="v14x-stage" viewBox="0 0 500 340" role="img" aria-label="تمثيل مساحة المستطيل ومحيطه"></svg></div></div>
+ <div class="v14x-controls"><button type="button" onclick="v14xGeometryReset()" style="background:#607887">إعادة موضع الشكل</button></div>
+ <div id="v14GeometryRead" class="v14x-reading" aria-live="polite"></div><div class="v14x-explain">تغيير الأبعاد يغيّر المساحة والمحيط، أما الانتقال الهندسي فيغيّر الموقع فقط ويحافظ على الأطوال والزوايا والمساحة.</div>
 </section>
 
 <!-- صفحة السؤال -->
@@ -2515,6 +2550,65 @@ function v14gSimulate(n){
  const note=pred==='vary'?'توقعك مناسب علميًا. ':pred==='same'?'التطابق ليس مضمونًا؛ فالتوزيع عشوائي. ':'اختر توقعًا قبل التجربة التالية. ';
  document.getElementById('v14gFeedback').textContent=note+'حجم العينة: '+n+' فرد. الشريط الأزرق المخضر للنسبة النظرية، والذهبي للنسبة الملاحظة. كرر التجربة وقارن.';
 }
+
+/* V14 — Heat, Density, Geometry: local-only visual simulations */
+const V14X_NS='http://www.w3.org/2000/svg';
+function v14xNode(parent,tag,attrs={},value){const n=document.createElementNS(V14X_NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));if(value!==undefined)n.textContent=String(value);parent.appendChild(n);return n;}
+function v14xClear(id){const root=document.getElementById(id);if(root)root.replaceChildren();return root;}
+function v14xText(root,x,y,content,size=15,fill='#17384d'){return v14xNode(root,'text',{x,y,'text-anchor':'middle','font-size':size,fill,'font-family':'Arial,sans-serif'},content);}
+function v14xLine(root,x1,y1,x2,y2,color='#cbdde3',width=2){return v14xNode(root,'line',{x1,y1,x2,y2,stroke:color,'stroke-width':width});}
+let v14xHeatTimer=null,v14xHeatTick=0,v14xHeatSnapshot='';
+function v14xHeatStop(){if(v14xHeatTimer!==null){clearInterval(v14xHeatTimer);v14xHeatTimer=null;}const b=document.getElementById('v14HeatPlay');if(b)b.textContent='▶ تشغيل الانتقال';}
+function v14xHeatData(){const t1=extraVal('h1'),t2=extraVal('h2'),m1=extraVal('hm'),m2=extraVal('hn'),eq=(m1*t1+m2*t2)/(m1+m2);return {t1,t2,m1,m2,eq};}
+function v14xHeatReset(){v14xHeatStop();v14xHeatTick=0;v14xHeatSnapshot=JSON.stringify(v14xHeatData());v14xHeatDraw();}
+function v14xHeatStep(){v14xHeatStop();v14xHeatTick=Math.min(20,v14xHeatTick+1);v14xHeatDraw();}
+function v14xHeatPlay(){if(v14xHeatTimer!==null){v14xHeatStop();return;}if(v14xHeatTick>=20)v14xHeatTick=0;document.getElementById('v14HeatPlay').textContent='⏸ إيقاف';v14xHeatTimer=setInterval(()=>{v14xHeatTick++;v14xHeatDraw();if(v14xHeatTick>=20)v14xHeatStop();},220);}
+function v14xHeatDraw(){const d=v14xHeatData(),f=1-Math.exp(-v14xHeatTick/4),a=d.t1+(d.eq-d.t1)*f,b=d.t2+(d.eq-d.t2)*f;
+ const svg=v14xClear('v14HeatSvg'),g=v14xClear('v14HeatGraph');if(!svg||!g)return;
+ const heatColor=t=>`hsl(${Math.round(220-210*t/100)},75%,${Math.round(72-18*t/100)}%)`;
+ for(const [x,t,label] of [[55,a,'الجسم الأول'],[285,b,'الجسم الثاني']]){v14xNode(svg,'rect',{x,y:65,width:160,height:145,rx:14,fill:heatColor(t),stroke:'#547888','stroke-width':2});v14xText(svg,x+80,125,t.toFixed(1)+' °م',26);v14xText(svg,x+80,160,label,16);}
+ v14xLine(svg,220,140,280,140,'#087f82',4);v14xText(svg,250,125,d.t1===d.t2?'اتزان':d.t1>d.t2?'→':'←',24);v14xText(svg,250,247,'الاتزان النظري '+d.eq.toFixed(1)+' °م',17);
+ const L=48,R=465,T=25,B=230;for(let i=0;i<=4;i++){const y=B-i*(B-T)/4;v14xLine(g,L,y,R,y);v14xText(g,24,y+5,String(i*25),12);}
+ for(const [initial,color] of [[d.t1,'#c76b37'],[d.t2,'#087f82']]){let points=[];for(let i=0;i<=v14xHeatTick;i++){const t=initial+(d.eq-initial)*(1-Math.exp(-i/4));points.push(`${L+i/20*(R-L)},${B-t/100*(B-T)}`);}v14xNode(g,'polyline',{points:points.join(' '),fill:'none',stroke:color,'stroke-width':4});}
+ v14xText(g,255,265,'خطوات زمنية افتراضية (0–20)',14);document.getElementById('v14HeatRead').textContent=`الخطوة ${v14xHeatTick} من 20 | الجسم الأول: ${a.toFixed(1)}°م | الثاني: ${b.toFixed(1)}°م | درجة الاتزان المتوقعة: ${d.eq.toFixed(1)}°م`;
+}
+let v14xDensityTimer=null,v14xDensityProgress=0,v14xDensitySnapshot='';
+function v14xDensityStop(){if(v14xDensityTimer!==null){clearInterval(v14xDensityTimer);v14xDensityTimer=null;}const b=document.getElementById('v14DensityPlay');if(b)b.textContent='▶ أنزل الجسم في الماء';}
+function v14xDensityReset(){v14xDensityStop();v14xDensityProgress=0;v14xDensitySnapshot=extraVal('dm')+':'+extraVal('dv');v14xDensityDraw();}
+function v14xDensityPlay(){if(v14xDensityTimer!==null){v14xDensityStop();return;}if(v14xDensityProgress>=1)v14xDensityProgress=0;document.getElementById('v14DensityPlay').textContent='⏸ إيقاف';v14xDensityTimer=setInterval(()=>{v14xDensityProgress=Math.min(1,v14xDensityProgress+.055);v14xDensityDraw();if(v14xDensityProgress>=1)v14xDensityStop();},70);}
+function v14xDensityDraw(){const mass=extraVal('dm'),vol=extraVal('dv'),rho=mass/vol,svg=v14xClear('v14DensitySvg'),g=v14xClear('v14DensityGraph');if(!svg||!g)return;
+ v14xNode(svg,'rect',{x:55,y:120,width:390,height:160,fill:'#b6e3f0',rx:9});v14xLine(svg,55,120,445,120,'#428caf',3);
+ const finalY=rho<1?120-74*(1-rho):rho===1?162:205;const y=32+(finalY-32)*v14xDensityProgress;
+ v14xNode(svg,'rect',{x:210,y,width:80,height:74,rx:6,fill:'#c99655',stroke:'#8a5d2e','stroke-width':3});v14xText(svg,250,18,`ρ الجسم = ${rho.toFixed(2)} جم/سم³`,17);v14xText(svg,250,297,rho<1?'طفو':rho===1?'اتزان محايد':'غوص',16);
+ const max=Math.max(1.2,rho*1.15),base=247,height=200;
+ for(const [i,value,label,color] of [[0,1,'الماء','#4e9fbc'],[1,rho,'الجسم','#c99655']]){const x=115+i*180,h=Math.min(height,value/max*height);v14xNode(g,'rect',{x,y:base-h,width:95,height:h,rx:5,fill:color});v14xText(g,x+47,base-h-9,value.toFixed(2),17);v14xText(g,x+47,base+25,label,16);}
+ document.getElementById('v14DensityRead').textContent=`الكثافة = ${mass} ÷ ${vol} = ${rho.toFixed(2)} جم/سم³. ${rho<1?'النسبة المغمورة المتوقعة عند الاتزان: '+(rho*100).toFixed(0)+'%.':rho===1?'الكثافة مساوية للماء: اتزان محايد في النموذج.':'الكثافة أكبر من الماء: يغوص الجسم.'}`;
+}
+let v14xGeoDrag=null;
+function v14xGeometryReset(){v14xGeoDrag=null;const gx=document.getElementById('gx'),gy=document.getElementById('gy');if(gx)gx.value=2;if(gy)gy.value=1;v14xGeometryDraw();}
+function v14xGeometryDraw(){const l=extraVal('gl'),w=extraVal('gw'),dx=extraVal('gx'),dy=extraVal('gy'),mode=document.getElementById('geoMode').value,svg=v14xClear('v14GeometrySvg'),g=v14xClear('v14GeometryGraph');if(!svg||!g)return;
+ const scale=19,originX=150,originY=255;
+ for(let x=20;x<=480;x+=scale)v14xLine(svg,x,15,x,315,'#e6eef1',1);
+ for(let y=15;y<=315;y+=scale)v14xLine(svg,20,y,480,y,'#e6eef1',1);
+ const x=originX+(mode==='transform'?dx*scale:0),y=originY-(mode==='transform'?dy*scale:0)-w*scale;
+ if(mode==='transform')v14xNode(svg,'rect',{x:originX,y:originY-w*scale,width:l*scale,height:w*scale,fill:'none',stroke:'#7f9ba6','stroke-width':2,'stroke-dasharray':'7 5'});
+ const rect=v14xNode(svg,'rect',{x,y,width:l*scale,height:w*scale,fill:'#4cb6a7','fill-opacity':'.75',stroke:'#087f82','stroke-width':3,rx:2,style:'cursor:grab;touch-action:none'});
+ v14xText(svg,x+l*scale/2,y+w*scale/2+5,`${l} × ${w}`,17);
+ rect.addEventListener('pointerdown',e=>{rect.setPointerCapture(e.pointerId);v14xGeoDrag={x:e.clientX,y:e.clientY,dx,dy};});
+ rect.addEventListener('pointermove',e=>{if(!v14xGeoDrag)return;const bounds=svg.getBoundingClientRect(),unit=bounds.width/500*scale;if(unit<=0)return;const nx=Math.max(-5,Math.min(5,Math.round(v14xGeoDrag.dx+(e.clientX-v14xGeoDrag.x)/unit))),ny=Math.max(-5,Math.min(5,Math.round(v14xGeoDrag.dy-(e.clientY-v14xGeoDrag.y)/unit)));if(mode==='transform'){document.getElementById('gx').value=nx;document.getElementById('gy').value=ny;document.getElementById('gxValue').textContent=nx;document.getElementById('gyValue').textContent=ny;rect.setAttribute('x',originX+nx*scale);rect.setAttribute('y',originY-ny*scale-w*scale);document.getElementById('v14GeometryRead').textContent=`الإزاحة الحالية: (${nx}, ${ny}) | المساحة: ${l*w} وحدة² — لم تتغير.`;}});
+ rect.addEventListener('pointerup',()=>{v14xGeoDrag=null;v14xGeometryDraw();});rect.addEventListener('pointercancel',()=>{v14xGeoDrag=null;v14xGeometryDraw();});
+ const area=l*w,per=2*(l+w),max=Math.max(area,per,1)*1.2;
+ for(const [i,value,label,color] of [[0,area,'المساحة','#087f82'],[1,per,'المحيط','#c49a50']]){const bx=115+i*190,h=value/max*230;v14xNode(g,'rect',{x:bx,y:260-h,width:100,height:h,fill:color,rx:5});v14xText(g,bx+50,248-h,value,18);v14xText(g,bx+50,289,label,16);}
+ document.getElementById('v14GeometryRead').textContent=`الطول ${l}، العرض ${w} | المساحة ${area} وحدة² | المحيط ${per} وحدة | الإزاحة (${dx}, ${dy}) ${mode==='area'?'— اختر نشاط الانتقال للسحب.':'— اسحب الشكل على الشبكة.'}`;
+}
+const v14xOldOpen=openExtraLab;
+openExtraLab=function(type){v14xOldOpen(type);for(const [t,id] of [['heat','v14Heat'],['density','v14Density'],['geometry','v14Geometry']])document.getElementById(id).hidden=t!==type;
+ if(type==='heat')v14xHeatReset();if(type==='density')v14xDensityReset();if(type==='geometry')v14xGeometryDraw();};
+const v14xOldUpdate=updateExtraLab;
+updateExtraLab=function(){v14xOldUpdate();if(extraType==='heat'){const snap=JSON.stringify(v14xHeatData());if(snap!==v14xHeatSnapshot)v14xHeatReset();else v14xHeatDraw();}if(extraType==='density'){const snap=extraVal('dm')+':'+extraVal('dv');if(snap!==v14xDensitySnapshot)v14xDensityReset();else v14xDensityDraw();}if(extraType==='geometry')v14xGeometryDraw();};
+const v14xOldClose=closeExtraLab;
+closeExtraLab=function(){v14xHeatStop();v14xDensityStop();v14xOldClose();};
+
 </script>
 </body>
 </html>
