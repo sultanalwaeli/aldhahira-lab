@@ -850,6 +850,14 @@ main {
 .v14-day{font-weight:bold;color:#12384e}
 #v14Chart svg{width:100%;max-height:250px;background:white;border-radius:12px}
 @media(max-width:640px){.v14-controls{grid-template-columns:1fr}}
+
+/* V14 — تعزيز مختبر الكهرباء دون تغيير واجهة الخادم */
+.v14-electric-controls{margin-top:12px;display:grid;gap:8px}
+.v14-electric-controls button{background:#24576c;text-align:center}
+.v14-electric-lamp{display:flex;align-items:center;gap:16px;background:#f4f9fb;border:1px solid #d6e7eb;border-radius:13px;padding:12px;margin-top:12px}
+.v14-bulb{width:65px;height:65px;flex:none;display:grid;place-items:center;font-size:37px;border-radius:50%;background:#e7edf1;transition:background .25s,box-shadow .25s}
+.v14-electric-lamp strong{font-size:13px}
+@media(prefers-reduced-motion:reduce){.v14-bulb{transition:none}}
 </style>
 </head>
 
@@ -1123,10 +1131,10 @@ main {
    <label for="electricR1">المقاومة الأولى R1: <span id="electricR1Value">6</span> أوم</label>
    <input id="electricR1" type="range" min="1" max="30" step="1" value="6" oninput="updateElectricLab()">
    <div id="electricR2Wrap"><label for="electricR2">المقاومة الثانية R2: <span id="electricR2Value">6</span> أوم</label><input id="electricR2" type="range" min="1" max="30" step="1" value="6" oninput="updateElectricLab()"></div>
-   <div class="inquiry-metrics"><div class="inquiry-metric">المقاومة المكافئة<strong id="electricReq">—</strong></div><div class="inquiry-metric">التيار الكلي<strong id="electricCurrent">—</strong></div></div>
+   <div class="inquiry-metrics"><div class="inquiry-metric">المقاومة المكافئة<strong id="electricReq">—</strong></div><div class="inquiry-metric">التيار الكلي<strong id="electricCurrent">—</strong></div></div><div class="v14-electric-controls"><button type="button" id="electricSwitch" onclick="toggleElectricSwitch()" aria-pressed="true">🔌 المفتاح: مغلق (الدائرة تعمل)</button><span id="electricSwitchHelp" class="muted">افتح المفتاح لإيقاف التيار، وأغلقه لاستكمال التجربة.</span></div>
    <div class="inquiry-actions"><button type="button" onclick="recordElectricLab()">سجّل القياس</button><button type="button" onclick="resetElectricLab()" style="background:#607887">إعادة التجربة</button></div>
   </div>
-  <div class="inquiry-panel"><h3>مخطط الدائرة</h3><div id="electricDiagram"></div><p class="muted" id="electricDetail"></p><p class="muted">رمز البطارية يمثل المصدر؛ الأسهم توضح اتجاه التيار الاصطلاحي. الرسم تخطيطي وليس بمقياس.</p></div>
+  <div class="inquiry-panel"><h3>مخطط الدائرة</h3><div id="electricDiagram"></div><div class="v14-electric-lamp"><div id="electricLamp" class="v14-bulb" role="img" aria-label="مؤشر ضوئي تقريبي لاستطاعة المقاومة الأولى">💡</div><div><strong>مؤشر ضوئي افتراضي للمقاومة R1</strong><div id="electricPower" class="muted" aria-live="polite"></div></div></div><p class="muted" id="electricDetail"></p><p class="muted">رمز البطارية يمثل المصدر؛ الأسهم توضح اتجاه التيار الاصطلاحي. الرسم تخطيطي وليس بمقياس.</p></div>
  </div>
  <div class="inquiry-panel" style="margin-top:18px"><h3>سجل القياسات</h3><p class="muted">ثبّت المقاومة وطريقة التوصيل، ثم غيّر الجهد وسجّل ثلاث قراءات لاستنتاج العلاقة بين الجهد والتيار.</p><div style="overflow-x:auto"><table class="inquiry-table"><thead><tr><th>التجربة</th><th>التوصيل</th><th>الجهد (V)</th><th>المقاومة المكافئة (Ω)</th><th>التيار الكلي (A)</th></tr></thead><tbody id="electricRows"><tr><td colspan="5">لم تُسجل قياسات بعد</td></tr></tbody></table></div><div id="electricChart"></div></div>
  <div class="inquiry-panel" style="margin-top:18px"><h3>سؤال الاستدلال</h3><p>عند تثبيت المقاومة المكافئة ومضاعفة فرق الجهد، ماذا يحدث لشدة التيار الكلي في الدائرة المثالية؟</p>
@@ -1942,13 +1950,14 @@ function checkInquiry(){
    مختبر الدوائر الكهربائية - قانون أوم
 =================================== */
 let electricReadings=[];
+let electricSwitchClosed=true;
 function electricData(){
  const mode=$('electricMode').value;
  const voltage=Number($('electricVoltage').value);
  const r1=Number($('electricR1').value),r2=Number($('electricR2').value);
  const req=mode==='single'?r1:mode==='series'?r1+r2:r1*r2/(r1+r2);
- const current=voltage/req;
- return {mode,voltage,r1,r2,req,current,i1:mode==='parallel'?voltage/r1:current,i2:mode==='parallel'?voltage/r2:current};
+ const current=electricSwitchClosed?voltage/req:0;
+ return {mode,voltage,r1,r2,req,current,i1:electricSwitchClosed?(mode==='parallel'?voltage/r1:current):0,i2:electricSwitchClosed?(mode==='parallel'?voltage/r2:current):0,closed:electricSwitchClosed};
 }
 function electricFmt(n){return Number(n.toFixed(3)).toLocaleString('en-US',{maximumFractionDigits:3});}
 function openElectricLab(){
@@ -1957,6 +1966,7 @@ function openElectricLab(){
  $('electricLab').style.display='block';updateElectricLab();showLabJump('electricLab');
 }
 function closeElectricLab(){$('electricLab').style.display='none';$('app').style.display='block';showLabJump(null);}
+function toggleElectricSwitch(){electricSwitchClosed=!electricSwitchClosed;updateElectricLab();}
 function updateElectricLab(){
  const d=electricData();
  $('electricR2Wrap').style.display=d.mode==='single'?'none':'block';
@@ -1965,7 +1975,16 @@ function updateElectricLab(){
  $('electricR2Value').textContent=d.r2;
  $('electricReq').textContent=electricFmt(d.req)+' Ω';
  $('electricCurrent').textContent=electricFmt(d.current)+' A';
- $('electricDetail').textContent=d.mode==='parallel'
+ $('electricSwitch').textContent=d.closed?'🔌 المفتاح: مغلق (الدائرة تعمل)':'🔌 المفتاح: مفتوح (التيار متوقف)';
+ $('electricSwitch').setAttribute('aria-pressed',String(d.closed));
+ // مؤشر ضوئي توضيحي: تمثل R1 حملاً أوميًا، لا نضيف مصباحًا آخر إلى الدائرة.
+ const r1Current=d.mode==='parallel'?d.i1:d.current;
+ const power=r1Current*r1Current*d.r1;
+ const intensity=d.closed?Math.min(1,Math.sqrt(power/12)):0;
+ const lamp=$('electricLamp');lamp.style.background=d.closed?`rgba(255,205,67,${(.12+.72*intensity).toFixed(3)})`:'#e7edf1';
+ lamp.style.boxShadow=d.closed?`0 0 ${Math.round(8+26*intensity)}px rgba(246,180,35,${(.12+.55*intensity).toFixed(3)})`:'none';
+ $('electricPower').textContent=`الاستطاعة المحسوبة على R1: ${electricFmt(power)} واط. الإضاءة تقريب بصري وليست نموذجًا لمصباح حقيقي.`;
+ $('electricDetail').textContent=!d.closed?'المفتاح مفتوح: لا يوجد مسار مغلق، لذا التيار يساوي صفرًا.':d.mode==='parallel'
  ?`تيار الفرع الأول: ${electricFmt(d.i1)} A | تيار الفرع الثاني: ${electricFmt(d.i2)} A | مجموعهما: ${electricFmt(d.current)} A`
  :d.mode==='series'?`يمر التيار نفسه (${electricFmt(d.current)} A) في المقاومتين.`:'مقاومة واحدة في مسار مغلق.';
  drawElectricDiagram(d);
@@ -1996,7 +2015,19 @@ function drawElectricDiagram(d){
   line(420,60,420,255);line(100,255,420,255);
   label(260,34,`${d.r1} Ω`,14);
  }
+ // تمثيل حركة الشحنات بصورة تخطيطية فقط؛ لا يعبر عن السرعة الحقيقية للإلكترونات.
+ if(d.closed && d.current>0){
+  const paths=d.mode==='parallel'
+   ?['M100 60 H230 V255 H100 V170','M100 60 H340 V255 H100 V170']
+   :['M100 60 H420 V255 H100 V170'];
+  paths.forEach((path,i)=>{
+   const dot=svgElement('circle',{r:5,fill:i?'#c49a50':'#ed8c45',stroke:'#fff','stroke-width':1});
+   const motion=svgElement('animateMotion',{dur:(Math.max(1.3,5/(1+Math.sqrt(d.current)))).toFixed(2)+'s',repeatCount:'indefinite',path});
+   dot.appendChild(motion);svg.appendChild(dot);
+  });
+ }
  label(260,285,`I الكلي = ${electricFmt(d.current)} A`,17);
+ if(!d.closed)label(260,306,'المفتاح مفتوح — لا يمر تيار',14);
  host.appendChild(svg);
 }
 function recordElectricLab(){
@@ -2004,7 +2035,7 @@ function recordElectricLab(){
  electricReadings.push(electricData());renderElectricReadings();
 }
 function resetElectricLab(){
- electricReadings=[];$('electricMode').value='single';$('electricVoltage').value=6;$('electricR1').value=6;$('electricR2').value=6;
+ electricReadings=[];electricSwitchClosed=true;$('electricMode').value='single';$('electricVoltage').value=6;$('electricR1').value=6;$('electricR2').value=6;
  document.querySelectorAll('input[name="electricChoice"]').forEach(x=>x.checked=false);
  updateElectricLab();renderElectricReadings();
 }
