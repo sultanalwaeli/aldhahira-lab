@@ -19,7 +19,12 @@
  --green:#16845d;
  --red:#b33d3d;
 }
-ِrial,sans-serif;
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font-family:Tahoma,Arial,sans-serif;
 }
 header{
  background:linear-gradient(110deg,#123e59,#087f82);
@@ -878,6 +883,20 @@ main {
 .v14x-explain{padding:10px;border-right:3px solid #bc9552;background:#fff9e9;border-radius:7px;font-size:13px;line-height:1.8}
 .v14x-panel label{display:block;font-weight:bold;margin:8px 0}.v14x-panel input[type=range]{width:100%;accent-color:#087f82}
 @media(max-width:680px){.v14x-grid{grid-template-columns:1fr}.v14x-panel{padding:11px}}
+
+/* V16 — مهارات قراءة التمثيلات في التحديات، دون تغيير التصحيح */
+.v16-reading{margin:14px 0;padding:15px 17px;background:#f1f8fa;border:1px solid #cbdfe6;border-radius:13px}
+.v16-reading h4{margin:0 0 8px;color:#123e59;font-size:15px}
+.v16-reading p{margin:4px 0 9px;font-size:13px;line-height:1.8}
+.v16-reading details{border-top:1px solid #d5e6eb;padding-top:8px}
+.v16-reading summary{cursor:pointer;font-weight:bold;color:#087f82;font-size:13px}
+.v16-reading ul{margin:9px 0 0;padding-right:21px;font-size:13px;line-height:1.9}
+.v16-data-toggle{margin:12px 0 4px;background:#23586c;font-size:12px;padding:9px 13px}
+.v16-data-table{margin-top:8px}
+.v16-data-table[hidden]{display:none!important}
+.v16-data-table caption{font-size:12px;color:#34596c;padding:8px}
+.v16-data-table th,.v16-data-table td{font-variant-numeric:tabular-nums}
+@media(max-width:600px){.v16-reading{padding:12px}.v16-data-toggle{width:100%}}
 </style>
 </head>
 
@@ -1519,6 +1538,7 @@ function showQuestion(r){
 
  // الرسم مرتبط ببيانات السؤال
  renderAssessmentSimulation(r.question);
+ renderV16ReadingGuide(r.question);
 
  $('feedback').textContent='';
  $('feedback').className='';
@@ -1675,6 +1695,48 @@ function renderAssessmentSimulation(q){
  else if(v.type==='punnett'){
   renderPunnett(host,v);
  }
+}
+
+
+/* V16 — سقالات التفكير في التحديات. لا ترسل بيانات ولا تكشف الإجابة. */
+function renderV16ReadingGuide(question){
+ const host=$('simulation');
+ if(!host || !question || !question.visual)return;
+ const v=question.visual;
+ const guides={
+  triangle:['حدّد الضلعين المعلومين والزاوية القائمة.','ما العلاقة الرياضية المناسبة لإيجاد المجهول؟','تحقق من معقولية الطول الناتج ووحدته.'],
+  table:['اقرأ عنوان كل عمود ووحدة القياس.','قارن صفين أو أكثر قبل الاستنتاج.','هل تدعم الأرقام الاستنتاج الذي اخترته؟'],
+  bars:['اقرأ تدريج المحور الرأسي قبل مقارنة ارتفاع الأعمدة.','حدّد أكبر قيمة وأصغر قيمة والفرق بينهما.','انتبه إلى الوحدات وإلى ما إذا كان المحور يبدأ من الصفر.'],
+  circuit:['ميّز بين فرق الجهد وشدة التيار والمقاومة.','حدّد الكمية المجهولة ثم اختر العلاقة المناسبة.','تأكد من الوحدات قبل اعتماد الإجابة.'],
+  punnett:['حدّد الأمشاج المحتملة لكل من الأبوين.','اقرأ الخانات الأربع بوصفها احتمالات نظرية.','فرّق بين الطراز الجيني والصفة الظاهرية.']
+ };
+ const tips=guides[v.type];
+ if(!tips)return;
+ const box=document.createElement('section');box.className='v16-reading';
+ const h=document.createElement('h4');h.textContent='🔎 اقرأ التمثيل العلمي قبل الإجابة';
+ const p=document.createElement('p');p.textContent='فكّر في المعطيات والدليل. هذه الإرشادات لا تعرض الإجابة الصحيحة.';
+ const details=document.createElement('details');
+ const summary=document.createElement('summary');summary.textContent='إظهار خطوات التفكير المساعدة';
+ const ul=document.createElement('ul');
+ tips.forEach(t=>{const li=document.createElement('li');li.textContent=t;ul.appendChild(li);});
+ details.append(summary,ul);box.append(h,p,details);host.appendChild(box);
+ if(v.type==='bars')renderV16BarData(host,v);
+}
+function renderV16BarData(host,v){
+ const values=Array.isArray(v.values)?v.values:[];
+ if(!values.length || values.length>30 || v.hideValues)return;
+ const button=document.createElement('button');button.type='button';button.className='v16-data-toggle';
+ button.textContent='عرض بيانات الرسم في جدول';button.setAttribute('aria-expanded','false');
+ const table=document.createElement('table');table.className='v16-data-table';table.hidden=true;
+ const caption=document.createElement('caption');caption.textContent='قيم الرسم البياني كما وردت في السؤال';table.appendChild(caption);
+ const head=document.createElement('tr');['الفئة','القيمة'].forEach(t=>{const th=document.createElement('th');th.textContent=t;head.appendChild(th);});table.appendChild(head);
+ values.forEach((value,i)=>{const row=document.createElement('tr');
+  const a=document.createElement('td');a.textContent=String((v.labels||[])[i]??('مجموعة '+(i+1)));
+  const b=document.createElement('td');b.textContent=v.hideValues?'مخفية في السؤال':String(value);
+  row.append(a,b);table.appendChild(row);
+ });
+ button.addEventListener('click',()=>{table.hidden=!table.hidden;button.textContent=table.hidden?'عرض بيانات الرسم في جدول':'إخفاء جدول البيانات';button.setAttribute('aria-expanded',String(!table.hidden));});
+ host.append(button,table);
 }
 
 /* ===================================
