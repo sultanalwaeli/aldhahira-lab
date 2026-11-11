@@ -897,6 +897,13 @@ main {
 .v16-data-table caption{font-size:12px;color:#34596c;padding:8px}
 .v16-data-table th,.v16-data-table td{font-variant-numeric:tabular-nums}
 @media(max-width:600px){.v16-reading{padding:12px}.v16-data-toggle{width:100%}}
+
+/* V18 — scientific visual representations (frontend only) */
+.v18-visual{background:#f5fafc;border:1px solid #cbdfe6;border-radius:15px;padding:18px;margin:15px 0}
+.v18-visual h3{margin:0 0 8px;color:#123e59}.v18-visual p{font-size:13px;color:#486879;margin:5px 0 12px}
+.v18-visual svg{display:block;width:100%;max-width:690px;margin:0 auto;background:#fff;border-radius:12px}
+.v18-visual .v18-key{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;font-size:13px;margin-top:10px}
+@media(max-width:600px){.v18-visual{padding:11px}}
 </style>
 </head>
 
@@ -1695,8 +1702,52 @@ function renderAssessmentSimulation(q){
  else if(v.type==='punnett'){
   renderPunnett(host,v);
  }
+ else if(['atom','cells','line','earthLayers'].includes(v.type)){
+  renderV18Scientific(host,v);
+ }
 }
 
+
+
+/* V18 — additional visual types; no API or scoring changes.
+ Supported visual payloads:
+ {type:'atom',protons:10,neutrons:10,electrons:9}
+ {type:'cells',counts:[15,21],labels:['أ','ب']}
+ {type:'line',labels:['0','1','2'],values:[20,24,29],xLabel:'الزمن (دقيقة)',yLabel:'الحرارة (°م)'}
+ {type:'earthLayers',labels:['القشرة','الوشاح','اللب الخارجي','اللب الداخلي']}
+*/
+function renderV18Scientific(host,v){
+ const box=document.createElement('section');box.className='v18-visual';
+ const names={atom:'نموذج الجسيمات الذرية',cells:'مقارنة نموذجَي خليتين',line:'منحنى البيانات العلمية',earthLayers:'مقطع طبقات الأرض'};
+ const title=document.createElement('h3');title.textContent='🔬 '+names[v.type];box.appendChild(title);
+ const note=document.createElement('p');note.textContent='رسم تعليمي توضيحي؛ اقرأ المعطيات قبل الاستنتاج. الأبعاد والأحجام ليست مقياسًا حقيقيًا.';box.appendChild(note);
+ const svg=svgElement('svg',{viewBox:'0 0 640 320',role:'img','aria-label':names[v.type]});
+ const add=(tag,attrs,txt)=>{const el=svgElement(tag,attrs,txt);svg.appendChild(el);return el;};
+ const txt=(x,y,value,size=17,fill='#123e59')=>add('text',{x,y,'text-anchor':'middle','font-size':size,fill},value);
+ const numeric=x=>Number.isFinite(Number(x))?Math.max(0,Math.min(200,Math.round(Number(x)))):0;
+ if(v.type==='atom'){
+  const p=numeric(v.protons),n=numeric(v.neutrons),e=numeric(v.electrons);
+  [62,106,150].forEach(r=>add('circle',{cx:320,cy:145,r,fill:'none',stroke:'#d3e5eb','stroke-width':2,'stroke-dasharray':'5 6'}));
+  add('circle',{cx:320,cy:145,r:37,fill:'#f5dca6',stroke:'#bc9552','stroke-width':2});
+  txt(320,140,'النواة',14);txt(320,159,`${p}p⁺ · ${n}n`,13);
+  const shown=Math.min(e,24);
+  for(let j=0;j<shown;j++){const shell=j<2?62:j<10?106:150;const k=j<2?j:j<10?j-2:j-10;const total=j<2?Math.min(2,shown):j<10?Math.min(8,shown-2):Math.min(14,shown-10);const a=2*Math.PI*k/Math.max(total,1)-Math.PI/2;add('circle',{cx:320+shell*Math.cos(a),cy:145+shell*Math.sin(a),r:6,fill:'#159a91'});}
+  txt(320,304,`بروتونات: ${p}   |   نيوترونات: ${n}   |   إلكترونات: ${e}`,16);
+  if(e>24)txt(320,283,'توزيع الإلكترونات تخطيطي وغير مكتمل',12,'#60798a');
+ }else if(v.type==='cells'){
+  const counts=Array.isArray(v.counts)?v.counts.slice(0,2).map(numeric):[0,0];
+  const labels=Array.isArray(v.labels)?v.labels:['أ','ب'];
+  counts.forEach((count,i)=>{const cx=i?455:185,cy=145;add('ellipse',{cx,cy,rx:130,ry:100,fill:'#e5f6f2',stroke:'#159a91','stroke-width':3});add('ellipse',{cx:cx-18,cy:cy-5,rx:30,ry:25,fill:'#b5d7ef',stroke:'#5d94bd'});const shown=Math.min(count,24);for(let j=0;j<shown;j++){const angle=j*2.39996,rad=38+((j*17)%48);const x=cx+rad*Math.cos(angle),y=cy+rad*.65*Math.sin(angle);add('ellipse',{cx:x,cy:y,rx:9,ry:5,fill:'#dfad64',stroke:'#aa7940'});}txt(cx,275,`العينة ${String(labels[i]??(i+1))}: ${count} ميتوكوندريا`,15);});
+  txt(320,306,'رموز العضيات تخطيطية؛ الأعداد مكتوبة أسفل كل خلية',12,'#60798a');
+ }else if(v.type==='line'){
+  const values=Array.isArray(v.values)?v.values.map(Number).slice(0,18):[];
+  if(values.length<2||values.some(x=>!Number.isFinite(x))){txt(320,160,'لا توجد بيانات صالحة لرسم المنحنى');}
+  else{const min=Math.min(...values),max=Math.max(...values),range=Math.max(1,max-min);const L=80,R=590,T=45,B=245;add('path',{d:`M${L} ${T} V${B} H${R}`,stroke:'#123e59','stroke-width':2,fill:'none'});for(let j=0;j<=4;j++){const y=B-(B-T)*j/4;add('line',{x1:L,y1:y,x2:R,y2:y,stroke:'#e0ebee'});txt(51,y+5,(min+range*j/4).toFixed(1),12);}const pts=values.map((x,i)=>[L+(R-L)*i/(values.length-1),B-(x-min)/range*(B-T)]);add('polyline',{points:pts.map(z=>z.join(',')).join(' '),fill:'none',stroke:'#087f82','stroke-width':4,'stroke-linejoin':'round'});pts.forEach(([x,y],i)=>{add('circle',{cx:x,cy:y,r:5,fill:'#c49a50'});if(values.length<=9)txt(x,B+20,String((v.labels||[])[i]??i),12);});txt(320,296,String(v.xLabel||'المتغير المستقل'),15);txt(320,24,String(v.yLabel||'المتغير التابع'),15);}
+ }else if(v.type==='earthLayers'){
+  const colors=['#b5d9a2','#e5ad72','#e7c36b','#cf795a'];const radii=[127,115,79,39];radii.forEach((r,i)=>add('circle',{cx:320,cy:150,r,fill:colors[i],stroke:'#fff','stroke-width':2}));const labels=Array.isArray(v.labels)?v.labels:['القشرة','الوشاح','اللب الخارجي','اللب الداخلي'];labels.slice(0,4).forEach((label,i)=>{const x=85+(i%2)*390,y=48+Math.floor(i/2)*220;txt(x,y,String(label),15);});txt(320,308,'مقطع تخطيطي لا يمثل سماكات الطبقات بمقياس حقيقي',12,'#60798a');
+ }
+ box.appendChild(svg);host.appendChild(box);
+}
 
 /* V16 — سقالات التفكير في التحديات. لا ترسل بيانات ولا تكشف الإجابة. */
 function renderV16ReadingGuide(question){
@@ -1708,7 +1759,11 @@ function renderV16ReadingGuide(question){
   table:['اقرأ عنوان كل عمود ووحدة القياس.','قارن صفين أو أكثر قبل الاستنتاج.','هل تدعم الأرقام الاستنتاج الذي اخترته؟'],
   bars:['اقرأ تدريج المحور الرأسي قبل مقارنة ارتفاع الأعمدة.','حدّد أكبر قيمة وأصغر قيمة والفرق بينهما.','انتبه إلى الوحدات وإلى ما إذا كان المحور يبدأ من الصفر.'],
   circuit:['ميّز بين فرق الجهد وشدة التيار والمقاومة.','حدّد الكمية المجهولة ثم اختر العلاقة المناسبة.','تأكد من الوحدات قبل اعتماد الإجابة.'],
-  punnett:['حدّد الأمشاج المحتملة لكل من الأبوين.','اقرأ الخانات الأربع بوصفها احتمالات نظرية.','فرّق بين الطراز الجيني والصفة الظاهرية.']
+  punnett:['حدّد الأمشاج المحتملة لكل من الأبوين.','اقرأ الخانات الأربع بوصفها احتمالات نظرية.','فرّق بين الطراز الجيني والصفة الظاهرية.'],
+  atom:['قارن عدد البروتونات والإلكترونات.','استنتج الشحنة الصافية من الفرق بين الشحنات.','النيوترونات لا تغيّر الشحنة الكهربائية.'],
+  cells:['قارن العضيات المرسومة مع ثبات بقية العوامل.','ميّز بين الدليل المرصود والاستنتاج.','لا تستنتج مقدار الطاقة الفعلي من الرسم وحده.'],
+  line:['اقرأ وحدات المحورين وتدرجهما.','قارن الاتجاه والتغير بين نقطتين.','تحقق مما إذا كانت البيانات تكفي لتفسير السبب.'],
+  earthLayers:['اقرأ ترتيب الطبقات ومفتاح الرسم.','اربط موضع الطبقة بالخاصية المذكورة.','لا تستنتج تفاصيل غير معروضة في الرسم.']
  };
  const tips=guides[v.type];
  if(!tips)return;
